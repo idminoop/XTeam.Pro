@@ -347,7 +347,7 @@ export default function Pricing() {
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center">
                       <Star className="w-4 h-4 mr-1" />
-                      Most Popular
+                      {t('pricing.tiers.mostPopular')}
                     </span>
                   </div>
                 )}
@@ -437,7 +437,7 @@ export default function Pricing() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Input Form */}
                 <div className="bg-gray-50 rounded-2xl p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Your Current Situation</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">{t('pricing.roiCalculator.inputs.currentSituation')}</h3>
                   
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -579,7 +579,7 @@ export default function Pricing() {
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expected Efficiency Gain (%)
+                        {t('pricing.roiCalculator.inputs.expectedEfficiencyGain')}
                       </label>
                       <input
                         type="number"
@@ -594,7 +594,7 @@ export default function Pricing() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Automation Readiness (1-10)
+                          {t('pricing.roiCalculator.inputs.automationReadiness')}
                         </label>
                         <input
                           type="number"
@@ -608,7 +608,7 @@ export default function Pricing() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Change Management (1-10)
+                          {t('pricing.roiCalculator.inputs.changeManagement')}
                         </label>
                         <input
                           type="number"
@@ -622,7 +622,7 @@ export default function Pricing() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Technical Complexity (1-10)
+                          {t('pricing.roiCalculator.inputs.technicalComplexity')}
                         </label>
                         <input
                           type="number"
@@ -644,7 +644,7 @@ export default function Pricing() {
                         className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <label htmlFor="regulatory" className="text-sm font-medium text-gray-700">
-                        Has regulatory requirements
+                        {t('pricing.roiCalculator.inputs.regulatoryRequirements')}
                       </label>
                     </div>
                     
@@ -660,12 +660,12 @@ export default function Pricing() {
 
                 {/* Results */}
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Your ROI Projection</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">{t('pricing.roiCalculator.results.title')}</h3>
                   
                   {roiError && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                       <div className="text-red-800 text-sm">
-                        <strong>Validation Error:</strong> {roiError}
+                        <strong>{t('pricing.roiCalculator.results.validationError')}:</strong> {roiError}
                       </div>
                     </div>
                   )}
@@ -673,7 +673,7 @@ export default function Pricing() {
                   {roiLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                      <p className="mt-2 text-gray-600">Calculating ROI...</p>
+                      <p className="mt-2 text-gray-600">{t('pricing.roiCalculator.results.calculating')}</p>
                     </div>
                   ) : roiResults ? (
                     <div className="space-y-4">
@@ -748,7 +748,7 @@ export default function Pricing() {
                       {/* AI Insights */}
                       {roiResults.insights && roiResults.insights.length > 0 && (
                         <div className="bg-white rounded-lg p-4">
-                          <div className="text-lg font-semibold text-gray-900 mb-2">AI Insights:</div>
+                          <div className="text-lg font-semibold text-gray-900 mb-2">{t('pricing.roiCalculator.results.aiInsights')}:</div>
                           <ul className="text-sm text-gray-600 space-y-1">
                             {roiResults.insights.map((insight, index) => (
                               <li key={index} className="flex items-start">
@@ -792,7 +792,7 @@ export default function Pricing() {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-gray-600">Fill in the form to calculate your ROI</p>
+                      <p className="text-gray-600">{t('pricing.roiCalculator.results.fillForm')}</p>
                     </div>
                   )}
                 </div>

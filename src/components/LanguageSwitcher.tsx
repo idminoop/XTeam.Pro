@@ -10,8 +10,8 @@ interface Language {
 }
 
 const languages: Language[] = [
-  { code: 'en', name: '', flag: '🇺🇸' },
-  { code: 'ru', name: '', flag: '🇷🇺' }
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' }
 ];
 
 const LanguageSwitcher: React.FC = () => {

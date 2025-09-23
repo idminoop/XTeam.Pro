@@ -537,7 +537,7 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-2">
-                        Your Position
+                        {t('contact.form.position')}
                       </label>
                       <input
                         type="text"
@@ -548,13 +548,13 @@ export default function Contact() {
                         className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                           validationErrors.position ? 'border-red-300 bg-red-50' : 'border-gray-300'
                         }`}
-                        placeholder="CEO, CTO, Manager, etc."
+                        placeholder={t('contact.form.positionPlaceholder')}
                       />
                       {validationErrors.position && <ErrorMessage error={validationErrors.position} />}
                     </div>
                     <div>
                       <label htmlFor="inquiryType" className="block text-sm font-medium text-gray-700 mb-2">
-                        Inquiry Type *
+                        {t('contact.form.inquiryType')} *
                       </label>
                       <select
                         id="inquiryType"
@@ -575,7 +575,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject *
+                    {t('contact.form.subject')} *
                   </label>
                   <input
                       type="text"
@@ -594,7 +594,7 @@ export default function Contact() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Services Interested In
+                    {t('contact.form.servicesInterestedIn')}
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {serviceOptions.map((service) => (
@@ -622,7 +622,7 @@ export default function Contact() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      <option value="">Select budget range</option>
+                      <option value="">{t('contact.form.selectBudgetRange')}</option>
                       {budgetRanges.map((range) => (
                         <option key={range} value={range}>{range}</option>
                       ))}
@@ -638,7 +638,7 @@ export default function Contact() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      <option value="">Select timeline</option>
+                      <option value="">{t('contact.form.selectTimeline')}</option>
                       {timelineOptions.map((timeline) => (
                         <option key={timeline} value={timeline}>{timeline}</option>
                       ))}
@@ -719,19 +719,19 @@ export default function Contact() {
                 <div className="space-y-4 mb-6">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">Free 30-minute consultation</span>
+                    <span className="text-gray-700">{t('contact.consultation.features.freeConsultation')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">Custom AI strategy roadmap</span>
+                    <span className="text-gray-700">{t('contact.consultation.features.customRoadmap')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">ROI projections & timeline</span>
+                    <span className="text-gray-700">{t('contact.consultation.features.roiProjections')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">No sales pressure</span>
+                    <span className="text-gray-700">{t('contact.consultation.features.noSalesPressure')}</span>
                   </div>
                 </div>
                 
@@ -747,32 +747,32 @@ export default function Contact() {
                 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">How quickly can you start a project?</h4>
-                    <p className="text-gray-600 text-sm">We can typically begin discovery within 1-2 weeks of signing the agreement.</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">{t('contact.faq.questions.projectStart.question')}</h4>
+                    <p className="text-gray-600 text-sm">{t('contact.faq.questions.projectStart.answer')}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Do you work with small businesses?</h4>
-                    <p className="text-gray-600 text-sm">Yes! We have solutions for businesses of all sizes, from startups to Fortune 500 companies.</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">{t('contact.faq.questions.smallBusiness.question')}</h4>
+                    <p className="text-gray-600 text-sm">{t('contact.faq.questions.smallBusiness.answer')}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">What's included in the consultation?</h4>
-                    <p className="text-gray-600 text-sm">A comprehensive assessment of your current processes, AI opportunities, and a custom roadmap.</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">{t('contact.faq.questions.consultationIncluded.question')}</h4>
+                    <p className="text-gray-600 text-sm">{t('contact.faq.questions.consultationIncluded.answer')}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Do you provide ongoing support?</h4>
-                    <p className="text-gray-600 text-sm">Yes, we offer 24/7 support, training, and continuous optimization services.</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">{t('contact.faq.questions.ongoingSupport.question')}</h4>
+                    <p className="text-gray-600 text-sm">{t('contact.faq.questions.ongoingSupport.answer')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Contact Methods */}
               <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-xl p-8 text-white">
-                <h3 className="text-2xl font-bold mb-4">Prefer to Talk Directly?</h3>
+                <h3 className="text-2xl font-bold mb-4">{t('contact.directContact.title')}</h3>
                 <p className="mb-6 opacity-90">
-                  Our team is available 24/7 to answer your questions and discuss your AI transformation needs.
+                  {t('contact.directContact.description')}
                 </p>
                 
                 <div className="space-y-4">
@@ -786,7 +786,7 @@ export default function Contact() {
                   </a>
                   <div className="flex items-center space-x-3">
                     <MessageSquare className="w-5 h-5" />
-                    <span>Live chat available on our website</span>
+                    <span>{t('contact.directContact.liveChat')}</span>
                   </div>
                 </div>
               </div>

@@ -213,7 +213,7 @@ export default function Blog() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-12"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Featured Articles</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('blog.featuredArticles')}</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {featuredPosts.map((post, index) => (
                   <motion.article
@@ -231,7 +231,7 @@ export default function Blog() {
                       />
                       <div className="absolute top-4 left-4">
                         <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                          Featured
+                          {t('blog.featured')}
                         </span>
                       </div>
                     </div>
@@ -243,7 +243,7 @@ export default function Blog() {
                         </span>
                         <div className="flex items-center text-gray-500 text-sm">
                           <Clock className="w-4 h-4 mr-1" />
-                          {post.readTime} min read
+                          {post.readTime} {t('blog.minRead')}
                         </div>
                       </div>
                       
@@ -272,7 +272,7 @@ export default function Blog() {
                           to={`/blog/${post.id}`}
                           className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
                         >
-                          Read More
+                          {t('blog.readMore')}
                           <ArrowRight className="w-4 h-4 ml-1" />
                         </Link>
                       </div>
@@ -433,7 +433,7 @@ export default function Blog() {
                                 {formatDate(post.publishedAt)}
                                 <span className="mx-2">•</span>
                                 <Clock className="w-3 h-3 mr-1" />
-                                {post.readTime} min
+                                {post.readTime} {t('blog.min')}
                               </div>
                             </div>
                           </div>

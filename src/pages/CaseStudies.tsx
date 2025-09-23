@@ -367,7 +367,7 @@ export default function CaseStudies() {
                   </span>
                   {study.featured && (
                     <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded">
-                      Featured
+                      {t('caseStudies.featured')}
                     </span>
                   )}
                 </div>
@@ -403,7 +403,7 @@ export default function CaseStudies() {
                     <span className="font-semibold text-green-600">{study.roi}</span>
                   </div>
                   <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
-                    Details
+                    {t('caseStudies.details')}
                     <ExternalLink className="w-4 h-4 ml-1" />
                   </button>
                 </div>

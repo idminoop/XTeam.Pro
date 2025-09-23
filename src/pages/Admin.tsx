@@ -795,21 +795,21 @@ export default function Admin() {
                             <button 
                               onClick={() => handleViewSubmission(submission.audit_id)}
                               className="text-blue-600 hover:text-blue-900"
-                              title="View Results"
+                              title={t('admin.dashboard.actions.viewResults')}
                             >
                               <Eye className="w-4 h-4" />
                             </button>
                             <button 
                               onClick={() => handleEditSubmission(submission.audit_id)}
                               className="text-gray-600 hover:text-gray-900"
-                              title="Edit Submission"
+                              title={t('admin.dashboard.actions.editSubmission')}
                             >
                               <Edit className="w-4 h-4" />
                             </button>
                             <button 
                               onClick={() => handleDeleteSubmission(submission.audit_id)}
                               className="text-red-600 hover:text-red-900"
-                              title="Delete Submission"
+                              title={t('admin.dashboard.actions.deleteSubmission')}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -868,7 +868,7 @@ export default function Admin() {
           >
             <div className="px-6 py-4 border-b border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Contact Inquiries</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('admin.dashboard.contactInquiries')}</h3>
                 <div className="mt-4 sm:mt-0 flex items-center space-x-4">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -943,10 +943,10 @@ export default function Admin() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center justify-end space-x-2">
-                          <button className="text-blue-600 hover:text-blue-900" title="View Details">
+                          <button className="text-blue-600 hover:text-blue-900" title={t('admin.dashboard.actions.viewDetails')}>
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="text-green-600 hover:text-green-900" title="Edit Contact">
+                          <button className="text-green-600 hover:text-green-900" title={t('admin.dashboard.actions.editContact')}>
                             <Edit className="w-4 h-4" />
                           </button>
                         </div>
@@ -1003,7 +1003,7 @@ export default function Admin() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      PDF Generation
+                      {t('admin.dashboard.configuration.pdfGeneration')}
                     </label>
                     <label className="flex items-center">
                       <input 
@@ -1018,7 +1018,7 @@ export default function Admin() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Auto-send Reports
+                      {t('admin.dashboard.configuration.autoSendReports')}
                     </label>
                     <label className="flex items-center">
                       <input 
@@ -1050,7 +1050,7 @@ export default function Admin() {
                           }
                         })}
                       />
-                      <span className="ml-2 text-sm text-gray-700">New submission notifications</span>
+                      <span className="ml-2 text-sm text-gray-700">{t('admin.dashboard.configuration.newSubmissionNotifications')}</span>
                     </label>
                     <label className="flex items-center">
                       <input 
@@ -1065,7 +1065,7 @@ export default function Admin() {
                           }
                         })}
                       />
-                      <span className="ml-2 text-sm text-gray-700">Weekly summary reports</span>
+                      <span className="ml-2 text-sm text-gray-700">{t('admin.dashboard.configuration.weeklySummaryReports')}</span>
                     </label>
                     <label className="flex items-center">
                       <input 
@@ -1080,7 +1080,7 @@ export default function Admin() {
                           }
                         })}
                       />
-                      <span className="ml-2 text-sm text-gray-700">Audit completion alerts</span>
+                      <span className="ml-2 text-sm text-gray-700">{t('admin.dashboard.configuration.auditCompletionAlerts')}
                     </label>
                   </div>
                 </div>
@@ -1092,7 +1092,7 @@ export default function Admin() {
                   <textarea
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     rows={4}
-                    placeholder="Enter custom prompts for AI analysis..."
+                    placeholder={t('admin.dashboard.configuration.customPromptsPlaceholder')}
                     value={JSON.stringify(configuration.custom_prompts || {}, null, 2)}
                     onChange={(e) => {
                       try {

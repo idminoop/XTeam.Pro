@@ -95,7 +95,13 @@
       "save": "Save",
       "saved": "Saved",
       "share": "Share",
-      "relatedArticles": "Related Articles"
+      "relatedArticles": "Related Articles",
+      "loading": "Loading article...",
+      "views": "views",
+      "likes": "likes",
+      "comments": "comments",
+      "minRead": "min read",
+      "min": "min"
     }
   },
   "footer": {
@@ -212,7 +218,8 @@
       "paragraph1": "XTeam.Pro was born from a simple observation: while AI technology was advancing rapidly, most businesses struggled to implement it effectively. The gap between AI's potential and practical business applications was enormous.",
       "paragraph2": "Our founders, Sarah Chen and Dr. Michael Rodriguez, had spent years building AI systems at tech giants like Google and Microsoft. They witnessed firsthand how AI could transform operations, but also saw how complex and expensive implementations often were.",
       "paragraph3": "In 2019, they decided to bridge this gap by creating XTeam.Pro - a company focused on making enterprise-grade AI accessible, practical, and profitable for businesses of all sizes.",
-      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value."
+      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value.",
+      "officeImageAlt": "XTeam.Pro Office"
     },
     "journey": {
       "title": "Our Journey",
@@ -661,6 +668,7 @@
       "save": "(Save 17%)"
     },
     "tiers": {
+      "mostPopular": "Most Popular",
       "starter": {
         "name": "Starter",
         "description": "Perfect for small businesses starting their AI journey",
@@ -838,8 +846,79 @@
         "calculationFailed": "Failed to calculate ROI"
       }
     },
+    "roiCalculator": {
+      "title": "ROI Calculator",
+      "subtitle": "Calculate your potential return on investment",
+      "inputs": {
+        "currentSituation": "Your Current Situation",
+        "expectedEfficiencyGain": "Expected Efficiency Gain (%)",
+        "automationReadiness": "Automation Readiness (1-10)",
+        "changeManagement": "Change Management (1-10)",
+        "technicalComplexity": "Technical Complexity (1-10)",
+        "regulatoryRequirements": "Has regulatory requirements",
+        "calculateButton": "Calculate ROI",
+        "calculating": "Calculating..."
+      },
+      "results": {
+        "title": "Your ROI Projection",
+        "validationError": "Validation Error",
+        "calculating": "Calculating ROI...",
+        "aiInsights": "AI Insights",
+        "fillForm": "Fill in the form to calculate your ROI",
+        "metrics": {
+          "annualWasteFromInefficiencies": "Annual waste from inefficiencies",
+          "projectedAnnualSavings": "Projected annual savings",
+          "paybackPeriod": "Payback period",
+          "threeYearROI": "3-year ROI",
+          "npv": "Net Present Value (NPV)",
+          "irr": "Internal Rate of Return (IRR)"
+        },
+        "savingsBreakdown": {
+          "title": "Savings Breakdown",
+          "categories": {
+            "time_savings": "Time savings",
+            "error_reduction": "Error reduction"
+          }
+        },
+        "riskFactors": {
+          "title": "Risk Factors",
+          "risk1": "Implementation complexity may affect timeline",
+          "risk2": "Change management challenges could impact adoption",
+          "risk3": "Technical integration requirements may vary"
+        },
+        "recommendations": {
+          "title": "Recommendations",
+          "recommendation1": "Start with pilot program to minimize risk",
+          "recommendation2": "Invest in comprehensive training program",
+          "recommendation3": "Consider phased implementation approach"
+        }
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
+      "subtitle": "Common questions about our pricing and services",
+      "questions": {
+        "question1": {
+          "question": "What's included in the implementation?",
+          "answer": "All packages include full implementation, data migration, staff training, and 90 days of support. We handle everything from setup to go-live."
+        },
+        "question2": {
+          "question": "How long does implementation take?",
+          "answer": "Typical implementation ranges from 4-12 weeks depending on complexity. We provide a detailed timeline during the consultation phase."
+        },
+        "question3": {
+          "question": "Do you offer custom pricing for large enterprises?",
+          "answer": "Yes, we offer custom pricing and solutions for enterprises with unique requirements. Contact our sales team for a personalized quote."
+        },
+        "question4": {
+          "question": "What kind of support do you provide?",
+          "answer": "All plans include ongoing support, with response times varying by tier. Enterprise customers get 24/7 support with dedicated account management."
+        },
+        "question5": {
+          "question": "Can I upgrade or downgrade my plan?",
+          "answer": "Yes, you can change your plan at any time. We'll help you transition smoothly and adjust billing accordingly."
+        }
+      },
       "questions": {
         "implementation": {
           "question": "What's included in the implementation?",
@@ -1185,7 +1264,6 @@
       "processing": "Processing..."
     }
   },
-  },
   "auditResults": {
     "title": "AI Audit Results",
     "processing": "Processing your audit...",
@@ -1384,7 +1462,9 @@
       "oldest": "Oldest First",
       "popular": "Most Popular"
     },
-    "featuredPosts": "Featured Articles",
+    "featuredArticles": "Featured Articles",
+    "minRead": "min read",
+
     "readTime": "{{minutes}} min read",
     "views": "{{count}} views",
     "readMore": "Read More",
@@ -1521,6 +1601,8 @@
       "filterByIndustry": "Filter by Industry",
       "searchPlaceholder": "Search case studies...",
       "viewDetails": "View Details",
+      "details": "Details",
+      "featured": "Featured",
       "challenge": "Challenge",
       "stats": {
         "projects": {
@@ -1862,6 +1944,9 @@
       "marketingConsent": "I agree to receive marketing communications from XTeam.Pro. You can unsubscribe at any time.",
       "sendingMessage": "Sending Message...",
       "sendMessage": "Send Message",
+      "positionPlaceholder": "CEO, CTO, Manager, etc.",
+      "inquiryType": "Inquiry Type",
+      "servicesInterestedIn": "Services Interested In",
       "success": "Message sent successfully!",
       "error": "Error"
     },
@@ -1874,10 +1959,39 @@
         "projections": "ROI projections & timeline",
         "noPressure": "No sales pressure"
       },
+      "features": {
+        "freeConsultation": "Free 30-minute consultation",
+        "customRoadmap": "Custom AI strategy roadmap",
+        "roiProjections": "ROI projections & timeline",
+        "noSalesPressure": "No sales pressure"
+      },
       "cta": "Book Free Consultation"
     },
     "faq": {
-      "title": "Frequently Asked Questions"
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "projectStart": {
+          "question": "How quickly can you start a project?",
+          "answer": "We can typically begin discovery within 1-2 weeks of signing the agreement."
+        },
+        "smallBusiness": {
+          "question": "Do you work with small businesses?",
+          "answer": "Yes! We have solutions for businesses of all sizes, from startups to Fortune 500 companies."
+        },
+        "consultationIncluded": {
+          "question": "What's included in the consultation?",
+          "answer": "A comprehensive assessment of your current processes, AI opportunities, and a custom roadmap."
+        },
+        "ongoingSupport": {
+          "question": "Do you provide ongoing support?",
+          "answer": "Yes, we offer 24/7 support, training, and continuous optimization services."
+        }
+      }
+    },
+    "directContact": {
+      "title": "Prefer to Talk Directly?",
+      "description": "Our team is available 24/7 to answer your questions and discuss your AI transformation needs.",
+      "liveChat": "Live chat available on our website"
     }
   },
   "admin": {
@@ -1941,8 +2055,14 @@
          "manageUsers": "Manage Users",
          "viewAudits": "View Audits",
          "settings": "Settings",
-         "logout": "Logout"
+         "logout": "Logout",
+         "viewResults": "View Results",
+         "editSubmission": "Edit Submission",
+         "deleteSubmission": "Delete Submission",
+         "viewDetails": "View Details",
+         "editContact": "Edit Contact"
        },
+       "contactInquiries": "Contact Inquiries",
        "configuration": {
          "title": "Audit Configuration",
          "aiModel": "AI Model",
@@ -1969,9 +2089,15 @@
          "pdfGeneration": "Enable PDF report generation",
          "autoSend": "Automatically send reports to clients",
          "emailNotifications": "Email notifications",
-         "customPrompts": "Custom Analysis Prompts",
+         "customPrompts": "Custom analysis prompts",
+         "customPromptsPlaceholder": "Enter custom prompts for AI analysis...",
+         "newSubmissionNotifications": "New submission notifications",
+         "weeklySummaryReports": "Weekly summary reports",
+         "auditCompletionAlerts": "Audit completion alerts",
          "reset": "Reset",
-         "save": "Save Configuration"
+         "save": "Save Configuration",
+         "pdfGeneration": "PDF Generation",
+         "autoSendReports": "Auto-send Reports"
        }
      }
    },
@@ -2029,6 +2155,8 @@
     },
     "addOns": {
       "title": "Add-ons",
+      "subtitle": "Enhance your plan with additional features",
+      "addToPlan": "Add to Plan",
       "analytics": {
         "name": "Advanced Analytics Package",
         "description": "Deep insights and custom reporting",
@@ -2097,6 +2225,12 @@
         }
       ]
     },
+    "finalCta": {
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Join hundreds of companies already benefiting from AI automation. Start your journey today.",
+      "scheduleConsultation": "Schedule Free Consultation",
+      "startFreeTrial": "Start Free Trial"
+    },
     "roi": {
       "title": "ROI Calculator",
       "errors": {
@@ -2147,6 +2281,23 @@
       }
     },
     "form": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "company": "Company Name",
+      "phone": "Phone Number",
+      "position": "Your Position",
+      "positionPlaceholder": "e.g., CEO, CTO, Marketing Manager",
+      "inquiryType": "Inquiry Type",
+      "subject": "Subject",
+      "message": "Message",
+      "servicesInterestedIn": "Services Interested In",
+      "budgetRange": "Budget Range",
+      "selectBudgetRange": "Select budget range",
+      "timeline": "Timeline",
+      "selectTimeline": "Select timeline",
+      "marketingConsent": "I agree to receive marketing communications from XTeam.Pro",
+      "sending": "Sending...",
+      "sendMessage": "Send Message",
       "inquiryTypes": {
         "consultation": "Free Consultation",
         "demo": "Product Demo",

@@ -234,7 +234,7 @@ export default function About() {
             >
               <img
                 src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Modern%20tech%20office%20with%20diverse%20team%20collaborating%20on%20AI%20projects%2C%20multiple%20monitors%20showing%20data%20visualizations%2C%20bright%20and%20innovative%20workspace&image_size=landscape_4_3"
-                alt="XTeam.Pro Office"
+                alt={t('about.story.officeImageAlt')}
                 className="rounded-2xl shadow-lg"
               />
             </motion.div>

@@ -441,6 +441,7 @@ interface StepContentProps {
 }
 
 function StepContent({ step, value, onChange }: StepContentProps) {
+  const { t } = useTranslation();
   if (step.type === 'select') {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

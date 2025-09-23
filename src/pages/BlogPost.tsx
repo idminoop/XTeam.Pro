@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, User, Share2, BookOpen, Tag, TrendingUp, MessageCircle, Heart, Bookmark } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 
 interface BlogPost {
   id: string;
@@ -33,6 +35,7 @@ interface RelatedPost {
 }
 
 export default function BlogPost() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<RelatedPost[]>([]);
@@ -239,7 +242,7 @@ export default function BlogPost() {
   }, [id]);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(i18n.language === 'ru' ? 'ru-RU' : 'en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -263,7 +266,7 @@ export default function BlogPost() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading article...</p>
+          <p className="text-gray-600">{t('blog.post.loading')}</p>
         </div>
       </div>
     );
@@ -322,7 +325,7 @@ export default function BlogPost() {
                 </div>
                 <div className="flex items-center text-gray-500 text-sm">
                   <Clock className="w-4 h-4 mr-1" />
-                  {post.readTime} min read
+                  {post.readTime} {t('blog.post.minRead')}
                 </div>
               </div>
               
@@ -333,15 +336,15 @@ export default function BlogPost() {
               <div className="flex items-center justify-center space-x-6 text-gray-500 text-sm">
                 <div className="flex items-center">
                   <TrendingUp className="w-4 h-4 mr-1" />
-                  {post.views.toLocaleString()} views
+                  {post.views.toLocaleString()} {t('blog.post.views')}
                 </div>
                 <div className="flex items-center">
                   <Heart className="w-4 h-4 mr-1" />
-                  {post.likes} likes
+                  {post.likes} {t('blog.post.likes')}
                 </div>
                 <div className="flex items-center">
                   <MessageCircle className="w-4 h-4 mr-1" />
-                  {post.comments} comments
+                  {post.comments} {t('blog.post.comments')}
                 </div>
               </div>
             </motion.div>
@@ -476,7 +479,7 @@ export default function BlogPost() {
                               </h4>
                               <div className="flex items-center text-xs text-gray-500 mt-1">
                                 <Clock className="w-3 h-3 mr-1" />
-                                {relatedPost.readTime} min
+                                {relatedPost.readTime} {t('blog.post.min')}
                               </div>
                             </div>
                           </div>
