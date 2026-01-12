@@ -8,12 +8,23 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database URL
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "sqlite+aiosqlite:///./xteam_pro.db"
-)
+RAW_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./xteam_pro.db")
 
-ASYNC_DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+if RAW_DATABASE_URL.startswith("postgresql+asyncpg://"):
+    DATABASE_URL = RAW_DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+    ASYNC_DATABASE_URL = RAW_DATABASE_URL
+elif RAW_DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = RAW_DATABASE_URL
+    ASYNC_DATABASE_URL = RAW_DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+elif RAW_DATABASE_URL.startswith("sqlite+aiosqlite:///"):
+    DATABASE_URL = RAW_DATABASE_URL.replace("sqlite+aiosqlite:///", "sqlite:///")
+    ASYNC_DATABASE_URL = RAW_DATABASE_URL
+elif RAW_DATABASE_URL.startswith("sqlite:///"):
+    DATABASE_URL = RAW_DATABASE_URL
+    ASYNC_DATABASE_URL = RAW_DATABASE_URL.replace("sqlite:///", "sqlite+aiosqlite:///")
+else:
+    DATABASE_URL = RAW_DATABASE_URL
+    ASYNC_DATABASE_URL = RAW_DATABASE_URL
 
 # Create engines
 engine = create_engine(DATABASE_URL)
