@@ -29,7 +29,9 @@ interface CaseStudy {
 }
 
 export default function CaseStudies() {
-  const { t } = useTranslation();
+  const { t: tRaw } = useTranslation();
+  const t = (key: string, options?: any): string =>
+    tRaw(key.startsWith('caseStudies.') ? `blog.${key}` : key, options) as unknown as string;
   const [selectedIndustry, setSelectedIndustry] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 

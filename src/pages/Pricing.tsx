@@ -121,18 +121,21 @@ export default function Pricing() {
 
   const addOns = [
     {
+      id: 'analytics',
       name: t('pricing.addOns.analytics.name'),
       description: t('pricing.addOns.analytics.description'),
       price: t('pricing.addOns.analytics.price'),
       features: [t('pricing.addOns.analytics.features.0'), t('pricing.addOns.analytics.features.1'), t('pricing.addOns.analytics.features.2')]
     },
     {
+      id: 'support',
       name: t('pricing.addOns.support.name'),
       description: t('pricing.addOns.support.description'),
       price: t('pricing.addOns.support.price'),
       features: [t('pricing.addOns.support.features.0'), t('pricing.addOns.support.features.1'), t('pricing.addOns.support.features.2')]
     },
     {
+      id: 'custom',
       name: t('pricing.addOns.custom.name'),
       description: t('pricing.addOns.custom.description'),
       price: t('pricing.addOns.custom.price'),
@@ -357,10 +360,10 @@ export default function Pricing() {
                     {tier.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {t(`pricing.tiers.${tier.name.toLowerCase().replace(' ', '_')}.name`)}
+                    {tier.name}
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    {t(`pricing.tiers.${tier.name.toLowerCase().replace(' ', '_')}.description`)}
+                    {tier.description}
                   </p>
                   <div className="mb-4">
                     <span className="text-4xl font-bold text-gray-900">{tier.price}</span>
@@ -374,7 +377,7 @@ export default function Pricing() {
                       <div key={idx} className="flex items-start">
                         <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                         <span className="text-gray-600">
-                          {t(`pricing.tiers.${tier.name.toLowerCase().replace(' ', '_')}.features.feature${idx + 1}`)}
+                          {feature}
                         </span>
                       </div>
                     ))}
@@ -386,7 +389,7 @@ export default function Pricing() {
                         <div key={idx} className="flex items-start">
                           <Info className="w-4 h-4 text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
                           <span className="text-sm text-gray-500">
-                            {t(`pricing.tiers.${tier.name.toLowerCase().replace(' ', '_')}.limitations.limitation${idx + 1}`)}
+                            {limitation}
                           </span>
                         </div>
                       ))}
@@ -399,7 +402,7 @@ export default function Pricing() {
                     ? 'bg-blue-600 text-white hover:bg-blue-700'
                     : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                 }`}>
-                  {t(`pricing.tiers.${tier.name.toLowerCase().replace(' ', '_')}.cta`)}
+                  {tier.cta}
                 </button>
               </motion.div>
             ))}
@@ -819,21 +822,21 @@ export default function Pricing() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {addOns.map((addon, index) => (
               <motion.div
-                key={addon.name}
+                key={addon.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index }}
                 className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow"
               >
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t(`pricing.addOns.items.${addon.name.toLowerCase().replace(/\s+/g, '_')}.name`)}</h3>
-                <p className="text-gray-600 mb-4">{t(`pricing.addOns.items.${addon.name.toLowerCase().replace(/\s+/g, '_')}.description`)}</p>
-                <div className="text-2xl font-bold text-blue-600 mb-4">{t(`pricing.addOns.items.${addon.name.toLowerCase().replace(/\s+/g, '_')}.price`)}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{addon.name}</h3>
+                <p className="text-gray-600 mb-4">{addon.description}</p>
+                <div className="text-2xl font-bold text-blue-600 mb-4">{addon.price}</div>
                 
                 <div className="space-y-2 mb-6">
                   {addon.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center">
                       <Check className="w-4 h-4 text-green-500 mr-2" />
-                      <span className="text-sm text-gray-600">{t(`pricing.addOns.items.${addon.name.toLowerCase().replace(/\s+/g, '_')}.features.feature${idx + 1}`)}</span>
+                      <span className="text-sm text-gray-600">{feature}</span>
                     </div>
                   ))}
                 </div>

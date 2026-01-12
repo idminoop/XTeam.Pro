@@ -1,25 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Globe, ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Check } from 'lucide-react';
 
 interface Language {
   code: string;
-  name: string;
-  flag: string;
 }
 
 const languages: Language[] = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+  { code: 'en' },
+  { code: 'ru' }
 ];
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const resolvedCode = (i18n.resolvedLanguage || i18n.language || 'en').split('-')[0];
+  const currentLanguage = languages.find(lang => lang.code === resolvedCode) || languages[0];
 
   const changeLanguage = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
@@ -45,13 +44,9 @@ const LanguageSwitcher: React.FC = () => {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 min-w-[100px] justify-between hover:bg-gray-50 transition-colors"
+        className="flex items-center space-x-2 min-w-[64px] justify-between hover:bg-gray-50 transition-colors"
       >
-        <div className="flex items-center space-x-2">
-          <span className="text-lg">{currentLanguage.flag}</span>
-          <span className="text-sm font-medium hidden sm:inline">{t(`languages.${currentLanguage.code}`)}</span>
-          <span className="text-sm font-medium sm:hidden">{currentLanguage.code.toUpperCase()}</span>
-        </div>
+        <span className="text-sm font-medium">{currentLanguage.code.toUpperCase()}</span>
         <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
@@ -65,10 +60,7 @@ const LanguageSwitcher: React.FC = () => {
                 currentLanguage.code === language.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
               }`}
             >
-              <div className="flex items-center space-x-2">
-                <span className="text-lg">{language.flag}</span>
-                <span className="text-sm font-medium">{t(`languages.${language.code}`)}</span>
-              </div>
+              <span className="text-sm font-medium">{language.code.toUpperCase()}</span>
               {currentLanguage.code === language.code && (
                 <Check className="w-4 h-4 text-blue-600" />
               )}

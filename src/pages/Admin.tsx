@@ -1080,7 +1080,7 @@ export default function Admin() {
                           }
                         })}
                       />
-                      <span className="ml-2 text-sm text-gray-700">{t('admin.dashboard.configuration.auditCompletionAlerts')}
+                      <span className="ml-2 text-sm text-gray-700">{t('admin.dashboard.configuration.auditCompletionAlerts')}</span>
                     </label>
                   </div>
                 </div>

@@ -303,7 +303,7 @@ export default function Solutions() {
               {t('solutions.hero.subtitle')}
             </p>
             <button className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center">
-              {t('solutions.hero.exploreButton')}
+              {t('solutions.hero.ctaButton')}
               <ArrowRight className="w-5 h-5 ml-2" />
             </button>
           </motion.div>
@@ -338,10 +338,10 @@ export default function Solutions() {
                   <div className="p-3 bg-blue-100 rounded-lg text-blue-600 mr-4">
                     {solution.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900">{t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.title`)}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">{solution.title}</h3>
                 </div>
                 
-                <p className="text-gray-600 mb-6">{t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.description`)}</p>
+                <p className="text-gray-600 mb-6">{solution.description}</p>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                   <div>
@@ -350,7 +350,7 @@ export default function Solutions() {
                       {solution.benefits.map((benefit, idx) => (
                         <li key={idx} className="flex items-start text-sm text-gray-600">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                          {t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.benefits.${idx}`)}
+                          {benefit}
                         </li>
                       ))}
                     </ul>
@@ -362,7 +362,7 @@ export default function Solutions() {
                       {solution.useCases.map((useCase, idx) => (
                         <li key={idx} className="flex items-start text-sm text-gray-600">
                           <ArrowRight className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                          {t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.useCases.${idx}`)}
+                          {useCase}
                         </li>
                       ))}
                     </ul>
@@ -375,7 +375,7 @@ export default function Solutions() {
                       <BarChart3 className="h-5 w-5 mr-2" />
                       {t('solutions.coreSolutions.roiImpact')}
                     </h4>
-                    <p className="text-green-700">{t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.roi`)}</p>
+                    <p className="text-green-700">{solution.roi}</p>
                   </div>
                   
                   <div className="bg-blue-50 p-4 rounded-lg">
@@ -383,7 +383,7 @@ export default function Solutions() {
                       <Clock className="h-5 w-5 mr-2" />
                       {t('solutions.coreSolutions.implementation')}
                     </h4>
-                    <p className="text-blue-700">{t(`solutions.coreSolutions.${solution.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.implementation`)}</p>
+                    <p className="text-blue-700">{solution.implementation}</p>
                   </div>
                 </div>
               </motion.div>
@@ -419,17 +419,17 @@ export default function Solutions() {
                   <div className="p-2 bg-blue-600 text-white rounded-lg mr-3">
                     {scenario.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">{t(`solutions.industryStories.${scenario.industry.toLowerCase().replace(/[^a-z0-9]/g, '')}.industry`)}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{scenario.industry}</h3>
                 </div>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-red-600 mb-2">{t('solutions.industryStories.challenge')}:</h4>
-                  <p className="text-gray-600 text-sm">{t(`solutions.industryStories.${scenario.industry.toLowerCase().replace(/[^a-z0-9]/g, '')}.challenge`)}</p>
+                  <p className="text-gray-600 text-sm">{scenario.challenge}</p>
                 </div>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-blue-600 mb-2">{t('solutions.industryStories.solution')}:</h4>
-                  <p className="text-gray-600 text-sm">{t(`solutions.industryStories.${scenario.industry.toLowerCase().replace(/[^a-z0-9]/g, '')}.solution`)}</p>
+                  <p className="text-gray-600 text-sm">{scenario.solution}</p>
                 </div>
                 
                 <div>
@@ -438,7 +438,7 @@ export default function Solutions() {
                     {scenario.results.map((result, idx) => (
                       <li key={idx} className="flex items-start text-sm text-gray-600">
                         <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                        {t(`solutions.industryStories.${scenario.industry.toLowerCase().replace(/[^a-z0-9]/g, '')}.results.${idx}`)}
+                        {result}
                       </li>
                     ))}
                   </ul>
@@ -476,10 +476,10 @@ export default function Solutions() {
                   <div className={`p-3 ${agent.color} text-white rounded-lg mr-3`}>
                     {agent.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">{t(`solutions.aiWorkforce.${agent.name}.name`)}</h3>
+                  <h3 className="text-lg font-bold text-gray-900">{agent.name}</h3>
                 </div>
                 
-                <p className="text-gray-600 text-sm mb-4">{t(`solutions.aiWorkforce.${agent.name}.description`)}</p>
+                <p className="text-gray-600 text-sm mb-4">{agent.description}</p>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-900 mb-2 text-sm">{t('solutions.aiWorkforce.capabilities')}:</h4>
@@ -487,17 +487,17 @@ export default function Solutions() {
                     {agent.capabilities.slice(0, 3).map((capability, idx) => (
                       <li key={idx} className="flex items-start text-xs text-gray-600">
                         <Zap className="w-3 h-3 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
-                        {t(`solutions.aiWorkforce.${agent.name}.capabilities.${idx}`)}
+                        {capability}
                       </li>
                     ))}
                   </ul>
                   {agent.capabilities.length > 3 && (
-                    <p className="text-xs text-gray-500 mt-1">+{agent.capabilities.length - 3} more capabilities</p>
+                    <p className="text-xs text-gray-500 mt-1">+{agent.capabilities.length - 3} {t('solutions.aiWorkforce.moreCapabilities')}</p>
                   )}
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2 text-sm">Industries:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2 text-sm">{t('solutions.aiWorkforce.industries')}:</h4>
                   <div className="flex flex-wrap gap-1">
                     {agent.industries.map((industry, idx) => (
                       <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">

@@ -195,7 +195,7 @@ export default function About() {
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
-                <div className="text-gray-600">{t(`about.stats.${stat.label.toLowerCase().replace(/[^a-z0-9]/g, '')}`)}</div>
+                <div className="text-gray-600">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -276,8 +276,8 @@ export default function About() {
                   }`}>
                     <div className="bg-white rounded-lg shadow-lg p-6">
                       <div className="text-2xl font-bold text-blue-600 mb-2">{milestone.year}</div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{t(`about.journey.milestones.${milestone.year}.title`)}</h3>
-                    <p className="text-gray-600">{t(`about.journey.milestones.${milestone.year}.description`)}</p>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{milestone.title}</h3>
+                      <p className="text-gray-600">{milestone.description}</p>
                     </div>
                   </div>
                   
@@ -316,8 +316,8 @@ export default function About() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full mb-4">
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{t(`about.values.${value.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.title`)}</h3>
-                    <p className="text-gray-600">{t(`about.values.${value.title.toLowerCase().replace(/[^a-z0-9]/g, '')}.description`)}</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{value.title}</h3>
+                <p className="text-gray-600">{value.description}</p>
               </motion.div>
             ))}
           </div>
