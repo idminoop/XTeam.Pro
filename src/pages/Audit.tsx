@@ -3,16 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { apiCall } from '../utils/api';
 
 interface AuditData {
-  industry: string;
-  companySize: string;
-  painPoints: string[];
-  currentSystems: string[];
-  kpis: string[];
-  contactInfo: {
-    email: string;
+  businessType: string;       // step id
+  companySize: string;        // step id
+  currentChallenges: string[];// step id
+  aiExperience: string;       // step id
+  budget: string;             // step id
+  timeline: string;           // step id
+  contact: {                  // step id
+    email?: string;
     phone?: string;
     company?: string;
     name?: string;
@@ -26,6 +28,8 @@ interface AuditSubmissionRequest {
   current_processes: string[];
   pain_points: string[];
   automation_goals: string[];
+  budget_range?: string;
+  timeline?: string;
   contact_email: string;
   contact_name: string;
   contact_phone?: string;
@@ -39,6 +43,9 @@ interface AuditStep {
   options?: string[];
   required: boolean;
 }
+
+type ContactStepValue = Partial<AuditData['contact']>;
+type StepValue = string | string[] | ContactStepValue | undefined;
 
 
 
@@ -150,7 +157,7 @@ export default function Audit() {
     }
   ];
 
-  const handleStepData = (stepId: string, value: any) => {
+  const handleStepData = (stepId: string, value: StepValue) => {
     setAuditData(prev => ({
       ...prev,
       [stepId]: value
@@ -172,27 +179,27 @@ export default function Audit() {
   };
 
   const validateAuditData = (): string | null => {
-    if (!auditData.industry) return t('audit.validation.industryRequired');
+    if (!auditData.businessType) return t('audit.validation.industryRequired');
     if (!auditData.companySize) return t('audit.validation.companySizeRequired');
-    if (!auditData.painPoints || auditData.painPoints.length === 0) return t('audit.validation.painPointsRequired');
-    if (!auditData.currentSystems || auditData.currentSystems.length === 0) return t('audit.validation.currentSystemsRequired');
-    if (!auditData.kpis || auditData.kpis.length === 0) return t('audit.validation.kpisRequired');
-    if (!auditData.contactInfo?.email) return t('audit.validation.emailRequired');
-    if (!auditData.contactInfo.email.includes('@')) return t('audit.validation.validEmailRequired');
+    if (!auditData.currentChallenges || auditData.currentChallenges.length === 0) return t('audit.validation.painPointsRequired');
+    if (!auditData.contact?.email) return t('audit.validation.emailRequired');
+    if (!auditData.contact.email.includes('@')) return t('audit.validation.validEmailRequired');
     return null;
   };
 
   const transformAuditData = (): AuditSubmissionRequest => {
     return {
-      company_name: auditData.contactInfo?.company || 'Not specified',
-      industry: auditData.industry!,
+      company_name: auditData.contact?.company || 'Not specified',
+      industry: auditData.businessType!,
       company_size: auditData.companySize!,
-      current_processes: auditData.currentSystems!,
-      pain_points: auditData.painPoints!,
-      automation_goals: auditData.kpis!,
-      contact_email: auditData.contactInfo!.email,
-      contact_name: auditData.contactInfo?.name || 'Anonymous',
-      contact_phone: auditData.contactInfo?.phone
+      current_processes: auditData.currentChallenges!,
+      pain_points: auditData.currentChallenges!,
+      automation_goals: auditData.currentChallenges!,
+      budget_range: auditData.budget,
+      timeline: auditData.timeline,
+      contact_email: auditData.contact!.email,
+      contact_name: auditData.contact?.name || 'Anonymous',
+      contact_phone: auditData.contact?.phone
     };
   };
 
@@ -231,7 +238,7 @@ export default function Audit() {
       // Validate basic audit data first
       const basicValidationError = validateAuditData();
       if (basicValidationError) {
-        alert(basicValidationError);
+        toast.error(basicValidationError);
         return;
       }
 
@@ -241,7 +248,7 @@ export default function Audit() {
       // Validate transformed submission data
       const submissionValidationError = validateSubmissionData(submissionData);
       if (submissionValidationError) {
-        alert(submissionValidationError);
+        toast.error(submissionValidationError);
         return;
       }
       
@@ -275,7 +282,9 @@ export default function Audit() {
           if (errorData.detail) {
             // FastAPI validation error format
             if (Array.isArray(errorData.detail)) {
-              errorMessage = errorData.detail.map((err: any) => `${err.loc?.join('.')} - ${err.msg}`).join(', ');
+              errorMessage = errorData.detail
+                .map((err: { loc?: Array<string | number>; msg?: string }) => `${err.loc?.join('.') || 'field'} - ${err.msg || 'Invalid value'}`)
+                .join(', ');
             } else {
               errorMessage = errorData.detail;
             }
@@ -302,7 +311,7 @@ export default function Audit() {
         displayMessage = t('audit.errors.serverError');
       }
       
-      alert(`${t('audit.errors.submissionFailed')}: ${displayMessage}`);
+      toast.error(`${t('audit.errors.submissionFailed')}: ${displayMessage}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -317,7 +326,7 @@ export default function Audit() {
     }
     
     if (step.type === 'contact') {
-      const contact = auditData.contactInfo;
+      const contact = auditData.contact;
       return contact?.email && contact.email.includes('@');
     }
     
@@ -436,8 +445,8 @@ export default function Audit() {
 
 interface StepContentProps {
   step: AuditStep;
-  value: any;
-  onChange: (value: any) => void;
+  value: StepValue;
+  onChange: (value: StepValue) => void;
 }
 
 function StepContent({ step, value, onChange }: StepContentProps) {
@@ -465,7 +474,7 @@ function StepContent({ step, value, onChange }: StepContentProps) {
   }
 
   if (step.type === 'multiselect') {
-    const selectedValues = Array.isArray(value) ? value : [];
+    const selectedValues: string[] = Array.isArray(value) ? value : [];
     
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -505,7 +514,8 @@ function StepContent({ step, value, onChange }: StepContentProps) {
   }
 
   if (step.type === 'contact') {
-    const contactInfo = value || {};
+    const contactInfo: ContactStepValue =
+      value && typeof value === 'object' && !Array.isArray(value) ? value : {};
     
     return (
       <div className="space-y-6">

@@ -24,6 +24,7 @@ env/
 .env.*
 !.env.example
 backend/venv/
+backend/test_xteam_pro.db
 
 # Editor directories and files
 .vscode/*

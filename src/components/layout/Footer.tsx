@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Linkedin, Twitter, Github } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,15 +9,15 @@ const Footer: React.FC = () => {
 
   const footerLinks = {
     solutions: [
-      { name: t('footer.links.processAutomation'), href: '/solutions/automation' },
-      { name: t('footer.links.dataIntegration'), href: '/solutions/integration' },
-      { name: t('footer.links.aiImplementation'), href: '/solutions/ai' },
-      { name: t('footer.links.customDevelopment'), href: '/solutions/development' },
+      { name: t('footer.links.processAutomation'), href: '/solutions' },
+      { name: t('footer.links.dataIntegration'), href: '/solutions' },
+      { name: t('footer.links.aiImplementation'), href: '/solutions' },
+      { name: t('footer.links.customDevelopment'), href: '/solutions' },
     ],
     resources: [
       { name: t('footer.links.caseStudies'), href: '/case-studies' },
       { name: t('footer.links.blog'), href: '/blog' },
-      { name: t('footer.links.roiCalculator'), href: '/roi-calculator' },
+      { name: t('footer.links.roiCalculator'), href: '/pricing' },
       { name: t('footer.links.freeAudit'), href: '/audit' },
     ],
     company: [
@@ -61,12 +62,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               {footerLinks.solutions.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -78,12 +79,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -95,16 +96,16 @@ const Footer: React.FC = () => {
             <ul className="space-y-2 mb-6">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
-            
+
             {/* Social Links */}
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white transition-colors">
@@ -126,15 +127,15 @@ const Footer: React.FC = () => {
             {t('footer.copyright', { year: currentYear })}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
+            <Link to="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
               {t('footer.links.termsOfService')}
-            </a>
-            <a href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
+            </Link>
+            <Link to="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
               {t('footer.links.privacyPolicy')}
-            </a>
-            <a href="/cookies" className="text-gray-300 hover:text-white text-sm transition-colors">
+            </Link>
+            <Link to="/cookies" className="text-gray-300 hover:text-white text-sm transition-colors">
               {t('footer.links.cookiePolicy')}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -25,21 +26,21 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-2xl font-bold text-primary">{t('common.companyName')}</span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -49,9 +50,11 @@ const Header: React.FC = () => {
             <Button variant="outline" size="sm">
               {t('nav.login')}
             </Button>
-            <Button size="sm">
-              {t('nav.startAudit')}
-            </Button>
+            <Link to="/audit">
+              <Button size="sm">
+                {t('nav.startAudit')}
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -71,14 +74,14 @@ const Header: React.FC = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t">
               {navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="text-gray-700 hover:text-primary block px-3 py-2 text-base font-medium transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
               <div className="pt-4 space-y-2">
                 <div className="pb-2">
@@ -87,9 +90,11 @@ const Header: React.FC = () => {
                 <Button variant="outline" className="w-full">
                   {t('nav.login')}
                 </Button>
-                <Button className="w-full">
-                  {t('nav.startAudit')}
-                </Button>
+                <Link to="/audit" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="w-full">
+                    {t('nav.startAudit')}
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

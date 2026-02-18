@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi.responses import StreamingResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_, or_
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
-import uuid
+import csv
+import io
+import json
 
 from database.config import get_async_db
 from models.admin import AdminUser, AuditConfiguration
@@ -17,6 +20,54 @@ from services.analytics_service import AnalyticsService
 
 router = APIRouter(tags=["admin"])
 security = HTTPBearer()
+
+
+def _default_configuration_payload() -> Dict[str, Any]:
+    return {
+        "ai_model": "gpt-4",
+        "analysis_depth": "standard",
+        "include_roi_analysis": True,
+        "include_risk_assessment": True,
+        "include_implementation_roadmap": True,
+        "pdf_template": "default",
+        "auto_generate_pdf": True,
+        "pdf_generation_enabled": True,
+        "auto_send_reports": False,
+        "notification_settings": {
+            "email_on_completion": True,
+            "slack_notifications": False,
+            "new_submissions": True,
+            "weekly_reports": False,
+            "completion_alerts": True
+        },
+        "custom_prompts": None
+    }
+
+
+def _extract_configuration_metadata(config: AuditConfiguration) -> Dict[str, Any]:
+    defaults = _default_configuration_payload()
+
+    if not config.description:
+        return defaults
+
+    try:
+        metadata = json.loads(config.description)
+    except (TypeError, json.JSONDecodeError):
+        return defaults
+
+    if not isinstance(metadata, dict):
+        return defaults
+
+    merged = defaults.copy()
+    merged.update({key: value for key, value in metadata.items() if key in defaults})
+
+    notification_settings = defaults["notification_settings"].copy()
+    raw_notification_settings = metadata.get("notification_settings")
+    if isinstance(raw_notification_settings, dict):
+        notification_settings.update(raw_notification_settings)
+    merged["notification_settings"] = notification_settings
+
+    return merged
 
 # Pydantic models for request/response
 class AdminLoginRequest(BaseModel):
@@ -64,11 +115,15 @@ class DashboardStatsResponse(BaseModel):
 class AuditManagementResponse(BaseModel):
     audit_id: str
     company_name: str
+    contact_name: Optional[str]
+    email: str
+    phone: Optional[str]
     status: str
     maturity_score: Optional[int]
-    created_at: datetime
-    contact_email: str
+    estimated_roi: Optional[float]
+    submitted_at: datetime
     industry: str
+    company_size: str
 
 # Authentication dependency
 async def get_current_admin_user(
@@ -88,8 +143,16 @@ async def get_current_admin_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid authentication credentials"
             )
+
+        try:
+            user_db_id = int(user_id)
+        except (TypeError, ValueError):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials"
+            )
         
-        user = await db.get(AdminUser, user_id)
+        user = await db.get(AdminUser, user_db_id)
         if not user or not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -120,7 +183,7 @@ async def admin_login(
         result = await db.execute(query)
         user = result.scalar_one_or_none()
         
-        if not user or not auth_service.verify_password(login_data.password, user.password_hash):
+        if not user or not auth_service.verify_password(login_data.password, user.hashed_password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid username or password"
@@ -141,6 +204,8 @@ async def admin_login(
             data={"sub": user.id, "username": user.username, "role": user.role}
         )
         
+        full_name = " ".join(part for part in [user.first_name, user.last_name] if part).strip() or user.username
+
         return AdminLoginResponse(
             access_token=access_token,
             token_type="bearer",
@@ -149,7 +214,7 @@ async def admin_login(
                 "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "full_name": user.full_name,
+                "full_name": full_name,
                 "role": user.role
             }
         )
@@ -171,7 +236,7 @@ async def get_dashboard_stats(
     Get dashboard statistics
     """
     try:
-        analytics_service = AnalyticsService(db)
+        analytics_service = AnalyticsService()
         
         # Calculate date ranges
         now = datetime.utcnow()
@@ -213,7 +278,7 @@ async def get_dashboard_stats(
         conversion_rate = (total_contacts / total_audits * 100) if total_audits > 0 else 0
         
         # Get recent activities
-        recent_activities = await analytics_service.get_recent_activities(limit=10)
+        recent_activities = await analytics_service.get_recent_activities(db, limit=10)
         
         return DashboardStatsResponse(
             total_audits=total_audits,
@@ -267,24 +332,31 @@ async def get_audits_management(
         result = await db.execute(query)
         audits = result.scalars().all()
         
-        # Get audit results for maturity scores
+        # Get audit results for maturity scores and estimated savings
         audit_results = {}
         if audits:
             audit_ids = [audit.id for audit in audits]
             results_query = select(AuditResult).where(AuditResult.audit_id.in_(audit_ids))
             results_result = await db.execute(results_query)
-            for result in results_result.scalars().all():
-                audit_results[result.audit_id] = result.maturity_score
-        
+            for ar in results_result.scalars().all():
+                audit_results[ar.audit_id] = {
+                    "maturity_score": ar.maturity_score,
+                    "estimated_savings": ar.estimated_savings
+                }
+
         return [
             AuditManagementResponse(
-                audit_id=audit.id,
+                audit_id=str(audit.id),
                 company_name=audit.company_name,
+                contact_name=audit.contact_name,
+                email=audit.contact_email,
+                phone=audit.phone,
                 status=audit.status,
-                maturity_score=audit_results.get(audit.id),
-                created_at=audit.created_at,
-                contact_email=audit.contact_email,
-                industry=audit.industry
+                maturity_score=audit_results.get(audit.id, {}).get("maturity_score"),
+                estimated_roi=audit_results.get(audit.id, {}).get("estimated_savings"),
+                submitted_at=audit.created_at,
+                industry=audit.industry,
+                company_size=audit.company_size
             )
             for audit in audits
         ]
@@ -323,7 +395,7 @@ async def get_contacts_management(
         
         return [
             {
-                "inquiry_id": contact.id,
+                "inquiry_id": str(contact.id),
                 "name": contact.name,
                 "email": contact.email,
                 "company": contact.company,
@@ -332,7 +404,7 @@ async def get_contacts_management(
                 "status": contact.status,
                 "priority": contact.priority,
                 "created_at": contact.created_at,
-                "response_sent": contact.response_sent
+                "response_sent": contact.status in {"responded", "closed"}
             }
             for contact in contacts
         ]
@@ -357,31 +429,22 @@ async def get_audit_configuration(
         config = result.scalar_one_or_none()
         
         if not config:
-            # Return default configuration
-            return {
-                "ai_model": "gpt-4",
-                "analysis_depth": "standard",
-                "include_roi_analysis": True,
-                "include_risk_assessment": True,
-                "include_implementation_roadmap": True,
-                "pdf_template": "default",
-                "auto_generate_pdf": True,
-                "notification_settings": {
-                    "email_on_completion": True,
-                    "slack_notifications": False
-                }
-            }
-        
+            return _default_configuration_payload()
+
+        metadata = _extract_configuration_metadata(config)
+
         return {
-            "ai_model": config.ai_model,
-            "analysis_depth": config.analysis_depth,
-            "include_roi_analysis": config.include_roi_analysis,
-            "include_risk_assessment": config.include_risk_assessment,
-            "include_implementation_roadmap": config.include_implementation_roadmap,
-            "pdf_template": config.pdf_template,
-            "auto_generate_pdf": config.auto_generate_pdf,
-            "notification_settings": config.notification_settings,
-            "custom_prompts": config.custom_prompts
+            "ai_model": config.openai_model or "gpt-4",
+            "analysis_depth": metadata["analysis_depth"],
+            "include_roi_analysis": bool(config.include_roi_projections),
+            "include_risk_assessment": metadata["include_risk_assessment"],
+            "include_implementation_roadmap": bool(config.include_implementation_roadmap),
+            "pdf_template": metadata["pdf_template"],
+            "auto_generate_pdf": metadata["auto_generate_pdf"],
+            "pdf_generation_enabled": metadata["pdf_generation_enabled"],
+            "auto_send_reports": metadata["auto_send_reports"],
+            "notification_settings": metadata["notification_settings"],
+            "custom_prompts": metadata["custom_prompts"]
         }
         
     except Exception as e:
@@ -408,19 +471,28 @@ async def update_audit_configuration(
         for config in current_configs:
             config.is_active = False
         
-        # Create new configuration
+        metadata = {
+            "analysis_depth": config_data.analysis_depth,
+            "include_risk_assessment": config_data.include_risk_assessment,
+            "pdf_template": config_data.pdf_template,
+            "auto_generate_pdf": config_data.auto_generate_pdf,
+            "pdf_generation_enabled": config_data.auto_generate_pdf,
+            "auto_send_reports": False,
+            "notification_settings": config_data.notification_settings,
+            "custom_prompts": config_data.custom_prompts
+        }
+
+        # Create new configuration mapped to existing ORM fields
         new_config = AuditConfiguration(
-            id=str(uuid.uuid4()),
-            ai_model=config_data.ai_model,
-            analysis_depth=config_data.analysis_depth,
-            include_roi_analysis=config_data.include_roi_analysis,
-            include_risk_assessment=config_data.include_risk_assessment,
+            name=f"Admin Configuration {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}",
+            description=json.dumps(metadata),
+            openai_model=config_data.ai_model,
+            include_executive_summary=True,
+            include_detailed_analysis=config_data.analysis_depth != "basic",
+            include_roi_projections=config_data.include_roi_analysis,
             include_implementation_roadmap=config_data.include_implementation_roadmap,
-            pdf_template=config_data.pdf_template,
-            auto_generate_pdf=config_data.auto_generate_pdf,
-            notification_settings=config_data.notification_settings,
-            custom_prompts=config_data.custom_prompts,
             is_active=True,
+            is_default=False,
             created_by=current_user.id
         )
         
@@ -493,7 +565,7 @@ async def get_submissions(
                 "industry": audit.industry,
                 "status": audit.status,
                 "maturityScore": audit_result.maturity_score if audit_result else None,
-                "estimatedROI": audit_result.estimated_roi if audit_result else None,
+                "estimatedROI": audit_result.estimated_savings if audit_result else None,
                 "createdAt": audit.created_at.isoformat(),
                 "completedAt": audit_result.created_at.isoformat() if audit_result else None
             })
@@ -534,8 +606,8 @@ async def get_analytics(
         avg_score_result = await db.execute(avg_score_query)
         avg_maturity_score = avg_score_result.scalar() or 0
         
-        # Get total estimated ROI
-        total_roi_query = select(func.sum(AuditResult.estimated_roi))
+        # Get total estimated savings (ROI proxy)
+        total_roi_query = select(func.sum(AuditResult.estimated_savings))
         total_roi_result = await db.execute(total_roi_query)
         total_estimated_roi = total_roi_result.scalar() or 0
         
@@ -590,20 +662,105 @@ async def get_analytics_overview(
     Get analytics overview for specified period
     """
     try:
-        analytics_service = AnalyticsService(db)
-        
+        analytics_service = AnalyticsService()
+
         end_date = datetime.utcnow()
         start_date = end_date - timedelta(days=days)
-        
+
         analytics_data = await analytics_service.get_analytics_overview(
+            db=db,
             start_date=start_date,
             end_date=end_date
         )
-        
+
         return analytics_data
-        
+
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get analytics: {str(e)}"
         )
+
+
+@router.delete("/submissions/{submission_id}")
+async def delete_submission(
+    submission_id: int,
+    current_user: AdminUser = Depends(get_current_admin_user),
+    db: AsyncSession = Depends(get_async_db)
+):
+    """
+    Delete an audit submission and associated results
+    """
+    audit = await db.get(Audit, submission_id)
+    if not audit:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Submission not found"
+        )
+
+    result_query = select(AuditResult).where(AuditResult.audit_id == submission_id)
+    result_rows = await db.execute(result_query)
+    audit_result = result_rows.scalar_one_or_none()
+    if audit_result:
+        await db.delete(audit_result)
+
+    await db.delete(audit)
+    await db.commit()
+
+    return {"message": "Submission deleted successfully", "id": submission_id}
+
+
+@router.get("/export")
+async def export_data(
+    format: str = Query("csv", pattern="^(csv)$"),
+    current_user: AdminUser = Depends(get_current_admin_user),
+    db: AsyncSession = Depends(get_async_db)
+):
+    """
+    Export audit submissions as CSV
+    """
+    query = (
+        select(Audit, AuditResult)
+        .outerjoin(AuditResult, Audit.id == AuditResult.audit_id)
+        .order_by(Audit.created_at.desc())
+    )
+    rows = await db.execute(query)
+    records = rows.all()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow([
+        "ID", "Company Name", "Industry", "Company Size",
+        "Contact Email", "Contact Name", "Contact Phone",
+        "Status", "Maturity Score", "ROI Projection",
+        "Estimated Savings", "Implementation Cost", "Payback Period",
+        "Created At"
+    ])
+
+    for audit, result in records:
+        writer.writerow([
+            audit.id,
+            audit.company_name or "",
+            audit.industry or "",
+            audit.company_size or "",
+            audit.contact_email or "",
+            audit.contact_name or "",
+            audit.phone or "",
+            audit.status or "",
+            result.maturity_score if result else "",
+            result.roi_projection if result else "",
+            result.estimated_savings if result else "",
+            result.implementation_cost if result else "",
+            result.payback_period if result else "",
+            audit.created_at.isoformat() if audit.created_at else "",
+        ])
+
+    output.seek(0)
+    filename = f"submissions_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+
+    return StreamingResponse(
+        io.BytesIO(output.getvalue().encode("utf-8-sig")),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )

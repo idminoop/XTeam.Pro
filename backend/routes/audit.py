@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from typing import List, Optional
 from pydantic import BaseModel, Field
 from datetime import datetime
-import uuid
 
 from database.config import get_db, get_async_db
 from models.audit import Audit, AuditResult, PDFReport
@@ -12,6 +11,16 @@ from services.ai_service import AIService
 from services.pdf_service import PDFService
 
 router = APIRouter(tags=["audit"])
+
+
+def _parse_audit_id(audit_id: str) -> int:
+    try:
+        return int(audit_id)
+    except (TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid audit id"
+        )
 
 # Pydantic models for request/response
 class AuditSubmissionRequest(BaseModel):
@@ -87,7 +96,7 @@ async def submit_audit(
         
         # Process audit with AI service (async)
         ai_service = AIService()
-        await ai_service.process_audit_async(audit_id, audit_data.dict())
+        await ai_service.process_audit_async(audit_id, audit_data.model_dump())
         
         return AuditResponse(
             audit_id=audit_id,
@@ -112,8 +121,10 @@ async def get_audit_results(
     Get audit results by audit ID
     """
     try:
+        audit_db_id = _parse_audit_id(audit_id)
+
         # Get audit
-        audit = await db.get(Audit, audit_id)
+        audit = await db.get(Audit, audit_db_id)
         if not audit:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -121,7 +132,9 @@ async def get_audit_results(
             )
         
         # Get audit results
-        audit_result = await db.get(AuditResult, audit_id)
+        result_query = select(AuditResult).where(AuditResult.audit_id == audit_db_id)
+        result_rows = await db.execute(result_query)
+        audit_result = result_rows.scalar_one_or_none()
         if not audit_result:
             if audit.status == "processing":
                 raise HTTPException(
@@ -135,7 +148,9 @@ async def get_audit_results(
                 )
         
         # Get PDF report URL if available
-        pdf_report = await db.get(PDFReport, audit_id)
+        pdf_query = select(PDFReport).where(PDFReport.audit_id == audit_db_id)
+        pdf_rows = await db.execute(pdf_query)
+        pdf_report = pdf_rows.scalar_one_or_none()
         pdf_url = pdf_report.file_path if pdf_report else None
         
         return AuditResultResponse(
@@ -176,7 +191,8 @@ async def get_audit_status(
     Get audit processing status
     """
     try:
-        audit = await db.get(Audit, audit_id)
+        audit_db_id = _parse_audit_id(audit_id)
+        audit = await db.get(Audit, audit_db_id)
         if not audit:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -207,8 +223,10 @@ async def download_audit_report(
     Download PDF audit report
     """
     try:
+        audit_db_id = _parse_audit_id(audit_id)
+
         # Check if audit exists
-        audit = await db.get(Audit, audit_id)
+        audit = await db.get(Audit, audit_db_id)
         if not audit:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -216,7 +234,9 @@ async def download_audit_report(
             )
         
         # Get PDF report
-        pdf_report = await db.get(PDFReport, audit_id)
+        pdf_query = select(PDFReport).where(PDFReport.audit_id == audit_db_id)
+        pdf_rows = await db.execute(pdf_query)
+        pdf_report = pdf_rows.scalar_one_or_none()
         if not pdf_report:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,

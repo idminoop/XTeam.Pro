@@ -1,5 +1,6 @@
 import os
-import jwt
+import logging
+from jose import jwt, JWTError, ExpiredSignatureError
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from passlib.context import CryptContext
@@ -10,10 +11,14 @@ from fastapi import HTTPException, status
 from database.config import get_async_db
 from models.admin import AdminUser
 
+logger = logging.getLogger(__name__)
+
 class AuthService:
     def __init__(self):
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-        self.secret_key = os.getenv("JWT_SECRET_KEY", "your-secret-key-change-in-production")
+        self.secret_key = os.getenv("JWT_SECRET_KEY")
+        if not self.secret_key:
+            raise RuntimeError("JWT_SECRET_KEY environment variable is required and must not be empty")
         self.algorithm = "HS256"
         self.access_token_expire_minutes = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
         self.refresh_token_expire_days = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRE_DAYS", "7"))
@@ -35,6 +40,8 @@ class AuthService:
         Create JWT access token
         """
         to_encode = data.copy()
+        if "sub" in to_encode:
+            to_encode["sub"] = str(to_encode["sub"])
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
         else:
@@ -49,6 +56,8 @@ class AuthService:
         Create JWT refresh token
         """
         to_encode = data.copy()
+        if "sub" in to_encode:
+            to_encode["sub"] = str(to_encode["sub"])
         expire = datetime.utcnow() + timedelta(days=self.refresh_token_expire_days)
         to_encode.update({"exp": expire, "type": "refresh"})
         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
@@ -70,12 +79,12 @@ class AuthService:
             
             return payload
             
-        except jwt.ExpiredSignatureError:
+        except ExpiredSignatureError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token has expired"
             )
-        except jwt.JWTError:
+        except JWTError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials"
@@ -110,7 +119,7 @@ class AuthService:
                 return user
                 
             except Exception as e:
-                print(f"Error authenticating user: {str(e)}")
+                logger.error(f"Error authenticating user: {str(e)}")
                 return None
             finally:
                 await db.close()
@@ -121,9 +130,10 @@ class AuthService:
         """
         async for db in get_async_db():
             try:
-                return await db.get(AdminUser, user_id)
+                user_db_id = int(user_id)
+                return await db.get(AdminUser, user_db_id)
             except Exception as e:
-                print(f"Error getting user by ID: {str(e)}")
+                logger.error(f"Error getting user by ID: {str(e)}")
                 return None
             finally:
                 await db.close()
@@ -138,7 +148,7 @@ class AuthService:
                 result = await db.execute(query)
                 return result.scalar_one_or_none()
             except Exception as e:
-                print(f"Error getting user by username: {str(e)}")
+                logger.error(f"Error getting user by username: {str(e)}")
                 return None
             finally:
                 await db.close()
@@ -192,7 +202,7 @@ class AuthService:
                 raise
             except Exception as e:
                 await db.rollback()
-                print(f"Error creating user: {str(e)}")
+                logger.error(f"Error creating user: {str(e)}")
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Error creating user"
@@ -217,7 +227,7 @@ class AuthService:
                 
             except Exception as e:
                 await db.rollback()
-                print(f"Error updating password: {str(e)}")
+                logger.error(f"Error updating password: {str(e)}")
                 return False
             finally:
                 await db.close()
@@ -239,7 +249,7 @@ class AuthService:
                 
             except Exception as e:
                 await db.rollback()
-                print(f"Error deactivating user: {str(e)}")
+                logger.error(f"Error deactivating user: {str(e)}")
                 return False
             finally:
                 await db.close()
@@ -280,7 +290,7 @@ class AuthService:
         except HTTPException:
             raise
         except Exception as e:
-            print(f"Error refreshing token: {str(e)}")
+            logger.error(f"Error refreshing token: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not refresh token"
@@ -338,9 +348,9 @@ class AuthService:
                         role="admin"
                     )
                     
-                    print(f"Default admin user created: {default_username}")
+                    logger.info(f"Default admin user created: {default_username}")
                 
                 await db.close()
                 
         except Exception as e:
-            print(f"Error initializing default admin: {str(e)}")
+            logger.error(f"Error initializing default admin: {str(e)}")

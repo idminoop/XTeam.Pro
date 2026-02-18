@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '../utils/api';
 import { motion } from 'framer-motion';
-import { Download, TrendingUp, Target, Zap, AlertCircle, CheckCircle2, ArrowRight, Clock, RefreshCw, ListChecks } from 'lucide-react';
+import { Download, TrendingUp, Target, Zap, AlertCircle, CheckCircle2, ArrowRight, Clock, RefreshCw } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { toast } from 'sonner';
 
@@ -38,6 +38,7 @@ interface AuditStatus {
 export default function AuditResults() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [result, setResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -148,8 +149,7 @@ export default function AuditResults() {
   };
 
   const handleBookConsultation = () => {
-    // Redirect to contact page or open calendar booking
-    window.location.href = '/contact?source=audit';
+    navigate('/contact?source=audit');
   };
 
   if (loading) {

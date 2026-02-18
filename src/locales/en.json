@@ -29,7 +29,7 @@
     "features": {
       "title": "Why Choose Our AI Platform",
       "subtitle": "Discover the powerful features that set us apart",
-      "aiAnalysis": {
+      "aiAudit": {
         "title": "AI-Powered Analysis",
         "description": "Advanced algorithms analyze your business processes to identify optimization opportunities"
       },
@@ -48,8 +48,8 @@
     },
     "stats": {
       "businessesTransformed": "Businesses Transformed",
-      "averageRoiIncrease": "Average ROI Increase",
-      "fasterProcessing": "Faster Processing",
+      "averageROI": "Average ROI Increase",
+      "processingTime": "Faster Processing",
       "clientSatisfaction": "Client Satisfaction",
       "successfulProjects": "Successful Projects",
       "happyClients": "Happy Clients"

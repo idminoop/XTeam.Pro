@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Calendar, User, ArrowRight, Tag, Clock, TrendingUp, BookOpen, Filter } from 'lucide-react';
+import { Search, Calendar, ArrowRight, Clock, TrendingUp, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -30,7 +30,7 @@ interface Category {
 }
 
 export default function Blog() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
@@ -177,7 +177,7 @@ export default function Blog() {
   const featuredPosts = blogPosts.filter(post => post.featured);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(i18n.language, {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

@@ -1,7 +1,10 @@
 import os
 import io
+import logging
 from datetime import datetime
 from typing import Dict, List, Any, Optional
+
+logger = logging.getLogger(__name__)
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -42,6 +45,12 @@ class PDFService:
         # Setup styles
         self.styles = getSampleStyleSheet()
         self._setup_custom_styles()
+
+    def _to_int_id(self, raw_id: Any) -> Any:
+        try:
+            return int(raw_id)
+        except (TypeError, ValueError):
+            return raw_id
     
     def ensure_reports_directory(self):
         """Ensure reports directory exists"""
@@ -113,9 +122,10 @@ class PDFService:
         Generate comprehensive audit report PDF
         """
         try:
+            audit_db_id = self._to_int_id(audit_id)
             async for db in get_async_db():
                 # Get audit data
-                audit = await db.get(Audit, audit_id)
+                audit = await db.get(Audit, audit_db_id)
                 if not audit:
                     raise ValueError(f"Audit {audit_id} not found")
                 
@@ -165,7 +175,7 @@ class PDFService:
                 
                 # Save PDF record to database
                 pdf_report = PDFReport(
-                    audit_id=audit_id,
+                    audit_id=audit_db_id,
                     filename=filename,
                     file_path=filepath,
                     file_size=os.path.getsize(filepath),
@@ -178,7 +188,7 @@ class PDFService:
                 return filepath
                 
         except Exception as e:
-            print(f"Error generating PDF report: {str(e)}")
+            logger.error(f"Error generating PDF report: {str(e)}")
             raise
     
     def _build_title_page(self, audit: Audit, analysis_result: Dict[str, Any]) -> List:
@@ -279,17 +289,21 @@ class PDFService:
         # Current state assessment
         content.append(Paragraph("Current State Assessment", self.styles['CustomHeading']))
         
+        processes_text = ', '.join(audit.business_processes) if isinstance(audit.business_processes, list) else str(audit.business_processes)
+        challenges_text = ', '.join(audit.current_challenges) if isinstance(audit.current_challenges, list) else str(audit.current_challenges)
+        goals_text = ', '.join(audit.automation_goals) if isinstance(audit.automation_goals, list) else str(audit.automation_goals)
+
         current_state_text = f"""
         <b>Company Profile:</b><br/>
         • Industry: {audit.industry}<br/>
         • Size: {audit.company_size}<br/>
-        • Current Processes: {audit.current_processes}<br/><br/>
-        
-        <b>Identified Pain Points:</b><br/>
-        {audit.pain_points}<br/><br/>
-        
+        • Current Processes: {processes_text}<br/><br/>
+
+        <b>Identified Challenges:</b><br/>
+        {challenges_text}<br/><br/>
+
         <b>Automation Goals:</b><br/>
-        {audit.automation_goals}
+        {goals_text}
         """
         
         content.append(Paragraph(current_state_text, self.styles['CustomBody']))
@@ -344,11 +358,6 @@ class PDFService:
             content.append(Paragraph(
                 f"<b>{i}. {recommendation}</b>",
                 self.styles['CustomSubheading']
-            ))
-            content.append(Paragraph(
-                "This recommendation addresses key operational inefficiencies and "
-                "provides measurable business value through improved productivity and cost reduction.",
-                self.styles['CustomBody']
             ))
             content.append(Spacer(1, 0.1*inch))
         
@@ -462,7 +471,7 @@ class PDFService:
             return chart_path
             
         except Exception as e:
-            print(f"Error creating radar chart: {str(e)}")
+            logger.error(f"Error creating radar chart: {str(e)}")
             return None
     
     async def get_report_by_id(self, report_id: str) -> Optional[PDFReport]:
@@ -470,14 +479,16 @@ class PDFService:
         Get PDF report by ID
         """
         async for db in get_async_db():
-            return await db.get(PDFReport, report_id)
+            report_db_id = self._to_int_id(report_id)
+            return await db.get(PDFReport, report_db_id)
     
     async def list_reports_by_audit(self, audit_id: str) -> List[PDFReport]:
         """
         List all PDF reports for an audit
         """
         async for db in get_async_db():
-            query = select(PDFReport).where(PDFReport.audit_id == audit_id)
+            audit_db_id = self._to_int_id(audit_id)
+            query = select(PDFReport).where(PDFReport.audit_id == audit_db_id)
             result = await db.execute(query)
             return result.scalars().all()
     

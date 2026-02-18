@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 import { apiCall } from '../utils/api';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  LineChart, Line, PieChart, Pie, Cell, Area, AreaChart
+  PieChart, Pie, Cell, Area, AreaChart
 } from 'recharts';
 import { 
-  Users, FileText, TrendingUp, DollarSign, Calendar, 
-  Settings, Download, Filter, Search, Eye, Edit, Trash2,
-  Plus, CheckCircle, Clock, AlertCircle, Mail, Phone, LogIn, LogOut
+  Users, FileText, TrendingUp, DollarSign,
+  Settings, Download, Search, Eye, Edit, Trash2,
+  CheckCircle, Clock, AlertCircle, Mail, Phone, LogOut
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -76,14 +77,6 @@ interface AuditConfiguration {
   custom_prompts?: Record<string, string>;
 }
 
-interface AdminUser {
-  id: string;
-  username: string;
-  email: string;
-  full_name: string;
-  role: string;
-}
-
 interface AnalyticsData {
   totalSubmissions: number;
   completedAudits: number;
@@ -106,7 +99,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedSubmission, setSelectedSubmission] = useState<AuditSubmission | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [loginForm, setLoginForm] = useState({ username: '', password: '' });
@@ -129,12 +122,14 @@ export default function Admin() {
       });
 
       const data = await response.json();
-      setAuthToken(data.access_token);
+      const token = data.access_token;
+      setAuthToken(token);
       setIsAuthenticated(true);
-      localStorage.setItem('admin_token', data.access_token);
-      await loadDashboardData();
-    } catch (error: any) {
-      setAuthError(error.message || t('admin.login.error'));
+      sessionStorage.setItem('admin_token', token);
+      await loadDashboardData(token);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : t('admin.login.error');
+      setAuthError(message);
     } finally {
       setAuthLoading(false);
     }
@@ -143,23 +138,25 @@ export default function Admin() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     setAuthToken(null);
-    localStorage.removeItem('admin_token');
+    sessionStorage.removeItem('admin_token');
     setLoginForm({ username: '', password: '' });
   };
 
-  // Data loading functions
-  const loadDashboardData = async () => {
-    if (!authToken) return;
+  // Data loading functions — accepts token directly to avoid React state race condition
+  const loadDashboardData = async (token?: string) => {
+    const activeToken = token ?? authToken;
+    if (!activeToken) return;
 
     try {
       setLoading(true);
-      const response = await apiCall('/api/admin/dashboard', {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
-      });
-      const stats = await response.json();
+      const [dashResponse, analyticsResponse] = await Promise.all([
+        apiCall('/api/admin/dashboard', { headers: { 'Authorization': `Bearer ${activeToken}` } }),
+        apiCall('/api/admin/analytics', { headers: { 'Authorization': `Bearer ${activeToken}` } })
+      ]);
+      const stats = await dashResponse.json();
+      const analyticsData = await analyticsResponse.json();
       setDashboardStats(stats);
+      setAnalytics(analyticsData);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
     } finally {
@@ -237,70 +234,13 @@ export default function Admin() {
     }
   };
 
-  // Combined data loading function
-  const fetchData = async () => {
-    if (!authToken) return;
-    
-    setLoading(true);
-    try {
-      await Promise.all([
-        loadDashboardData(),
-        loadSubmissions(),
-        loadContacts(),
-        loadConfiguration()
-      ]);
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const mockAnalytics: AnalyticsData = {
-    totalSubmissions: 127,
-    completedAudits: 89,
-    averageMaturityScore: 64.2,
-    totalEstimatedROI: 15600000,
-    conversionRate: 23.5,
-    monthlySubmissions: [
-      { month: 'Aug', submissions: 18, conversions: 4 },
-      { month: 'Sep', submissions: 22, conversions: 5 },
-      { month: 'Oct', submissions: 28, conversions: 7 },
-      { month: 'Nov', submissions: 31, conversions: 8 },
-      { month: 'Dec', submissions: 28, conversions: 6 },
-      { month: 'Jan', submissions: 35, conversions: 9 }
-    ],
-    industryBreakdown: [
-      { industry: 'Manufacturing', count: 32, percentage: 25.2 },
-      { industry: 'Financial Services', count: 28, percentage: 22.0 },
-      { industry: 'Healthcare', count: 24, percentage: 18.9 },
-      { industry: 'Retail', count: 21, percentage: 16.5 },
-      { industry: 'Logistics', count: 15, percentage: 11.8 },
-      { industry: 'Other', count: 7, percentage: 5.5 }
-    ],
-    companySizeBreakdown: [
-      { size: '1000+', count: 45, percentage: 35.4 },
-      { size: '500-1000', count: 38, percentage: 29.9 },
-      { size: '100-500', count: 28, percentage: 22.0 },
-      { size: '50-100', count: 12, percentage: 9.4 },
-      { size: '<50', count: 4, percentage: 3.1 }
-    ],
-    maturityScoreDistribution: [
-      { range: '0-20', count: 8 },
-      { range: '21-40', count: 15 },
-      { range: '41-60', count: 28 },
-      { range: '61-80', count: 32 },
-      { range: '81-100', count: 6 }
-    ]
-  };
-
   useEffect(() => {
     // Check for existing token on component mount
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('admin_token');
     if (token) {
       setAuthToken(token);
       setIsAuthenticated(true);
-      loadDashboardData();
+      loadDashboardData(token); // pass token directly — state not yet updated
     }
   }, []);
 
@@ -380,47 +320,40 @@ export default function Admin() {
   };
 
   const handleEditSubmission = (id: string) => {
-    // In a real app, this would open an edit modal or navigate to edit page
+    void id;
+    toast.error('Edit functionality is coming soon. Use View to review audit results.');
   };
 
   const handleDeleteSubmission = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this submission?')) {
-      try {
-        await apiCall(`/api/admin/submissions/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        });
-        
-        // Refresh data after successful deletion
-        loadSubmissions();
-      } catch (error) {
-        console.error('Error deleting submission:', error);
-        alert('Failed to delete submission');
-      }
+    try {
+      await apiCall(`/api/admin/submissions/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      toast.success('Submission deleted');
+      loadSubmissions();
+    } catch {
+      toast.error('Failed to delete submission');
     }
   };
 
   const handleExportData = async () => {
     try {
-      const response = await apiCall('/api/admin/export?format=csv');
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'audit_submissions.csv';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      } else {
-        alert('Failed to export data');
-      }
-    } catch (error) {
-      console.error('Error exporting data:', error);
-      alert('Failed to export data');
+      const response = await apiCall('/api/admin/export?format=csv', {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'audit_submissions.csv';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast.success('Export downloaded');
+    } catch {
+      toast.error('Failed to export data');
     }
   };
 
@@ -636,7 +569,7 @@ export default function Admin() {
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('admin.dashboard.charts.monthlySubmissions')}</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={mockAnalytics.monthlySubmissions}>
+                  <AreaChart data={analytics?.monthlySubmissions || []}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
@@ -653,16 +586,20 @@ export default function Admin() {
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={mockAnalytics.industryBreakdown}
+                      data={analytics?.industryBreakdown || []}
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={(entry: any) => `${entry.industry} (${entry.percentage}%)`}
+                      label={(props) => {
+                        const industry = 'industry' in props ? String(props.industry) : '';
+                        const percentage = 'percentage' in props ? Number(props.percentage) : 0;
+                        return `${industry} (${percentage}%)`;
+                      }}
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="count"
                     >
-                      {mockAnalytics.industryBreakdown.map((entry, index) => (
+                      {(analytics?.industryBreakdown || []).map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -824,7 +761,7 @@ export default function Admin() {
           </motion.div>
         )}
 
-        {activeTab === 'analytics' && mockAnalytics && (
+        {activeTab === 'analytics' && analytics && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -834,7 +771,7 @@ export default function Admin() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('admin.dashboard.charts.companySizeDistribution')}</h3>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={mockAnalytics.companySizeBreakdown}>
+                <BarChart data={analytics?.companySizeBreakdown || []}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="size" />
                   <YAxis />
@@ -848,7 +785,7 @@ export default function Admin() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('admin.dashboard.charts.maturityScoreDistribution')}</h3>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={mockAnalytics.maturityScoreDistribution}>
+                <BarChart data={analytics?.maturityScoreDistribution || []}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="range" />
                   <YAxis />

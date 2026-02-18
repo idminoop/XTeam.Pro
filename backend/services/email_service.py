@@ -1,6 +1,8 @@
 import os
 import smtplib
 import asyncio
+import logging
+import concurrent.futures
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -12,6 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.config import get_async_db
 from models.contact import ContactInquiry
+
+logger = logging.getLogger(__name__)
 
 class EmailService:
     def __init__(self):
@@ -51,9 +55,8 @@ class EmailService:
         
         for filename, content in templates.items():
             filepath = os.path.join(self.templates_dir, filename)
-            if not os.path.exists(filepath):
-                with open(filepath, 'w', encoding='utf-8') as f:
-                    f.write(content)
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(content)
     
     def _get_contact_confirmation_template(self) -> str:
         """Get contact form confirmation email template"""
@@ -84,8 +87,7 @@ class EmailService:
             
             <h3>Your Inquiry Details:</h3>
             <ul>
-                <li><strong>Company:</strong> {{ company_name }}</li>
-                <li><strong>Industry:</strong> {{ industry }}</li>
+                <li><strong>Company:</strong> {{ company }}</li>
                 <li><strong>Inquiry Type:</strong> {{ inquiry_type }}</li>
                 <li><strong>Submitted:</strong> {{ submitted_at }}</li>
             </ul>
@@ -136,32 +138,31 @@ class EmailService:
         <div class="content">
             <div class="info-box">
                 <h3>Contact Information</h3>
-                <p><strong>Name:</strong> {{ contact_name }}</p>
-                <p><strong>Email:</strong> {{ contact_email }}</p>
-                <p><strong>Phone:</strong> {{ contact_phone or 'Not provided' }}</p>
-                <p><strong>Company:</strong> {{ company_name }}</p>
-                <p><strong>Industry:</strong> {{ industry }}</p>
-                <p><strong>Company Size:</strong> {{ company_size }}</p>
+                <p><strong>Name:</strong> {{ name }}</p>
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Phone:</strong> {{ phone or 'Not provided' }}</p>
+                <p><strong>Company:</strong> {{ company or 'Not specified' }}</p>
             </div>
-            
+
             <div class="info-box">
                 <h3>Inquiry Details</h3>
                 <p><strong>Type:</strong> {{ inquiry_type }}</p>
+                <p><strong>Priority:</strong> {{ priority }}</p>
                 <p><strong>Budget Range:</strong> {{ budget_range or 'Not specified' }}</p>
                 <p><strong>Timeline:</strong> {{ timeline or 'Not specified' }}</p>
                 <p><strong>Preferred Contact:</strong> {{ preferred_contact_method }}</p>
             </div>
-            
-            <div class="info-box {% if is_urgent %}urgent{% endif %}">
+
+            <div class="info-box {% if priority == 'urgent' %}urgent{% endif %}">
                 <h3>Message</h3>
                 <p>{{ message }}</p>
             </div>
-            
+
             <div class="info-box">
                 <h3>Submission Details</h3>
                 <p><strong>Submitted:</strong> {{ submitted_at }}</p>
                 <p><strong>Source:</strong> {{ source or 'Website contact form' }}</p>
-                <p><strong>Newsletter Subscription:</strong> {{ 'Yes' if newsletter_subscription else 'No' }}</p>
+                <p><strong>Newsletter Subscription:</strong> {{ 'Yes' if is_newsletter_subscribed else 'No' }}</p>
             </div>
             
             <p><strong>Action Required:</strong> Please follow up with this inquiry within 24 hours.</p>
@@ -336,25 +337,35 @@ class EmailService:
                         )
                         msg.attach(part)
             
-            # Send email
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
-                if self.smtp_username and self.smtp_password:
-                    server.login(self.smtp_username, self.smtp_password)
-                
-                recipients = [to_email]
-                if cc:
-                    recipients.extend(cc)
-                if bcc:
-                    recipients.extend(bcc)
-                
-                server.send_message(msg, to_addrs=recipients)
-            
+            recipients = [to_email]
+            if cc:
+                recipients.extend(cc)
+            if bcc:
+                recipients.extend(bcc)
+
+            # Send via thread executor to avoid blocking the async event loop
+            loop = asyncio.get_event_loop()
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                await loop.run_in_executor(
+                    executor,
+                    self._send_smtp,
+                    msg,
+                    recipients
+                )
+
             return True
-            
+
         except Exception as e:
-            print(f"Error sending email: {str(e)}")
+            logger.error(f"Error sending email: {str(e)}")
             return False
+
+    def _send_smtp(self, msg: MIMEMultipart, recipients: list) -> None:
+        """Synchronous SMTP send — runs in a thread executor."""
+        with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+            server.starttls()
+            if self.smtp_username and self.smtp_password:
+                server.login(self.smtp_username, self.smtp_password)
+            server.send_message(msg, to_addrs=recipients)
     
     async def send_contact_confirmation(self, contact_inquiry: ContactInquiry) -> bool:
         """
@@ -364,24 +375,23 @@ class EmailService:
             template = self.jinja_env.get_template('contact_confirmation.html')
             
             html_content = template.render(
-                contact_name=contact_inquiry.contact_name,
-                company_name=contact_inquiry.company_name,
-                industry=contact_inquiry.industry,
+                name=contact_inquiry.name,
+                company=contact_inquiry.company,
                 inquiry_type=contact_inquiry.inquiry_type,
                 message=contact_inquiry.message,
                 submitted_at=contact_inquiry.created_at.strftime('%B %d, %Y at %I:%M %p')
             )
-            
+
             subject = "Thank you for contacting XTeam.Pro - We'll be in touch soon!"
-            
+
             return await self.send_email(
-                to_email=contact_inquiry.contact_email,
+                to_email=contact_inquiry.email,
                 subject=subject,
                 html_content=html_content
             )
-            
+
         except Exception as e:
-            print(f"Error sending contact confirmation: {str(e)}")
+            logger.error(f"Error sending contact confirmation: {str(e)}")
             return False
     
     async def send_contact_notification(self, contact_inquiry: ContactInquiry) -> bool:
@@ -392,24 +402,22 @@ class EmailService:
             template = self.jinja_env.get_template('contact_notification.html')
             
             html_content = template.render(
-                contact_name=contact_inquiry.contact_name,
-                contact_email=contact_inquiry.contact_email,
-                contact_phone=contact_inquiry.contact_phone,
-                company_name=contact_inquiry.company_name,
-                industry=contact_inquiry.industry,
-                company_size=contact_inquiry.company_size,
+                name=contact_inquiry.name,
+                email=contact_inquiry.email,
+                phone=contact_inquiry.phone,
+                company=contact_inquiry.company,
                 inquiry_type=contact_inquiry.inquiry_type,
+                priority=contact_inquiry.priority,
                 budget_range=contact_inquiry.budget_range,
                 timeline=contact_inquiry.timeline,
                 preferred_contact_method=contact_inquiry.preferred_contact_method,
                 message=contact_inquiry.message,
                 submitted_at=contact_inquiry.created_at.strftime('%B %d, %Y at %I:%M %p'),
                 source=contact_inquiry.source,
-                newsletter_subscription=contact_inquiry.newsletter_subscription,
-                is_urgent=contact_inquiry.is_urgent
+                is_newsletter_subscribed=contact_inquiry.is_newsletter_subscribed
             )
-            
-            subject = f"🚨 New Contact Inquiry from {contact_inquiry.company_name}"
+
+            subject = f"New Contact Inquiry from {contact_inquiry.company or contact_inquiry.name}"
             
             # Send to admin email
             admin_email = os.getenv("ADMIN_EMAIL", "admin@xteam.pro")
@@ -421,7 +429,7 @@ class EmailService:
             )
             
         except Exception as e:
-            print(f"Error sending contact notification: {str(e)}")
+            logger.error(f"Error sending contact notification: {str(e)}")
             return False
     
     async def send_audit_completion_notification(
@@ -459,7 +467,7 @@ class EmailService:
             )
             
         except Exception as e:
-            print(f"Error sending audit completion notification: {str(e)}")
+            logger.error(f"Error sending audit completion notification: {str(e)}")
             return False
     
     async def send_welcome_email(self, email: str, name: str) -> bool:
@@ -480,7 +488,7 @@ class EmailService:
             )
             
         except Exception as e:
-            print(f"Error sending welcome email: {str(e)}")
+            logger.error(f"Error sending welcome email: {str(e)}")
             return False
     
     def is_configured(self) -> bool:

@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>New Contact Inquiry - XTeam.Pro</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #ef4444; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; background: #f8fafc; }
+        .info-box { background: white; padding: 15px; margin: 10px 0; border-left: 4px solid #2563eb; }
+        .urgent { border-left-color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 New Contact Inquiry</h1>
+        </div>
+        <div class="content">
+            <div class="info-box">
+                <h3>Contact Information</h3>
+                <p><strong>Name:</strong> {{ name }}</p>
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Phone:</strong> {{ phone or 'Not provided' }}</p>
+                <p><strong>Company:</strong> {{ company or 'Not specified' }}</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Inquiry Details</h3>
+                <p><strong>Type:</strong> {{ inquiry_type }}</p>
+                <p><strong>Priority:</strong> {{ priority }}</p>
+                <p><strong>Budget Range:</strong> {{ budget_range or 'Not specified' }}</p>
+                <p><strong>Timeline:</strong> {{ timeline or 'Not specified' }}</p>
+                <p><strong>Preferred Contact:</strong> {{ preferred_contact_method }}</p>
+            </div>
+
+            <div class="info-box {% if priority == 'urgent' %}urgent{% endif %}">
+                <h3>Message</h3>
+                <p>{{ message }}</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Submission Details</h3>
+                <p><strong>Submitted:</strong> {{ submitted_at }}</p>
+                <p><strong>Source:</strong> {{ source or 'Website contact form' }}</p>
+                <p><strong>Newsletter Subscription:</strong> {{ 'Yes' if is_newsletter_subscribed else 'No' }}</p>
+            </div>
+            
+            <p><strong>Action Required:</strong> Please follow up with this inquiry within 24 hours.</p>
+        </div>
+    </div>
+</body>
+</html>
+        

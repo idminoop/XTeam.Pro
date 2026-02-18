@@ -9,7 +9,7 @@ import logging
 from datetime import datetime
 
 # Import database
-from database.config import engine, get_async_db, init_db
+from database.config import async_engine, get_async_db, init_db
 
 # Import routes
 from routes.audit import router as audit_router
@@ -67,7 +67,7 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("Shutting down XTeam.Pro FastAPI application...")
     try:
-        await engine.dispose()
+        await async_engine.dispose()
         logger.info("Database connections closed")
     except Exception as e:
         logger.error(f"Error during shutdown: {str(e)}")
@@ -246,18 +246,6 @@ if DEBUG:
                 })
         return {"routes": routes}
     
-    @app.get("/api/debug/config")
-    async def debug_config():
-        """Show current configuration (debug only)"""
-        return {
-            "debug": DEBUG,
-            "environment": ENVIRONMENT,
-            "allowed_hosts": ALLOWED_HOSTS,
-            "cors_origins": CORS_ORIGINS,
-            "database_url": os.getenv("DATABASE_URL", "Not set").replace(
-                os.getenv("DB_PASSWORD", ""), "***"
-            ) if os.getenv("DATABASE_URL") else "Not set"
-        }
 
 if __name__ == "__main__":
     import uvicorn

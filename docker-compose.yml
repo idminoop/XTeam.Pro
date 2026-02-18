@@ -13,7 +13,7 @@ services:
       - ENVIRONMENT=production
       - DEBUG=false
       - DATABASE_URL=sqlite+aiosqlite:///./xteam_pro.db
-      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - SECRET_KEY=${SECRET_KEY}
       - ALLOWED_HOSTS=localhost,127.0.0.1,frontend
       - CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://frontend
       - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
@@ -24,7 +24,7 @@ services:
       - SMTP_FROM_NAME=${SMTP_FROM_NAME:-XTeam.Pro}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DEFAULT_ADMIN_EMAIL=${DEFAULT_ADMIN_EMAIL:-admin@xteam.pro}
-      - DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD:-change-this-password}
+      - DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD}
       - MAX_UPLOAD_SIZE=10485760
       - UPLOAD_DIR=uploads
       - RATE_LIMIT_REQUESTS=100
@@ -55,8 +55,6 @@ services:
       - "3000:80"
     environment:
       - VITE_API_URL=http://backend:8000
-      - VITE_OPENAI_API_KEY=${VITE_OPENAI_API_KEY}
-      - VITE_OPENAI_MODEL=${VITE_OPENAI_MODEL:-gpt-4}
       - VITE_EMAIL_SERVICE_URL=${VITE_EMAIL_SERVICE_URL}
       - VITE_GOOGLE_ANALYTICS_ID=${VITE_GOOGLE_ANALYTICS_ID}
       - VITE_CALENDLY_URL=${VITE_CALENDLY_URL}

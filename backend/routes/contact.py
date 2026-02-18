@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
-import uuid
 
 from database.config import get_async_db
 from models.contact import ContactInquiry
@@ -44,6 +43,20 @@ class ContactInquiryResponse(BaseModel):
     created_at: datetime
     response_sent: bool
 
+
+def _response_sent(status_value: str) -> bool:
+    return status_value in {"responded", "closed"}
+
+
+def _parse_inquiry_id(inquiry_id: str) -> int:
+    try:
+        return int(inquiry_id)
+    except (TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid inquiry id"
+        )
+
 @router.post("/contact-submit", response_model=ContactResponse)
 async def submit_contact_inquiry(
     contact_data: ContactSubmissionRequest,
@@ -54,9 +67,7 @@ async def submit_contact_inquiry(
     """
     try:
         # Create contact inquiry record
-        inquiry_id = str(uuid.uuid4())
         contact_inquiry = ContactInquiry(
-            id=inquiry_id,
             name=contact_data.name,
             email=contact_data.email,
             phone=contact_data.phone,
@@ -68,7 +79,7 @@ async def submit_contact_inquiry(
             budget_range=contact_data.budget_range,
             timeline=contact_data.timeline,
             preferred_contact_method=contact_data.preferred_contact_method,
-            marketing_consent=contact_data.marketing_consent,
+            is_newsletter_subscribed=contact_data.marketing_consent,
             source=contact_data.source,
             status="new",
             priority="medium"
@@ -97,7 +108,7 @@ async def submit_contact_inquiry(
         estimated_time = response_times.get(contact_data.inquiry_type, "24-48 hours")
         
         return ContactResponse(
-            inquiry_id=inquiry_id,
+            inquiry_id=str(contact_inquiry.id),
             status="received",
             message="Your inquiry has been received successfully. We will get back to you soon.",
             estimated_response_time=estimated_time
@@ -119,7 +130,8 @@ async def get_contact_inquiry(
     Get contact inquiry details by ID
     """
     try:
-        inquiry = await db.get(ContactInquiry, inquiry_id)
+        inquiry_db_id = _parse_inquiry_id(inquiry_id)
+        inquiry = await db.get(ContactInquiry, inquiry_db_id)
         if not inquiry:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -127,7 +139,7 @@ async def get_contact_inquiry(
             )
         
         return ContactInquiryResponse(
-            inquiry_id=inquiry.id,
+            inquiry_id=str(inquiry.id),
             name=inquiry.name,
             email=inquiry.email,
             company=inquiry.company,
@@ -135,7 +147,7 @@ async def get_contact_inquiry(
             subject=inquiry.subject,
             status=inquiry.status,
             created_at=inquiry.created_at,
-            response_sent=inquiry.response_sent
+            response_sent=_response_sent(inquiry.status)
         )
         
     except HTTPException:
@@ -175,7 +187,7 @@ async def get_contact_inquiries(
         
         return [
             ContactInquiryResponse(
-                inquiry_id=inquiry.id,
+                inquiry_id=str(inquiry.id),
                 name=inquiry.name,
                 email=inquiry.email,
                 company=inquiry.company,
@@ -183,7 +195,7 @@ async def get_contact_inquiries(
                 subject=inquiry.subject,
                 status=inquiry.status,
                 created_at=inquiry.created_at,
-                response_sent=inquiry.response_sent
+                response_sent=_response_sent(inquiry.status)
             )
             for inquiry in inquiries
         ]
@@ -204,7 +216,8 @@ async def update_inquiry_status(
     Update contact inquiry status
     """
     try:
-        inquiry = await db.get(ContactInquiry, inquiry_id)
+        inquiry_db_id = _parse_inquiry_id(inquiry_id)
+        inquiry = await db.get(ContactInquiry, inquiry_db_id)
         if not inquiry:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -220,9 +233,6 @@ async def update_inquiry_status(
         
         inquiry.status = new_status
         inquiry.updated_at = datetime.utcnow()
-        
-        if new_status == "responded":
-            inquiry.response_sent = True
         
         await db.commit()
         
