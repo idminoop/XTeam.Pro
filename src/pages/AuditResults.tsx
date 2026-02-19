@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '../utils/api';
+import { API_BASE_URL } from '../utils/api';
 import { motion } from 'framer-motion';
 import { Download, TrendingUp, Target, Zap, AlertCircle, CheckCircle2, ArrowRight, Clock, RefreshCw } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { toast } from 'sonner';
+import { buildContactPath } from '../utils/contactQuery';
 
 interface AuditResult {
   audit_id: string;
@@ -35,6 +36,43 @@ interface AuditStatus {
   updated_at: string;
 }
 
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string');
+
+const isProcessScores = (value: unknown): value is Record<string, number> => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  return Object.values(value as Record<string, unknown>).every(
+    (score) => typeof score === 'number' && Number.isFinite(score),
+  );
+};
+
+const isAuditResultPayload = (value: unknown): value is AuditResult => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const payload = value as Partial<AuditResult>;
+  return (
+    typeof payload.audit_id === 'string' &&
+    typeof payload.company_name === 'string' &&
+    typeof payload.maturity_score === 'number' &&
+    typeof payload.automation_potential === 'number' &&
+    typeof payload.roi_projection === 'number' &&
+    typeof payload.implementation_timeline === 'string' &&
+    isStringArray(payload.strengths) &&
+    isStringArray(payload.weaknesses) &&
+    isStringArray(payload.opportunities) &&
+    isStringArray(payload.recommendations) &&
+    isProcessScores(payload.process_scores) &&
+    isStringArray(payload.priority_areas) &&
+    typeof payload.created_at === 'string' &&
+    typeof payload.status === 'string'
+  );
+};
+
 export default function AuditResults() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
@@ -45,58 +83,69 @@ export default function AuditResults() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
-  const checkAuditStatus = async (): Promise<AuditStatus | null> => {
+  const checkAuditStatus = useCallback(async (): Promise<AuditStatus | null> => {
+    if (!id) {
+      return null;
+    }
+
     try {
-      const response = await apiCall(`/api/audit/status/${id}`);
+      const response = await fetch(`${API_BASE_URL}/api/audit/status/${id}`);
       if (response.ok) {
-        return await response.json();
+        const status = await response.json();
+        return status as AuditStatus;
       }
       return null;
     } catch (err) {
       console.error('Error checking audit status:', err);
       return null;
     }
-  };
+  }, [id]);
 
-  const fetchResults = async (): Promise<boolean> => {
-    try {
-      const response = await apiCall(`/api/audit/results/${id}`);
-      if (response.ok) {
-        const data = await response.json();
-        setResult(data);
-        setProcessing(false);
-        setLoading(false);
-        toast.success('Audit results are ready!');
-        return true;
-      } else if (response.status === 202) {
-        // Still processing
-        return false;
-      } else {
-        throw new Error('Failed to fetch audit results');
-      }
-    } catch (err) {
-      if (err instanceof Error && err.message.includes('202')) {
-        return false; // Still processing
-      }
-      throw err;
+  const fetchResults = useCallback(async (): Promise<'completed' | 'processing'> => {
+    if (!id) {
+      throw new Error('Missing audit identifier');
     }
-  };
+
+    const response = await fetch(`${API_BASE_URL}/api/audit/results/${id}`);
+
+    if (response.status === 202) {
+      setProcessing(true);
+      setLoading(false);
+      return 'processing';
+    }
+
+    if (response.status === 200) {
+      const data = await response.json();
+
+      if (!isAuditResultPayload(data)) {
+        throw new Error('Invalid audit result payload');
+      }
+
+      setResult(data);
+      setProcessing(false);
+      setLoading(false);
+      toast.success('Audit results are ready!');
+      return 'completed';
+    }
+
+    throw new Error(`Failed to fetch audit results (${response.status})`);
+  }, [id]);
 
   useEffect(() => {
-    let pollInterval: NodeJS.Timeout;
-    let progressInterval: NodeJS.Timeout;
+    let pollInterval: ReturnType<typeof setInterval> | undefined;
+    let progressInterval: ReturnType<typeof setInterval> | undefined;
 
     const startPolling = async () => {
       if (!id) return;
 
       try {
         // First, try to get results immediately
-        const hasResults = await fetchResults();
-        if (hasResults) return;
+        const initialState = await fetchResults();
+        if (initialState === 'completed') return;
 
         // If no results, check status and start polling
         const status = await checkAuditStatus();
-        if (status?.status === 'processing') {
+        if (status?.status === 'processing' || initialState === 'processing') {
           setProcessing(true);
           setLoading(false);
           
@@ -110,11 +159,27 @@ export default function AuditResults() {
 
           // Poll for results every 5 seconds
           pollInterval = setInterval(async () => {
-            const hasResults = await fetchResults();
-            if (hasResults) {
-              clearInterval(pollInterval);
-              clearInterval(progressInterval);
-              setProgress(100);
+            try {
+              const pollState = await fetchResults();
+              if (pollState === 'completed') {
+                if (pollInterval) {
+                  clearInterval(pollInterval);
+                }
+                if (progressInterval) {
+                  clearInterval(progressInterval);
+                }
+                setProgress(100);
+              }
+            } catch (pollError) {
+              if (pollInterval) {
+                clearInterval(pollInterval);
+              }
+              if (progressInterval) {
+                clearInterval(progressInterval);
+              }
+              setError('Unable to load audit results. Please try again later.');
+              setLoading(false);
+              console.error('Error while polling audit results:', pollError);
             }
           }, 5000);
         } else if (status?.status === 'completed') {
@@ -134,22 +199,26 @@ export default function AuditResults() {
     startPolling();
 
     return () => {
-      if (pollInterval) clearInterval(pollInterval);
-      if (progressInterval) clearInterval(progressInterval);
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
+      if (progressInterval) {
+        clearInterval(progressInterval);
+      }
     };
-  }, [id]);
+  }, [id, checkAuditStatus, fetchResults]);
 
   const handleDownloadReport = () => {
     if (result?.pdf_report_url) {
       window.open(result.pdf_report_url, '_blank');
     } else {
       // Fallback to download endpoint
-      window.open(`/api/audit/download/${id}`, '_blank');
+      window.open(`${API_BASE_URL}/api/audit/download/${id}`, '_blank');
     }
   };
 
   const handleBookConsultation = () => {
-    navigate('/contact?source=audit');
+    navigate(buildContactPath({ source: 'audit_consultation' }));
   };
 
   if (loading) {

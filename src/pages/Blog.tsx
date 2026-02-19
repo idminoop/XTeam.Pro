@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Calendar, ArrowRight, Clock, TrendingUp, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { buildContactPath } from '@/utils/contactQuery';
 
 interface BlogPost {
   id: string;
@@ -474,9 +475,12 @@ export default function Blog() {
                 placeholder={t('blog.newsletter.placeholder')}
                 className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
               />
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <Link
+                to={buildContactPath({ source: 'blog_subscribe' })}
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
+              >
                 {t('blog.newsletter.subscribe')}
-              </button>
+              </Link>
             </div>
             <p className="text-sm opacity-75 mt-4">
               {t('blog.newsletter.privacy')}

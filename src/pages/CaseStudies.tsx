@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, Users, Clock, DollarSign, Target, CheckCircle, ExternalLink, Filter, Search } from 'lucide-react';
+import { ArrowRight, ExternalLink, Filter, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { buildContactPath } from '@/utils/contactQuery';
 
 interface CaseStudy {
   id: string;
@@ -29,10 +31,9 @@ interface CaseStudy {
 }
 
 export default function CaseStudies() {
-  const { t: tRaw } = useTranslation();
-  const t = (key: string, options?: any): string =>
-    tRaw(key.startsWith('caseStudies.') ? `blog.${key}` : key, options) as unknown as string;
-  const [selectedIndustry, setSelectedIndustry] = useState<string>('All');
+  const { t } = useTranslation();
+  const ALL_INDUSTRIES = '__all_industries__';
+  const [selectedIndustry, setSelectedIndustry] = useState<string>(ALL_INDUSTRIES);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const caseStudies: CaseStudy[] = [
@@ -138,60 +139,60 @@ export default function CaseStudies() {
     },
     {
       id: 'retail-personalization',
-      title: 'AI-Powered Retail Personalization',
-      company: 'FashionForward',
-      industry: 'Retail',
-      challenge: 'Low conversion rates (2.1%) and high cart abandonment (78%) due to generic shopping experiences and poor product recommendations.',
-      solution: 'Implemented AI personalization engine with real-time recommendation system, dynamic pricing, and personalized marketing automation.',
-      implementation: 'Integrated over 8 weeks with A/B testing and gradual feature rollout to optimize performance.',
+      title: t('caseStudies.studies.retailPersonalization.title'),
+      company: t('caseStudies.studies.retailPersonalization.company'),
+      industry: t('caseStudies.studies.retailPersonalization.industry'),
+      challenge: t('caseStudies.studies.retailPersonalization.challenge'),
+      solution: t('caseStudies.studies.retailPersonalization.solution'),
+      implementation: t('caseStudies.studies.retailPersonalization.implementation'),
       results: [
-        { metric: 'Conversion Rate', value: '6.8%', improvement: '+224%' },
-        { metric: 'Cart Abandonment', value: '45%', improvement: '42% reduction' },
-        { metric: 'Average Order Value', value: '$127', improvement: '+85%' },
-        { metric: 'Revenue Growth', value: '$4.2M', improvement: '340% increase' }
+        { metric: t('caseStudies.studies.retailPersonalization.results.conversionRate.metric'), value: t('caseStudies.studies.retailPersonalization.results.conversionRate.value'), improvement: t('caseStudies.studies.retailPersonalization.results.conversionRate.improvement') },
+        { metric: t('caseStudies.studies.retailPersonalization.results.cartAbandonment.metric'), value: t('caseStudies.studies.retailPersonalization.results.cartAbandonment.value'), improvement: t('caseStudies.studies.retailPersonalization.results.cartAbandonment.improvement') },
+        { metric: t('caseStudies.studies.retailPersonalization.results.averageOrderValue.metric'), value: t('caseStudies.studies.retailPersonalization.results.averageOrderValue.value'), improvement: t('caseStudies.studies.retailPersonalization.results.averageOrderValue.improvement') },
+        { metric: t('caseStudies.studies.retailPersonalization.results.revenueGrowth.metric'), value: t('caseStudies.studies.retailPersonalization.results.revenueGrowth.value'), improvement: t('caseStudies.studies.retailPersonalization.results.revenueGrowth.improvement') }
       ],
       testimonial: {
-        quote: "The personalization AI has completely transformed our customer experience. Sales have tripled, and customers are genuinely excited about the recommendations they receive. It's like having a personal shopper for every customer.",
-        author: 'Amanda Foster',
-        position: 'Chief Marketing Officer'
+        quote: t('caseStudies.studies.retailPersonalization.testimonial.quote'),
+        author: t('caseStudies.studies.retailPersonalization.testimonial.author'),
+        position: t('caseStudies.studies.retailPersonalization.testimonial.position')
       },
-      tags: ['Retail', 'Personalization', 'Revenue Growth'],
-      timeline: '8 weeks',
-      investment: '$200K',
-      roi: '2100% in 6 months',
+      tags: [t('caseStudies.tags.retail'), t('caseStudies.tags.personalization'), t('caseStudies.tags.revenueGrowth')],
+      timeline: t('caseStudies.studies.retailPersonalization.timeline'),
+      investment: t('caseStudies.studies.retailPersonalization.investment'),
+      roi: t('caseStudies.studies.retailPersonalization.roi'),
       featured: true
     },
     {
       id: 'logistics-optimization',
-      title: 'Supply Chain Intelligence System',
-      company: 'GlobalLogistics Pro',
-      industry: 'Logistics',
-      challenge: 'Inefficient route planning and inventory management were causing 25% higher delivery costs and frequent stockouts affecting customer satisfaction.',
-      solution: 'Deployed AI-powered supply chain optimization with predictive analytics, dynamic routing, and automated inventory management.',
-      implementation: 'Rolled out across 15 distribution centers over 14 weeks with comprehensive staff training.',
+      title: t('caseStudies.studies.logisticsOptimization.title'),
+      company: t('caseStudies.studies.logisticsOptimization.company'),
+      industry: t('caseStudies.studies.logisticsOptimization.industry'),
+      challenge: t('caseStudies.studies.logisticsOptimization.challenge'),
+      solution: t('caseStudies.studies.logisticsOptimization.solution'),
+      implementation: t('caseStudies.studies.logisticsOptimization.implementation'),
       results: [
-        { metric: 'Delivery Costs', value: '$2.1M', improvement: '35% reduction' },
-        { metric: 'On-time Delivery', value: '97%', improvement: '+22%' },
-        { metric: 'Inventory Turnover', value: '12x', improvement: '+50%' },
-        { metric: 'Customer Satisfaction', value: '92%', improvement: '+28%' }
+        { metric: t('caseStudies.studies.logisticsOptimization.results.deliveryCosts.metric'), value: t('caseStudies.studies.logisticsOptimization.results.deliveryCosts.value'), improvement: t('caseStudies.studies.logisticsOptimization.results.deliveryCosts.improvement') },
+        { metric: t('caseStudies.studies.logisticsOptimization.results.onTimeDelivery.metric'), value: t('caseStudies.studies.logisticsOptimization.results.onTimeDelivery.value'), improvement: t('caseStudies.studies.logisticsOptimization.results.onTimeDelivery.improvement') },
+        { metric: t('caseStudies.studies.logisticsOptimization.results.inventoryTurnover.metric'), value: t('caseStudies.studies.logisticsOptimization.results.inventoryTurnover.value'), improvement: t('caseStudies.studies.logisticsOptimization.results.inventoryTurnover.improvement') },
+        { metric: t('caseStudies.studies.logisticsOptimization.results.customerSatisfaction.metric'), value: t('caseStudies.studies.logisticsOptimization.results.customerSatisfaction.value'), improvement: t('caseStudies.studies.logisticsOptimization.results.customerSatisfaction.improvement') }
       ],
       testimonial: {
-        quote: "The AI system has revolutionized our supply chain operations. We're delivering faster, cheaper, and more reliably than ever before. Our customers notice the difference, and our bottom line reflects it.",
-        author: 'Carlos Martinez',
-        position: 'VP of Operations'
+        quote: t('caseStudies.studies.logisticsOptimization.testimonial.quote'),
+        author: t('caseStudies.studies.logisticsOptimization.testimonial.author'),
+        position: t('caseStudies.studies.logisticsOptimization.testimonial.position')
       },
-      tags: ['Logistics', 'Supply Chain', 'Optimization'],
-      timeline: '14 weeks',
-      investment: '$350K',
-      roi: '600% in 8 months',
+      tags: [t('caseStudies.tags.logistics'), t('caseStudies.tags.supplyChain'), t('caseStudies.tags.optimization')],
+      timeline: t('caseStudies.studies.logisticsOptimization.timeline'),
+      investment: t('caseStudies.studies.logisticsOptimization.investment'),
+      roi: t('caseStudies.studies.logisticsOptimization.roi'),
       featured: false
     }
   ];
 
-  const industries = ['All', ...Array.from(new Set(caseStudies.map(study => study.industry)))];
+  const industries = [ALL_INDUSTRIES, ...Array.from(new Set(caseStudies.map(study => study.industry)))];
 
   const filteredStudies = caseStudies.filter(study => {
-    const matchesIndustry = selectedIndustry === 'All' || study.industry === selectedIndustry;
+    const matchesIndustry = selectedIndustry === ALL_INDUSTRIES || study.industry === selectedIndustry;
     const matchesSearch = searchTerm === '' || 
       study.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       study.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -296,10 +297,13 @@ export default function CaseStudies() {
                     <span className="text-gray-600">ROI: </span>
                     <span className="font-semibold text-green-600">{study.roi}</span>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                  <Link
+                    to={buildContactPath({ source: 'case_study', case: study.id })}
+                    className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center"
+                  >
                     {t('caseStudies.viewDetails')}
                     <ArrowRight className="w-4 h-4 ml-1" />
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             ))}
@@ -336,7 +340,9 @@ export default function CaseStudies() {
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {industries.map(industry => (
-                  <option key={industry} value={industry}>{industry}</option>
+                  <option key={industry} value={industry}>
+                    {industry === ALL_INDUSTRIES ? t('caseStudies.allIndustries') : industry}
+                  </option>
                 ))}
               </select>
             </div>
@@ -404,10 +410,13 @@ export default function CaseStudies() {
                     <span className="text-gray-600">ROI: </span>
                     <span className="font-semibold text-green-600">{study.roi}</span>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                  <Link
+                    to={buildContactPath({ source: 'case_study', case: study.id })}
+                    className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center"
+                  >
                     {t('caseStudies.details')}
                     <ExternalLink className="w-4 h-4 ml-1" />
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             ))}
@@ -428,13 +437,19 @@ export default function CaseStudies() {
               {t('caseStudies.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+              <Link
+                to={buildContactPath({ source: 'case_studies_final_cta' })}
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
+              >
                 {t('caseStudies.cta.button')}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+              </Link>
+              <Link
+                to="/audit"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center"
+              >
                 {t('caseStudies.cta.downloadButton')}
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

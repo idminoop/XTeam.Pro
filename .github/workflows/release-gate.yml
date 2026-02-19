@@ -20,8 +20,16 @@ jobs:
         run: npm ci
       - name: Type check
         run: npm run check
+      - name: Lint frontend
+        run: npm run lint
       - name: Build frontend
         run: npm run build
+      - name: Verify i18n keys
+        run: npm run i18n:check
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Run frontend smoke e2e
+        run: npm run e2e:smoke
 
   backend-integration:
     runs-on: ubuntu-latest

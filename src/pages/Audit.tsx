@@ -370,7 +370,7 @@ export default function Audit() {
           </div>
           <div className="flex justify-between mt-2">
             <div className="text-sm text-gray-600 mb-2">
-              {t('audit.progress', { current: currentStep + 1, total: auditSteps.length })}
+              {t('audit.progress.step', { current: currentStep + 1, total: auditSteps.length })}
             </div>
             <div className="text-xs text-gray-500">
               {Math.round(progress)}% {t('common.complete')}

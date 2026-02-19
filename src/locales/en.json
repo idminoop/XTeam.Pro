@@ -17,7 +17,26 @@
     "ru": "Русский"
   },
   "common": {
-    "companyName": "XTeam.Pro"
+    "companyName": "XTeam.Pro",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "empty": "No data available",
+    "complete": "Complete",
+    "backToHome": "Back to Home"
   },
   "home": {
     "hero": {
@@ -82,1433 +101,6 @@
     }
   },
   "blog": {
-    "notFound": {
-      "title": "Article Not Found",
-      "message": "The article you're looking for doesn't exist.",
-      "backButton": "Back to Blog"
-    },
-    "post": {
-      "tags": "Tags",
-      "actions": "Actions",
-      "like": "Like",
-      "liked": "Liked",
-      "save": "Save",
-      "saved": "Saved",
-      "share": "Share",
-      "relatedArticles": "Related Articles",
-      "loading": "Loading article...",
-      "views": "views",
-      "likes": "likes",
-      "comments": "comments",
-      "minRead": "min read",
-      "min": "min"
-    }
-  },
-  "footer": {
-    "description": "Transforming businesses through AI-driven automation and intelligent process optimization.",
-    "sections": {
-      "solutions": "Solutions",
-      "resources": "Resources",
-      "company": "Company"
-    },
-    "links": {
-      "processAutomation": "Process Automation",
-      "dataIntegration": "Data Integration",
-      "aiImplementation": "AI Implementation",
-      "customDevelopment": "Custom Development",
-      "caseStudies": "Case Studies",
-      "blog": "Blog",
-      "roiCalculator": "ROI Calculator",
-      "freeAudit": "Free Audit",
-      "aboutUs": "About Us",
-      "careers": "Careers",
-      "contact": "Contact",
-      "privacyPolicy": "Privacy Policy",
-      "termsOfService": "Terms of Service",
-      "cookiePolicy": "Cookie Policy"
-    },
-    "contact": {
-      "email": "hello@xteam.pro",
-      "phone": "+1 (555) 123-4567",
-      "address": "San Francisco, CA"
-    },
-    "copyright": "© {{year}} XTeam.Pro. All rights reserved."
-  },
-  "auditResults": {
-    "title": "Your AI Automation Audit Results",
-    "subtitle": "Comprehensive analysis of your business's AI automation potential",
-    "loading": "Analyzing your responses...",
-    "processing": {
-      "title": "Processing Your AI Audit",
-      "subtitle": "Our AI is analyzing your responses to generate personalized recommendations",
-      "status": "Analysis in progress...",
-      "timeEstimate": "This usually takes 2-3 minutes"
-    },
-    "error": {
-      "title": "Unable to Load Results",
-      "subtitle": "There was an issue loading your audit results. Please try again.",
-      "button": "Retry"
-    },
-    "maturityScore": {
-      "title": "AI Maturity Score"
-    },
-    "roiForecast": {
-      "title": "ROI Forecast"
-    },
-    "maturityAssessment": {
-      "title": "Maturity Assessment"
-    },
-    "strengths": {
-      "title": "Key Strengths"
-    },
-    "weaknesses": {
-      "title": "Areas for Improvement"
-    },
-    "opportunities": {
-      "title": "Opportunities"
-    },
-    "recommendations": {
-      "title": "Strategic Recommendations"
-    },
-    "priorities": {
-      "title": "Implementation Priorities"
-    },
-    "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Get personalized guidance from our AI experts",
-      "downloadReport": "Download Full Report",
-      "bookConsultation": "Book Free Consultation"
-    },
-    "metrics": {
-      "annualSavings": "Annual Savings",
-      "implementationCost": "Implementation Cost",
-      "paybackPeriod": "Payback Period",
-      "automationPotential": "Automation Potential",
-      "investment": "Investment",
-      "savings": "Savings",
-      "netBenefit": "Net Benefit",
-      "currentScore": "Current Score",
-      "currentState": "Current State",
-      "afterMonths": "After {{months}} Months"
-    },
-    "ratings": {
-      "excellent": "Excellent",
-      "good": "Good",
-      "fair": "Fair",
-      "needsImprovement": "Needs Improvement"
-    },
-    "messages": {
-      "priorityAreasAvailable": "Priority areas will be available after analysis completion"
-    }
-  },
-  "about": {
-    "hero": {
-      "title": "Pioneering the Future of",
-      "titleHighlight": "Business AI",
-      "subtitle": "We're a team of AI experts, engineers, and business strategists dedicated to transforming how companies operate through intelligent automation."
-    },
-    "stats": {
-      "projects": "AI Projects Delivered",
-      "savings": "Client Cost Savings",
-      "countries": "Countries Served",
-      "satisfaction": "Client Satisfaction"
-    },
-    "story": {
-      "title": "Our Story",
-      "paragraph1": "XTeam.Pro was born from a simple observation: while AI technology was advancing rapidly, most businesses struggled to implement it effectively. The gap between AI's potential and practical business applications was enormous.",
-      "paragraph2": "Our founders, Sarah Chen and Dr. Michael Rodriguez, had spent years building AI systems at tech giants like Google and Microsoft. They witnessed firsthand how AI could transform operations, but also saw how complex and expensive implementations often were.",
-      "paragraph3": "In 2019, they decided to bridge this gap by creating XTeam.Pro - a company focused on making enterprise-grade AI accessible, practical, and profitable for businesses of all sizes.",
-      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value.",
-      "officeImageAlt": "XTeam.Pro Office"
-    },
-    "journey": {
-      "title": "Our Journey",
-      "subtitle": "Key milestones in our mission to democratize AI for businesses worldwide.",
-      "milestones": {
-        "2019": {
-          "title": "Company Founded",
-          "description": "Sarah and Michael founded XTeam.Pro with a vision to democratize AI for businesses of all sizes."
-        },
-        "2020": {
-          "title": "First Enterprise Client",
-          "description": "Successfully deployed our first AI automation solution, saving our client $2M annually."
-        },
-        "2021": {
-          "title": "Series A Funding",
-          "description": "Raised $15M Series A to expand our AI platform and grow the team."
-        },
-        "2022": {
-          "title": "100+ Successful Deployments",
-          "description": "Reached milestone of 100 successful AI implementations across various industries."
-        },
-        "2023": {
-          "title": "AI Innovation Award",
-          "description": "Recognized as \"AI Innovation Company of the Year\" by TechCrunch."
-        },
-        "2024": {
-          "title": "Global Expansion",
-          "description": "Expanded operations to Europe and Asia, serving clients across 25+ countries."
-        }
-      }
-    },
-    "values": {
-      "title": "Our Values",
-      "subtitle": "The principles that guide everything we do and every decision we make.",
-      "resultsDriven": {
-        "title": "Results-Driven",
-        "description": "We measure success by the tangible impact we create for our clients - cost savings, efficiency gains, and revenue growth."
-      },
-      "humanCentered": {
-        "title": "Human-Centered AI",
-        "description": "Our AI solutions augment human capabilities rather than replace them, creating better experiences for employees and customers."
-      },
-      "excellence": {
-        "title": "Excellence",
-        "description": "We maintain the highest standards in everything we do, from code quality to customer service."
-      },
-      "transparency": {
-        "title": "Transparency",
-        "description": "We believe in open communication, clear pricing, and honest assessments of what AI can and cannot do."
-      }
-    },
-    "team": {
-      "title": "Meet Our Team",
-      "subtitle": "World-class experts in AI, engineering, and business strategy working together to deliver exceptional results for our clients.",
-      "expertise": "Expertise:"
-    },
-    "contact": {
-      "title": "Get in Touch",
-      "subtitle": "Ready to transform your business with AI? We'd love to hear from you.",
-      "headquarters": {
-        "title": "Headquarters",
-        "address": "123 Innovation Drive\nSan Francisco, CA 94105\nUnited States"
-      },
-      "contactInfo": {
-        "title": "Contact",
-        "details": "+1 (555) 123-4567\nhello@xteam.pro\nAvailable 24/7"
-      },
-      "schedule": {
-        "title": "Schedule",
-        "details": "Book a free consultation\n30-minute strategy session\nNo commitment required"
-      }
-    },
-    "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Join thousands of companies already using our AI solutions to drive growth and efficiency.",
-      "scheduleButton": "Schedule Consultation",
-      "downloadButton": "Download Case Studies"
-    },
-    "team": {
-      "title": "Meet Our Team",
-      "subtitle": "The experts behind your AI transformation",
-      "expertise": "Expertise"
-    },
-    "contact": {
-      "title": "Get in Touch",
-      "subtitle": "Ready to start your AI journey? Contact us today.",
-      "headquarters": {
-        "title": "Headquarters",
-        "address": "123 Innovation Drive\nSan Francisco, CA 94105"
-      },
-      "contactInfo": {
-        "title": "Contact Info",
-        "details": "+1 (555) 123-4567\ninfo@xteam.pro"
-      },
-      "schedule": {
-        "title": "Schedule a Call",
-        "details": "Book a free consultation\nMon-Fri, 9AM-6PM PST"
-      }
-    }
-  },
-  "solutions": {
-    "hero": {
-      "title": "AI Solutions That Transform",
-      "titleHighlight": "Your Business",
-      "subtitle": "Discover how our AI-powered automation solutions can revolutionize your operations, reduce costs, and accelerate growth across every aspect of your business.",
-      "ctaButton": "Start Your AI Journey"
-    },
-    "coreSolutions": {
-      "title": "Core AI Solutions",
-      "subtitle": "Comprehensive automation solutions designed to address your most critical business challenges.",
-      "benefits": "Key Benefits",
-      "useCases": "Use Cases",
-      "roiImpact": "ROI Impact",
-      "implementation": "Implementation",
-      "aicustomerserviceautomation": {
-        "title": "AI Customer Service Automation",
-        "description": "Transform your customer support with intelligent chatbots and automated response systems that provide 24/7 assistance.",
-        "benefits": {
-          "0": "24/7 customer support availability",
-          "1": "Reduce response time by 90%",
-          "2": "Handle 80% of inquiries automatically",
-          "3": "Improve customer satisfaction scores"
-        },
-        "useCases": {
-          "0": "Live chat automation",
-          "1": "Email response automation",
-          "2": "FAQ and knowledge base integration",
-          "3": "Ticket routing and prioritization"
-        },
-        "roi": "300% ROI within 6 months",
-        "implementation": "2-4 weeks"
-      },
-      "intelligentdataanalytics": {
-        "title": "Intelligent Data Analytics",
-        "description": "Automate data processing, analysis, and reporting to uncover insights and drive data-driven decision making.",
-        "benefits": {
-          "0": "Real-time data processing",
-          "1": "Automated report generation",
-          "2": "Predictive analytics capabilities",
-          "3": "Reduce manual analysis time by 85%"
-        },
-        "useCases": {
-          "0": "Sales performance analysis",
-          "1": "Customer behavior insights",
-          "2": "Financial reporting automation",
-          "3": "Market trend analysis"
-        },
-        "roi": "250% ROI within 4 months",
-        "implementation": "3-6 weeks"
-      },
-      "intelligentautomation": {
-        "description": "Transform your business processes with AI-powered automation that learns and adapts to your unique workflows.",
-        "benefits": {
-          "0": "Reduce manual work by up to 80%",
-          "1": "Eliminate human errors in repetitive tasks",
-          "2": "24/7 automated operations",
-          "3": "Seamless integration with existing systems"
-        },
-        "useCases": {
-          "0": "Document processing and data entry",
-          "1": "Customer service automation",
-          "2": "Invoice and payment processing",
-          "3": "Inventory management"
-        },
-        "roi": "Average 300% ROI within 12 months through reduced labor costs and increased efficiency.",
-        "implementation": "4-6 weeks implementation with full training and support included."
-      },
-      "processoptimization": {
-        "description": "Optimize your business processes using advanced AI analytics to identify bottlenecks and improvement opportunities.",
-        "benefits": {
-          "0": "Identify process inefficiencies instantly",
-          "1": "Real-time performance monitoring",
-          "2": "Predictive maintenance capabilities",
-          "3": "Continuous process improvement"
-        },
-        "useCases": {
-          "0": "Supply chain optimization",
-          "1": "Production line efficiency",
-          "2": "Resource allocation",
-          "3": "Quality control automation"
-        },
-        "roi": "Typical 25-40% improvement in operational efficiency and 15-30% cost reduction.",
-        "implementation": "6-8 weeks with comprehensive process analysis and optimization setup."
-      },
-      "predictiveanalytics": {
-        "description": "Harness the power of AI to predict future trends, customer behavior, and business outcomes with unprecedented accuracy.",
-        "benefits": {
-          "0": "Forecast demand with 95% accuracy",
-          "1": "Predict customer churn before it happens",
-          "2": "Optimize pricing strategies dynamically",
-          "3": "Risk assessment and mitigation"
-        },
-        "useCases": {
-          "0": "Sales forecasting and planning",
-          "1": "Customer lifetime value prediction",
-          "2": "Market trend analysis",
-          "3": "Financial risk modeling"
-        },
-        "roi": "Average 250% ROI through improved decision-making and reduced business risks.",
-        "implementation": "8-12 weeks including data integration and model training."
-      },
-      "businessprocessautomation": {
-        "title": "Business Process Automation",
-        "description": "Streamline and automate complex business workflows to eliminate manual tasks and improve operational efficiency.",
-        "benefits": {
-          "0": "Reduce processing time by up to 90%",
-          "1": "Eliminate manual errors and inconsistencies",
-          "2": "Ensure compliance with automated workflows",
-          "3": "Scale operations without increasing headcount"
-        },
-        "useCases": {
-          "0": "Invoice processing and approval workflows",
-          "1": "Employee onboarding automation",
-          "2": "Contract management and renewals",
-          "3": "Regulatory compliance monitoring"
-        },
-        "roi": "Average 400% ROI within 8 months through reduced operational costs.",
-        "implementation": "4-8 weeks with full process mapping and automation setup."
-      },
-      "aicontentcommunication": {
-        "title": "AI Content Communication",
-        "description": "Generate personalized, engaging content and communications at scale using advanced AI language models.",
-        "benefits": {
-          "0": "Create content 10x faster than manual writing",
-          "1": "Maintain consistent brand voice across channels",
-          "2": "Personalize communications for each customer",
-          "3": "Generate multilingual content automatically"
-        },
-        "useCases": {
-          "0": "Marketing email campaigns and newsletters",
-          "1": "Social media content and posts",
-          "2": "Product descriptions and documentation",
-          "3": "Customer support responses and FAQs"
-        },
-        "roi": "Average 350% ROI within 6 months through increased content output and engagement.",
-        "implementation": "3-5 weeks including content strategy and AI model training."
-      }
-    },
-    "industryStories": {
-      "title": "Industry Success Stories",
-      "subtitle": "See how businesses across different industries have transformed their operations with our AI solutions.",
-      "challenge": "Challenge:",
-      "solution": "Solution:",
-      "results": "Results:",
-      "manufacturing": {
-        "industry": "Manufacturing",
-        "challenge": "Manual quality control processes were slow and inconsistent, leading to 15% defect rates and customer complaints.",
-        "solution": "Implemented AI-powered visual inspection systems with real-time defect detection and automated sorting.",
-        "results": {
-          "0": "Reduced defect rates to under 2%",
-          "1": "Increased production speed by 40%",
-          "2": "Saved $2.3M annually in quality costs"
-        }
-      },
-      "healthcare": {
-        "industry": "Healthcare",
-        "challenge": "Patient scheduling and administrative tasks consumed 60% of staff time, reducing patient care quality.",
-        "solution": "Deployed AI assistants for appointment scheduling, patient communication, and administrative workflow automation.",
-        "results": {
-          "0": "Reduced administrative time by 70%",
-          "1": "Improved patient satisfaction by 35%",
-          "2": "Increased revenue by $1.8M through efficiency gains"
-        }
-      },
-      "retail": {
-        "industry": "Retail",
-        "challenge": "Inventory management was reactive, leading to frequent stockouts and overstock situations affecting profitability.",
-        "solution": "Implemented predictive inventory management with demand forecasting and automated reordering systems.",
-        "results": {
-          "0": "Reduced stockouts by 85%",
-          "1": "Decreased excess inventory by 45%",
-          "2": "Improved profit margins by 22%"
-        }
-      },
-      "finance": {
-        "industry": "Finance",
-        "challenge": "Manual document processing and compliance checks were time-consuming and error-prone, creating regulatory risks.",
-        "solution": "Automated document processing, compliance monitoring, and risk assessment using AI-powered systems.",
-        "results": {
-          "0": "Reduced processing time by 90%",
-          "1": "Eliminated compliance errors",
-          "2": "Saved $3.2M in operational costs"
-        }
-      }
-    },
-    "aiWorkforce": {
-      "title": "Meet Your AI Workforce",
-      "subtitle": "Specialized AI agents designed to handle specific business functions with human-like intelligence and 24/7 availability.",
-      "capabilities": "Capabilities:",
-      "industries": "Industries:",
-      "moreCapabilities": "more capabilities",
-      "salesassistant": {
-        "name": "Sales Assistant",
-        "description": "AI-powered sales agent that qualifies leads, schedules meetings, and nurtures prospects 24/7.",
-        "capabilities": {
-          "0": "Lead qualification and scoring",
-          "1": "Automated follow-up sequences",
-          "2": "Meeting scheduling and coordination",
-          "3": "CRM integration and data sync",
-          "4": "Personalized outreach campaigns"
-        }
-      },
-      "customerservicebot": {
-        "name": "Customer Service Bot",
-        "description": "Intelligent customer support agent that handles inquiries, resolves issues, and escalates complex cases.",
-        "capabilities": {
-          "0": "Multi-language support",
-          "1": "Instant response to common queries",
-          "2": "Order tracking and updates",
-          "3": "Complaint resolution workflows",
-          "4": "Knowledge base integration"
-        }
-      },
-      "dataanalyst": {
-        "name": "Data Analyst",
-        "description": "Advanced AI that analyzes business data, generates insights, and creates automated reports.",
-        "capabilities": {
-          "0": "Real-time data processing",
-          "1": "Predictive trend analysis",
-          "2": "Automated report generation",
-          "3": "Anomaly detection",
-          "4": "Interactive dashboards"
-        }
-      },
-      "contentcreator": {
-        "name": "Content Creator",
-        "description": "Creative AI that generates marketing content, social media posts, and personalized communications.",
-        "capabilities": {
-          "0": "Blog post and article writing",
-          "1": "Social media content creation",
-          "2": "Email campaign personalization",
-          "3": "SEO optimization",
-          "4": "Multi-format content adaptation"
-        }
-      },
-      "processautomator": {
-        "name": "Process Automator",
-        "description": "Workflow automation specialist that streamlines business processes and eliminates manual tasks.",
-        "capabilities": {
-          "0": "Document processing automation",
-          "1": "Approval workflow management",
-          "2": "Data entry and validation",
-          "3": "System integration",
-          "4": "Exception handling"
-        }
-      },
-      "qualitycontroller": {
-        "name": "Quality Controller",
-        "description": "AI-powered quality assurance agent that monitors, tests, and ensures consistent quality standards.",
-        "capabilities": {
-          "0": "Automated testing protocols",
-          "1": "Real-time quality monitoring",
-          "2": "Defect pattern recognition",
-          "3": "Compliance verification",
-          "4": "Quality reporting and analytics"
-        }
-      }
-    },
-    "industryScenarios": {
-      "title": "Industry Success Stories",
-      "subtitle": "Real-world examples of AI transformation across different industries",
-      "challenge": "Challenge:",
-      "solution": "Solution:",
-      "results": "Results:",
-      "manufacturing": {
-        "industry": "Manufacturing",
-        "challenge": "Manual quality control processes were slow and inconsistent, leading to 15% defect rates and customer complaints.",
-        "solution": "Implemented AI-powered visual inspection systems with real-time defect detection and automated sorting.",
-        "results": "Reduced defect rates to under 2%, increased production speed by 40%, saved $2.3M annually in quality costs"
-      },
-      "healthcare": {
-        "industry": "Healthcare",
-        "challenge": "Patient scheduling and administrative tasks consumed 60% of staff time, reducing patient care quality.",
-        "solution": "Deployed AI assistants for appointment scheduling, patient communication, and administrative workflow automation.",
-        "results": "Reduced administrative time by 70%, improved patient satisfaction by 35%, increased revenue by $1.8M through efficiency gains"
-      },
-      "retail": {
-        "industry": "Retail",
-        "challenge": "Inventory management was reactive, leading to frequent stockouts and overstock situations affecting profitability.",
-        "solution": "Implemented predictive inventory management with demand forecasting and automated reordering systems.",
-        "results": "Reduced stockouts by 85%, decreased excess inventory by 45%, improved profit margins by 22%"
-      },
-      "finance": {
-        "industry": "Finance",
-        "challenge": "Manual document processing and compliance checks were time-consuming and error-prone, creating regulatory risks.",
-        "solution": "Automated document processing, compliance monitoring, and risk assessment using AI-powered systems.",
-        "results": "Reduced processing time by 90%, eliminated compliance errors, saved $3.2M in operational costs"
-      }
-    },
-    "aiAgents": {
-      "title": "Meet Your AI Workforce",
-      "subtitle": "Specialized AI agents designed to handle specific business functions with human-like intelligence and 24/7 availability.",
-      "capabilities": "Capabilities:",
-      "industries": "Industries:",
-      "salesassistant": {
-        "name": "Sales Assistant",
-        "description": "AI-powered sales agent that qualifies leads, schedules meetings, and nurtures prospects 24/7.",
-        "capabilities": "Lead qualification and scoring, automated follow-up sequences, meeting scheduling and coordination, CRM integration and data sync, personalized outreach campaigns",
-        "industries": "Technology, SaaS, Real Estate, Insurance, Consulting"
-      },
-      "customerservicebot": {
-        "name": "Customer Service Bot",
-        "description": "Intelligent customer support agent that handles inquiries, resolves issues, and escalates complex cases.",
-        "capabilities": "Multi-language support, instant response to common queries, order tracking and updates, complaint resolution workflows, knowledge base integration",
-        "industries": "E-commerce, Retail, Telecommunications, Banking, Healthcare"
-      },
-      "dataanalyst": {
-        "name": "Data Analyst",
-        "description": "Advanced AI that analyzes business data, generates insights, and creates automated reports.",
-        "capabilities": "Real-time data processing, predictive trend analysis, automated report generation, anomaly detection, interactive dashboards",
-        "industries": "Finance, Marketing, Operations, Manufacturing, Logistics"
-      },
-      "contentcreator": {
-        "name": "Content Creator",
-        "description": "Creative AI that generates marketing content, social media posts, and personalized communications.",
-        "capabilities": "Blog post and article writing, social media content creation, email campaign personalization, SEO optimization, multi-format content adaptation",
-        "industries": "Marketing, Media, E-commerce, Education, Entertainment"
-      },
-      "processautomator": {
-        "name": "Process Automator",
-        "description": "Workflow automation specialist that streamlines business processes and eliminates manual tasks.",
-        "capabilities": "Document processing automation, approval workflow management, data entry and validation, system integration, exception handling",
-        "industries": "Finance, HR, Legal, Healthcare, Government"
-      },
-      "qualitycontroller": {
-        "name": "Quality Controller",
-        "description": "AI-powered quality assurance agent that monitors, tests, and ensures consistent quality standards.",
-        "capabilities": "Automated testing protocols, real-time quality monitoring, defect pattern recognition, compliance verification, quality reporting and analytics",
-        "industries": "Manufacturing, Software, Pharmaceuticals, Food & Beverage, Automotive"
-      }
-    },
-    "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Take our free AI audit to discover which solutions will have the biggest impact on your operations.",
-      "auditButton": "Take Free AI Audit",
-      "consultationButton": "Schedule Consultation"
-    }
-  },
-  "pricing": {
-    "hero": {
-      "title": "Transparent Pricing for",
-      "titleHighlight": " AI Transformation",
-      "subtitle": "Choose the perfect AI automation package for your business. All plans include implementation, training, and ongoing support.",
-      "monthly": "Monthly",
-      "annual": "Annual",
-      "save": "(Save 17%)"
-    },
-    "tiers": {
-      "mostPopular": "Most Popular",
-      "starter": {
-        "name": "Starter",
-        "description": "Perfect for small businesses starting their AI journey",
-        "cta": "Get Started",
-        "features": {
-          "feature1": "Up to 3 AI automations",
-          "feature2": "Basic analytics dashboard",
-          "feature3": "Email support",
-          "feature4": "Standard integrations",
-          "feature5": "Monthly performance reports"
-        },
-        "limitations": {
-          "limitation1": "Limited to 1,000 transactions/month",
-          "limitation2": "Basic customization options"
-        }
-      },
-      "professional": {
-        "name": "Professional",
-        "description": "Ideal for growing companies ready to scale",
-        "cta": "Start Free Trial",
-        "features": {
-          "feature1": "Up to 10 AI automations",
-          "feature2": "Advanced analytics & insights",
-          "feature3": "Priority support",
-          "feature4": "Custom integrations",
-          "feature5": "Weekly performance reports",
-          "feature6": "A/B testing capabilities",
-          "feature7": "Multi-user access"
-        },
-        "limitations": {
-          "limitation1": "Limited to 10,000 transactions/month"
-        }
-      },
-      "enterprise": {
-        "name": "Enterprise",
-        "description": "Complete AI transformation for large organizations",
-        "cta": "Contact Sales",
-        "features": {
-          "feature1": "Unlimited AI automations",
-          "feature2": "Real-time analytics & AI insights",
-          "feature3": "24/7 dedicated support",
-          "feature4": "Custom AI model development",
-          "feature5": "Daily performance reports",
-          "feature6": "Advanced A/B testing",
-          "feature7": "Unlimited user access",
-          "feature8": "White-label options",
-          "feature9": "SLA guarantees"
-        }
-      },
-      "popular": "Most Popular",
-      "whatsIncluded": "What's included:",
-      "limitations": "Limitations:"
-    },
-    "roiCalculator": {
-      "title": "ROI Calculator",
-      "subtitle": "Calculate your potential return on investment with AI automation. See how much you could save and earn with our solutions.",
-      "showButton": "Calculate Your ROI",
-      "hideButton": "Hide Calculator",
-      "currentSituation": "Your Current Situation",
-      "companySize": "Company Size",
-      "companySizes": {
-        "startup": "Startup (1-10 employees)",
-        "small": "Small (11-50 employees)",
-        "medium": "Medium (51-200 employees)",
-        "large": "Large (201-1000 employees)",
-        "enterprise": "Enterprise (1000+ employees)"
-      },
-      "industry": "Industry",
-      "industries": {
-        "technology": "Technology",
-        "finance": "Finance",
-        "healthcare": "Healthcare",
-        "manufacturing": "Manufacturing",
-        "retail": "Retail",
-        "other": "Other"
-      },
-      "annualCosts": "Annual Operating Costs",
-      "employeeCount": "Number of Employees",
-      "avgSalary": "Average Annual Salary",
-      "timeSpent": "Time Spent on Repetitive Tasks (%)",
-      "errorRate": "Current Error Rate (%)",
-      "budgetRange": "Budget Range",
-      "budgetRanges": {
-        "10k-50k": "$10k - $50k",
-        "50k-100k": "$50k - $100k",
-        "100k-500k": "$100k - $500k",
-        "500k+": "$500k+"
-      },
-      "implementationTimeline": "Implementation Timeline (months)",
-      "expectedGain": "Expected Efficiency Gain (%)",
-      "automationReadiness": "Automation Readiness (1-10)",
-      "changeManagement": "Change Management (1-10)",
-      "technicalComplexity": "Technical Complexity (1-10)",
-      "regulatoryRequirements": "Has regulatory requirements",
-      "calculateButton": "Calculate ROI",
-      "calculating": "Calculating...",
-      "projection": "Your ROI Projection",
-      "validationError": "Validation Error:",
-      "calculatingMessage": "Calculating ROI...",
-      "fillForm": "Fill in the form to calculate your ROI",
-      "metrics": {
-        "currentWaste": "Annual waste from inefficiencies",
-        "annualSavings": "Projected annual savings",
-        "paybackPeriod": "Payback period",
-        "threeYearROI": "3-year ROI",
-        "npv": "Net Present Value",
-        "irr": "Internal Rate of Return"
-      },
-      "breakdown": {
-        "title": "Savings Breakdown:",
-        "timeSavings": "Time savings:",
-        "errorReduction": "Error reduction:",
-        "year": "/year"
-      },
-      "insights": "AI Insights:",
-      "riskFactors": "Risk Factors:",
-      "recommendations": "Recommendations:"
-    },
-    "addOns": {
-      "title": "Optional Add-ons",
-      "subtitle": "Enhance your AI implementation with these additional services and features.",
-      "addToPackage": "Add to Package",
-      "premiumSupport": {
-        "name": "Premium Support",
-        "description": "24/7 priority support with dedicated account manager",
-        "features": {
-          "feature1": "Dedicated account manager",
-          "feature2": "24/7 phone & chat support",
-          "feature3": "Priority bug fixes",
-          "feature4": "Monthly strategy calls"
-        }
-      },
-      "customIntegrations": {
-        "name": "Custom Integrations",
-        "description": "Connect with any third-party system or legacy software",
-        "features": {
-          "feature1": "API development",
-          "feature2": "Legacy system integration",
-          "feature3": "Data migration assistance",
-          "feature4": "Testing & validation"
-        }
-      },
-      "advancedAnalytics": {
-        "name": "Advanced Analytics",
-        "description": "Deep insights with predictive analytics and custom dashboards",
-        "features": {
-          "feature1": "Predictive analytics",
-          "feature2": "Custom dashboards",
-          "feature3": "Advanced reporting",
-          "feature4": "Data visualization"
-        }
-      }
-    },
-    "roi": {
-      "currentProcesses": [
-        "Manual data entry",
-        "Report generation",
-        "Customer communication",
-        "Quality control"
-      ],
-      "processesToAutomate": [
-        "Data processing",
-        "Report automation",
-        "Customer service",
-        "Quality assurance"
-      ],
-      "errors": {
-        "currentCosts": "Annual operating costs must be greater than 0",
-        "employeeCount": "Employee count must be greater than 0",
-        "avgSalary": "Average salary must be greater than 0",
-        "timeSpent": "Time spent on tasks must be between 0 and 100%",
-        "errorRate": "Error rate must be between 0 and 100%",
-        "timeline": "Implementation timeline must be between 1 and 36 months",
-        "efficiency": "Expected efficiency gain must be between 0 and 100%",
-        "calculationFailed": "Failed to calculate ROI"
-      }
-    },
-    "roiCalculator": {
-      "title": "ROI Calculator",
-      "subtitle": "Calculate your potential return on investment",
-      "showCalculator": "Show calculator",
-      "hideCalculator": "Hide calculator",
-      "inputs": {
-        "currentSituation": "Your Current Situation",
-        "expectedEfficiencyGain": "Expected Efficiency Gain (%)",
-        "automationReadiness": "Automation Readiness (1-10)",
-        "changeManagement": "Change Management (1-10)",
-        "technicalComplexity": "Technical Complexity (1-10)",
-        "regulatoryRequirements": "Has regulatory requirements",
-        "calculateButton": "Calculate ROI",
-        "calculating": "Calculating..."
-      },
-      "results": {
-        "title": "Your ROI Projection",
-        "validationError": "Validation Error",
-        "calculating": "Calculating ROI...",
-        "aiInsights": "AI Insights",
-        "fillForm": "Fill in the form to calculate your ROI",
-        "metrics": {
-          "annualWasteFromInefficiencies": "Annual waste from inefficiencies",
-          "projectedAnnualSavings": "Projected annual savings",
-          "paybackPeriod": "Payback period",
-          "threeYearROI": "3-year ROI",
-          "npv": "Net Present Value (NPV)",
-          "irr": "Internal Rate of Return (IRR)"
-        },
-        "savingsBreakdown": {
-          "title": "Savings Breakdown",
-          "categories": {
-            "time_savings": "Time savings",
-            "error_reduction": "Error reduction"
-          }
-        },
-        "riskFactors": {
-          "title": "Risk Factors",
-          "risk1": "Implementation complexity may affect timeline",
-          "risk2": "Change management challenges could impact adoption",
-          "risk3": "Technical integration requirements may vary"
-        },
-        "recommendations": {
-          "title": "Recommendations",
-          "recommendation1": "Start with pilot program to minimize risk",
-          "recommendation2": "Invest in comprehensive training program",
-          "recommendation3": "Consider phased implementation approach"
-        }
-      }
-    },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "subtitle": "Common questions about our pricing and services",
-      "questions": {
-        "question1": {
-          "question": "What's included in the implementation?",
-          "answer": "All packages include full implementation, data migration, staff training, and 90 days of support. We handle everything from setup to go-live."
-        },
-        "question2": {
-          "question": "How long does implementation take?",
-          "answer": "Typical implementation ranges from 4-12 weeks depending on complexity. We provide a detailed timeline during the consultation phase."
-        },
-        "question3": {
-          "question": "Do you offer custom pricing for large enterprises?",
-          "answer": "Yes, we offer custom pricing and solutions for enterprises with unique requirements. Contact our sales team for a personalized quote."
-        },
-        "question4": {
-          "question": "What kind of support do you provide?",
-          "answer": "All plans include ongoing support, with response times varying by tier. Enterprise customers get 24/7 support with dedicated account management."
-        },
-        "question5": {
-          "question": "Can I upgrade or downgrade my plan?",
-          "answer": "Yes, you can change your plan at any time. We'll help you transition smoothly and adjust billing accordingly."
-        }
-      },
-      "questions": {
-        "implementation": {
-          "question": "What's included in the implementation?",
-          "answer": "All packages include full implementation, data migration, staff training, and 90 days of support. We handle everything from setup to go-live."
-        },
-        "timeline": {
-          "question": "How long does implementation take?",
-          "answer": "Typical implementation ranges from 4-12 weeks depending on complexity. We provide a detailed timeline during the consultation phase."
-        },
-        "customPricing": {
-          "question": "Do you offer custom pricing for large enterprises?",
-          "answer": "Yes, we offer custom pricing and solutions for enterprises with unique requirements. Contact our sales team for a personalized quote."
-        },
-        "support": {
-          "question": "What kind of support do you provide?",
-          "answer": "All plans include ongoing support, with response times varying by tier. Enterprise customers get 24/7 support with dedicated account management."
-        },
-        "planChanges": {
-          "question": "Can I upgrade or downgrade my plan?",
-          "answer": "Yes, you can change your plan at any time. We'll help you transition smoothly and adjust billing accordingly."
-        }
-      },
-      "roiCalculator": {
-        "title": "ROI Calculator",
-        "subtitle": "Calculate your potential return on investment with AI automation",
-        "inputs": {
-          "companySize": {
-            "label": "Company Size",
-            "options": {
-              "startup": "Startup (1-10 employees)",
-              "small": "Small (11-50 employees)",
-              "medium": "Medium (51-200 employees)",
-              "large": "Large (201-1000 employees)",
-              "enterprise": "Enterprise (1000+ employees)"
-            }
-          },
-          "industry": {
-            "label": "Industry",
-            "options": {
-              "technology": "Technology",
-              "healthcare": "Healthcare",
-              "finance": "Finance",
-              "manufacturing": "Manufacturing",
-              "retail": "Retail",
-              "consulting": "Consulting",
-              "other": "Other"
-            }
-          },
-          "annualOperatingCosts": {
-            "label": "Annual Operating Costs",
-            "placeholder": "Enter annual operating costs"
-          },
-          "numberOfEmployees": {
-            "label": "Number of Employees",
-            "placeholder": "Enter number of employees"
-          },
-          "averageAnnualSalary": {
-            "label": "Average Annual Salary",
-            "placeholder": "Enter average annual salary"
-          },
-          "timeSpentOnRepetitiveTasks": {
-            "label": "Time Spent on Repetitive Tasks (%)",
-            "placeholder": "Enter percentage (0-100)"
-          },
-          "currentErrorRate": {
-            "label": "Current Error Rate (%)",
-            "placeholder": "Enter error rate percentage"
-          },
-          "budgetRange": {
-            "label": "Budget Range",
-            "options": {
-              "range1": "$10,000 - $50,000",
-              "range2": "$50,000 - $100,000",
-              "range3": "$100,000 - $250,000",
-              "range4": "$250,000 - $500,000",
-              "range5": "$500,000+"
-            }
-          },
-          "implementationTimeline": {
-            "label": "Implementation Timeline",
-            "placeholder": "Select timeline",
-            "options": {
-              "months1to3": "1-3 months",
-              "months3to6": "3-6 months",
-              "months6to12": "6-12 months",
-              "months12plus": "12+ months"
-            }
-          }
-        },
-        "calculateButton": "Calculate ROI",
-        "calculating": "Calculating...",
-        "results": {
-          "title": "Your ROI Analysis",
-          "subtitle": "Based on your inputs, here's your projected return on investment",
-          "metrics": {
-            "currentWaste": "Current Waste",
-            "perYear": "per year",
-            "annualSavings": "Annual Savings",
-            "paybackPeriod": "Payback Period",
-            "months": "months",
-            "threeYearROI": "3-Year ROI",
-            "return": "return",
-            "npv": "Net Present Value",
-            "overThreeYears": "over 3 years",
-            "irr": "Internal Rate of Return",
-            "annualReturn": "annual return",
-            "annualWasteFromInefficiencies": "Annual waste from inefficiencies",
-            "projectedAnnualSavings": "Projected annual savings with AI",
-            "timeToRecoverInvestment": "Time to recover your investment",
-            "totalReturnOverThreeYears": "Total return over three years"
-          },
-          "savingsBreakdown": {
-            "title": "Savings Breakdown",
-            "categories": {
-              "time_savings": "Time Savings",
-              "error_reduction": "Error Reduction",
-              "efficiency_gains": "Efficiency Gains",
-              "cost_optimization": "Cost Optimization"
-            }
-          },
-          "aiInsights": {
-            "title": "AI Insights",
-            "insight1": "Your industry shows high potential for AI automation",
-            "insight2": "Process optimization could yield significant returns",
-            "insight3": "Consider starting with high-impact, low-risk implementations"
-          },
-          "riskFactors": {
-            "title": "Risk Factors",
-            "risk1": "Implementation complexity may affect timeline",
-            "risk2": "Change management requires proper planning",
-            "risk3": "ROI depends on successful user adoption"
-          },
-          "recommendations": {
-            "title": "Recommendations",
-            "recommendation1": "Start with pilot projects to validate assumptions",
-            "recommendation2": "Invest in team training and change management",
-            "recommendation3": "Consider phased implementation approach"
-          }
-        }
-      },
-      "addOns": {
-        "title": "Optional Add-ons",
-        "subtitle": "Enhance your AI solution with these additional services",
-        "addToPlan": "Add to Plan",
-        "items": {
-          "advanced_analytics": {
-            "name": "Advanced Analytics",
-            "description": "Deep insights and predictive analytics",
-            "price": "$2,000/month",
-            "features": {
-              "feature1": "Predictive modeling",
-              "feature2": "Custom dashboards",
-              "feature3": "Real-time insights"
-            }
-          },
-          "premium_support": {
-            "name": "Premium Support",
-            "description": "24/7 dedicated support team",
-            "price": "$1,500/month",
-            "features": {
-              "feature1": "24/7 availability",
-              "feature2": "Dedicated account manager",
-              "feature3": "Priority response"
-            }
-          },
-          "custom_integrations": {
-            "name": "Custom Integrations",
-            "description": "Seamless integration with your existing systems",
-            "price": "$5,000 one-time",
-            "features": {
-              "feature1": "API development",
-              "feature2": "Data migration",
-              "feature3": "System optimization"
-            }
-          }
-        }
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "subtitle": "Get answers to common questions about our pricing and services",
-        "questions": {
-          "question1": {
-            "question": "What's included in the free trial?",
-            "answer": "Our 14-day free trial includes full access to core features, sample data, and basic support to help you evaluate our platform."
-          },
-          "question2": {
-            "question": "Can I change plans later?",
-            "answer": "Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the next billing cycle."
-          },
-          "question3": {
-            "question": "Do you offer custom solutions?",
-            "answer": "Absolutely! We work with enterprise clients to create tailored AI solutions that meet their specific needs and requirements."
-          },
-          "question4": {
-            "question": "What kind of support do you provide?",
-            "answer": "All plans include email support. Professional and Enterprise plans include priority support with faster response times."
-          },
-          "question5": {
-            "question": "Is there a setup fee?",
-            "answer": "No setup fees for Starter and Professional plans. Enterprise plans may include implementation services with associated costs."
-          }
-        }
-      }
-    },
-    "finalCta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Start your AI journey today with a free consultation and custom ROI analysis.",
-      "scheduleConsultation": "Schedule Free Consultation",
-      "startFreeTrial": "Start Free Trial"
-    }
-  },
-  "audit": {
-    "title": "AI Business Audit",
-    "subtitle": "Discover how AI can transform your business operations",
-    "progress": {
-      "step": "Step {{current}} of {{total}}",
-      "complete": "{{percent}}% Complete"
-    },
-    "navigation": {
-      "previous": "Previous",
-      "next": "Next",
-      "complete": "Complete Audit",
-      "processing": "Processing..."
-    },
-    "steps": {
-      "businessType": {
-        "title": "Business Type",
-        "question": "What type of business do you operate?",
-        "options": {
-          "ecommerce": "E-commerce",
-          "saas": "SaaS/Technology",
-          "manufacturing": "Manufacturing",
-          "healthcare": "Healthcare",
-          "finance": "Finance/Banking",
-          "retail": "Retail",
-          "consulting": "Consulting",
-          "other": "Other"
-        }
-      },
-      "companySize": {
-        "title": "Company Size",
-        "question": "How many employees does your company have?",
-        "options": {
-          "startup": "1-10 employees (Startup)",
-          "small": "11-50 employees (Small)",
-          "medium": "51-200 employees (Medium)",
-          "large": "201-1000 employees (Large)",
-          "enterprise": "1000+ employees (Enterprise)"
-        }
-      },
-      "currentChallenges": {
-        "title": "Current Challenges",
-        "question": "What are your biggest operational challenges? (Select all that apply)",
-        "options": {
-          "manualProcesses": "Too many manual processes",
-          "dataAnalysis": "Difficulty analyzing data",
-          "customerService": "Customer service bottlenecks",
-          "inventoryManagement": "Inventory management issues",
-          "qualityControl": "Quality control problems",
-          "costReduction": "Need to reduce operational costs",
-          "scalingIssues": "Scaling difficulties",
-          "competitiveAdvantage": "Lack of competitive advantage"
-        }
-      },
-      "aiExperience": {
-        "title": "AI Experience",
-        "question": "What's your current experience with AI technologies?",
-        "options": {
-          "none": "No experience with AI",
-          "basic": "Basic understanding, no implementation",
-          "some": "Some AI tools in use",
-          "advanced": "Advanced AI implementation",
-          "expert": "AI-first organization"
-        }
-      },
-      "budget": {
-        "title": "Investment Budget",
-        "question": "What's your estimated budget for AI implementation?",
-        "options": {
-          "under10k": "Under $10,000",
-          "10k-50k": "$10,000 - $50,000",
-          "50k-100k": "$50,000 - $100,000",
-          "100k-500k": "$100,000 - $500,000",
-          "over500k": "Over $500,000"
-        }
-      },
-      "timeline": {
-        "title": "Implementation Timeline",
-        "question": "When would you like to start implementing AI solutions?",
-        "options": {
-          "immediately": "Immediately",
-          "1-3months": "Within 1-3 months",
-          "3-6months": "Within 3-6 months",
-          "6-12months": "Within 6-12 months",
-          "exploring": "Just exploring options"
-        }
-      },
-      "contact": {
-        "title": "Contact Information",
-        "question": "Please provide your contact details to receive your personalized audit report",
-        "fields": {
-          "name": "Full Name",
-          "email": "Email Address *",
-          "company": "Company Name",
-          "phone": "Phone Number (Optional)",
-          "namePlaceholder": "Your Full Name",
-          "emailPlaceholder": "your.email@company.com",
-          "companyPlaceholder": "Your Company Name",
-          "phonePlaceholder": "+1 (555) 123-4567"
-        },
-        "privacyNotice": "Privacy Notice: Your information will only be used to generate and deliver your personalized audit report. We respect your privacy and will not share your data with third parties."
-      }
-    },
-    "validation": {
-      "industryRequired": "Industry is required",
-      "companySizeRequired": "Company size is required",
-      "painPointsRequired": "At least one pain point is required",
-      "currentSystemsRequired": "At least one current system is required",
-      "kpisRequired": "At least one KPI is required",
-      "emailRequired": "Email is required",
-      "validEmailRequired": "Valid email is required",
-      "companyNameRequired": "Company name is required",
-      "currentProcessRequired": "At least one current process/system is required",
-      "automationGoalsRequired": "At least one automation goal/KPI is required",
-      "contactNameRequired": "Contact name is required"
-    },
-    "errors": {
-      "unknownError": "Unknown error occurred",
-      "networkError": "Network error: Please check your internet connection and try again.",
-      "validationError": "Validation error: Please check all required fields are filled correctly.",
-      "serverError": "Server error: Please try again later or contact support.",
-      "submissionFailed": "Audit submission failed",
-      "unexpectedResponse": "Unexpected response format"
-    },
-    "completion": {
-      "title": "Audit Complete!",
-      "message": "Your AI automation audit has been processed. Redirecting to your personalized results..."
-    },
-    "buttons": {
-      "previous": "Previous",
-      "next": "Next",
-      "complete": "Complete Audit",
-      "processing": "Processing..."
-    }
-  },
-  "auditResults": {
-    "title": "AI Audit Results",
-    "processing": "Processing your audit...",
-    "completed": "Audit Completed",
-    "score": "AI Readiness Score",
-    "recommendations": "Recommendations",
-    "downloadReport": "Download Full Report",
-    "categories": {
-      "infrastructure": "Infrastructure",
-      "data": "Data Quality",
-      "processes": "Business Processes",
-      "team": "Team Readiness",
-      "security": "Security"
-    }
-  },
-  "contact": {
-    "title": "Contact Us",
-    "subtitle": "Get in touch with our AI experts",
-    "form": {
-      "name": "Full Name",
-      "email": "Email Address",
-      "company": "Company Name",
-      "phone": "Phone Number",
-      "subject": "Subject",
-      "message": "Message",
-      "submit": "Send Message",
-      "submitting": "Sending..."
-    },
-    "info": {
-      "address": "Our Office",
-      "phone": "Phone",
-      "email": "Email",
-      "hours": "Business Hours"
-    }
-  },
-  "admin": {
-    "title": "Admin Dashboard",
-    "login": {
-      "title": "Admin Login",
-      "username": "Username",
-      "password": "Password",
-      "submit": "Login",
-      "submitting": "Logging in..."
-    },
-    "dashboard": {
-      "audits": "Total Audits",
-      "contacts": "Contact Requests",
-      "users": "Active Users",
-      "revenue": "Monthly Revenue"
-    },
-    "tabs": {
-      "audits": "Audits",
-      "contacts": "Contacts",
-      "analytics": "Analytics",
-      "settings": "Settings"
-    },
-    "actions": {
-      "logout": "Logout",
-      "dashboard": "Dashboard",
-      "submissions": "Submissions",
-      "configuration": "Configuration"
-    }
-  },
-  "about": {
-    "hero": {
-      "title": "Pioneering the Future of",
-      "titleHighlight": "Business AI",
-      "subtitle": "We're a team of AI experts, engineers, and business strategists dedicated to transforming how companies operate through intelligent automation."
-    },
-    "story": {
-      "title": "Our Story",
-      "paragraph1": "XTeam.Pro was born from a simple observation: while AI technology was advancing rapidly, most businesses struggled to implement it effectively. The gap between AI's potential and practical business applications was enormous.",
-      "paragraph2": "Our founders, Sarah Chen and Dr. Michael Rodriguez, had spent years building AI systems at tech giants like Google and Microsoft. They witnessed firsthand how AI could transform operations, but also saw how complex and expensive implementations often were.",
-      "paragraph3": "In 2019, they decided to bridge this gap by creating XTeam.Pro - a company focused on making enterprise-grade AI accessible, practical, and profitable for businesses of all sizes.",
-      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value.",
-      "officeImageAlt": "XTeam.Pro Office"
-    },
-    "journey": {
-      "title": "Our Journey",
-      "subtitle": "Key milestones in our mission to democratize AI for businesses worldwide."
-    },
-    "team": {
-      "title": "Meet Our Team",
-      "subtitle": "World-class experts in AI, engineering, and business strategy working together to deliver exceptional results for our clients.",
-      "expertise": "Expertise"
-    },
-    "contact": {
-      "title": "Get in Touch",
-      "subtitle": "Ready to transform your business with AI? We'd love to hear from you.",
-      "headquarters": {
-        "title": "Headquarters",
-        "address": "123 Innovation Drive\nSan Francisco, CA 94105\nUnited States"
-      },
-      "contactInfo": {
-        "title": "Contact",
-        "details": "+1 (555) 123-4567\nhello@xteam.pro\nAvailable 24/7"
-      },
-      "schedule": {
-        "title": "Schedule",
-        "details": "Book a free consultation\n30-minute strategy session\nNo commitment required"
-      }
-    },
-    "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Join thousands of companies already using our AI solutions to drive growth and efficiency.",
-      "scheduleButton": "Schedule Consultation",
-      "downloadButton": "Download Case Studies"
-    },
-      "teamMembers": {
-        "sarahChen": {
-          "name": "Sarah Chen",
-          "position": "CEO & Co-Founder",
-          "bio": "Former AI Research Director at Google with 15+ years in machine learning and enterprise automation. Led teams that deployed AI solutions for Fortune 500 companies, generating over $2B in cost savings.",
-          "expertise": ["AI Strategy", "Machine Learning", "Enterprise Architecture", "Team Leadership"]
-        },
-        "michaelRodriguez": {
-          "name": "Dr. Michael Rodriguez",
-          "position": "CTO & Co-Founder",
-          "bio": "PhD in Computer Science from MIT, former Principal Engineer at Microsoft Azure AI. Architect of scalable AI systems serving millions of users. Published 50+ research papers in top-tier AI conferences.",
-          "expertise": ["Deep Learning", "Cloud Architecture", "AI Research", "System Design"]
-        },
-        "jenniferWalsh": {
-          "name": "Jennifer Walsh",
-          "position": "VP of Customer Success",
-          "bio": "Former McKinsey consultant with 12+ years helping enterprises optimize operations. Led digital transformation initiatives for 100+ companies across various industries.",
-          "expertise": ["Business Strategy", "Change Management", "Customer Success", "Process Optimization"]
-        },
-        "davidKim": {
-          "name": "David Kim",
-          "position": "Head of AI Engineering",
-          "bio": "Former Senior ML Engineer at Tesla Autopilot team. Expert in computer vision, NLP, and real-time AI systems. Built AI models that process millions of data points daily.",
-          "expertise": ["Computer Vision", "NLP", "MLOps", "Real-time Systems"]
-        },
-        "amandaFoster": {
-          "name": "Amanda Foster",
-          "position": "Head of Product",
-          "bio": "Former Product Manager at Salesforce with 10+ years designing enterprise software. Led product teams that launched AI features used by millions of businesses worldwide.",
-          "expertise": ["Product Strategy", "UX Design", "Enterprise Software", "Agile Development"]
-        },
-        "robertJohnson": {
-          "name": "Robert Johnson",
-          "position": "VP of Sales",
-          "bio": "Former Enterprise Sales Director at IBM with 15+ years in B2B technology sales. Closed $500M+ in enterprise deals and built high-performing sales teams.",
-          "expertise": ["Enterprise Sales", "Business Development", "Client Relations", "Team Building"]
-        }
-      },
-    "milestones": {
-      "founded": {
-        "year": "2019",
-        "title": "Company Founded",
-        "description": "Started with a vision to democratize AI for businesses of all sizes"
-      },
-      "firstClient": {
-        "year": "2020",
-        "title": "First Enterprise Client",
-        "description": "Successfully deployed our first AI automation solution, saving our client $2M annually."
-      },
-      "seriesA": {
-        "year": "2021",
-        "title": "Series A Funding",
-        "description": "Raised $15M Series A to expand our AI platform and grow the team."
-      },
-      "hundredClients": {
-        "year": "2022",
-        "title": "100+ Successful Deployments",
-        "description": "Reached milestone of 100 successful AI implementations across various industries."
-      },
-      "aiAward": {
-        "year": "2023",
-        "title": "AI Innovation Award",
-        "description": "Recognized as \"AI Innovation Company of the Year\" by TechCrunch."
-      },
-      "globalExpansion": {
-        "year": "2024",
-        "title": "Global Expansion",
-        "description": "Expanded operations to Europe and Asia, serving clients across 25+ countries."
-      }
-    },
-    "values": {
-      "title": "Our Values",
-      "subtitle": "The principles that guide everything we do and every decision we make.",
-      "resultsDriven": {
-        "title": "Results-Driven",
-        "description": "We measure success by the tangible impact we create for our clients - cost savings, efficiency gains, and revenue growth."
-      },
-      "humanCenteredAI": {
-        "title": "Human-Centered AI",
-        "description": "Our AI solutions augment human capabilities rather than replace them, creating better experiences for employees and customers."
-      },
-      "excellence": {
-        "title": "Excellence",
-        "description": "We maintain the highest standards in everything we do, from code quality to customer service."
-      },
-      "transparency": {
-        "title": "Transparency",
-        "description": "We believe in open communication, clear pricing, and honest assessments of what AI can and cannot do."
-      }
-    },
-    "stats": {
-      "clientsServed": {
-        "number": "500+",
-        "label": "AI Projects Delivered",
-        "description": "Enterprise clients across 25+ countries"
-      },
-      "costSavings": {
-        "number": "$100M+",
-        "label": "Client Cost Savings",
-        "description": "Measurable ROI for our clients"
-      },
-      "uptime": {
-        "number": "25+",
-        "label": "Countries Served",
-        "description": "Reliable AI systems you can count on"
-      },
-      "support": {
-        "number": "98%",
-        "label": "Client Satisfaction",
-        "description": "Round-the-clock assistance when you need it"
-      }
-    }
-  },
-  "common": {
-    "companyName": "XTeam.Pro",
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "success": "Success!",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "view": "View",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "close": "Close",
-    "confirm": "Confirm",
-    "yes": "Yes",
-    "no": "No",
-    "empty": "No data available",
-    "complete": "complete"
-  },
-  "blog": {
     "title": "AI Insights & Industry Expertise",
     "subtitle": "Stay ahead of the curve with our latest insights on AI trends, implementation strategies, and success stories from leading organizations.",
     "searchPlaceholder": "Search articles, topics, or tags...",
@@ -1527,7 +119,6 @@
     },
     "featuredArticles": "Featured Articles",
     "minRead": "min read",
-
     "readTime": "{{minutes}} min read",
     "views": "{{count}} views",
     "readMore": "Read More",
@@ -1549,110 +140,110 @@
     "featured": "Featured",
     "viewsText": "views",
     "read": "Read",
-     "noArticlesFound": "No articles found",
-     "tryAdjusting": "Try adjusting your search terms or filters",
-     "article": "article",
-     "articles": "articles",
-     "min": "min",
-     "authors": {
-       "alexChen": {
-         "name": "Alex Chen",
-         "role": "AI Strategy Director"
-       },
-       "sarahJohnson": {
-         "name": "Sarah Johnson",
-         "role": "Automation Specialist"
-       },
-       "michaelRodriguez": {
-         "name": "Michael Rodriguez",
-         "role": "Data Science Lead"
-       },
-       "emilyDavis": {
-         "name": "Emily Davis",
-         "role": "Business Intelligence Analyst"
-       },
-       "davidWilson": {
-         "name": "David Wilson",
-         "role": "Process Optimization Expert"
-       },
-       "lisaAnderson": {
-         "name": "Lisa Anderson",
-         "role": "AI Implementation Consultant"
-       },
-       "jenniferWalsh": {
-         "name": "Jennifer Walsh",
-         "role": "VP of Customer Success"
-       },
-       "drMichaelRodriguez": {
-         "name": "Dr. Michael Rodriguez",
-         "role": "CTO & Co-Founder"
-       },
-       "sarahChen": {
-         "name": "Sarah Chen",
-         "role": "CEO & Co-Founder"
-       },
-       "davidKim": {
-         "name": "David Kim",
-         "role": "Head of AI Engineering"
-       },
-       "amandaFoster": {
-         "name": "Amanda Foster",
-         "role": "Head of Product"
-       },
-       "robertJohnson": {
-         "name": "Robert Johnson",
-         "role": "VP of Sales"
-       }
-     },
-     "tags": {
-       "aiStrategy": "AI Strategy",
-       "automation": "Automation",
-       "caseStudy": "Case Study",
-       "roi": "ROI",
-       "manufacturing": "Manufacturing",
-       "businessIntelligence": "Business Intelligence",
-       "customerService": "Customer Service",
-       "dataAnalytics": "Data Analytics",
-       "processOptimization": "Process Optimization",
-       "implementation": "Implementation",
-       "smallBusiness": "Small Business",
-       "growth": "Growth",
-       "aiTrends": "AI Trends",
-       "futureTech": "Future Tech",
-       "innovation": "Innovation",
-       "businessStrategy": "Business Strategy",
-       "businessAnalysis": "Business Analysis",
-       "financialPlanning": "Financial Planning",
-       "aiChatbots": "AI Chatbots",
-       "cxOptimization": "CX Optimization",
-       "decisionMaking": "Decision Making",
-       "aiInsights": "AI Insights",
-       "affordableAi": "Affordable AI",
-       "growthStrategy": "Growth Strategy",
-       "smbSolutions": "SMB Solutions"
-     },
-     "posts": {
-       "aiTransformationManufacturing": {
-         "title": "How AI Transformed Manufacturing Operations at TechCorp: A Complete Case Study",
-         "excerpt": "Discover how TechCorp reduced production costs by 35% and increased efficiency by 50% through strategic AI implementation in their manufacturing processes."
-       },
-       "futureOfAiBusiness": {
-         "title": "The Future of AI in Business: 10 Trends That Will Shape 2024",
-         "excerpt": "Explore the emerging AI trends that will revolutionize business operations, from autonomous decision-making to predictive analytics."
-       },
-       "automationRoiCalculator": {
-         "title": "Building an ROI Calculator for Process Automation: A Step-by-Step Guide",
-         "excerpt": "Learn how to create a comprehensive ROI calculator that helps businesses understand the financial impact of automation initiatives."
-       },
-       "aiCustomerService": {
-         "title": "Revolutionizing Customer Service with AI: Best Practices and Implementation",
-         "excerpt": "Discover how leading companies are using AI to enhance customer experiences while reducing operational costs."
-       },
-       "dataDrivenDecisions": {
-         "title": "Making Data-Driven Decisions: How AI Analytics Transform Business Intelligence",
-         "excerpt": "Learn how AI-powered analytics platforms are helping businesses make smarter, faster decisions based on real-time data insights."
-       },
-       "smallBusinessAi": {
+    "noArticlesFound": "No articles found",
+    "tryAdjusting": "Try adjusting your search terms or filters",
+    "article": "article",
+    "articles": "articles",
+    "min": "min",
+    "authors": {
+      "alexChen": {
+        "name": "Alex Chen",
+        "role": "AI Strategy Director"
+      },
+      "sarahJohnson": {
+        "name": "Sarah Johnson",
+        "role": "Automation Specialist"
+      },
+      "michaelRodriguez": {
+        "name": "Michael Rodriguez",
+        "role": "Data Science Lead"
+      },
+      "emilyDavis": {
+        "name": "Emily Davis",
+        "role": "Business Intelligence Analyst"
+      },
+      "davidWilson": {
+        "name": "David Wilson",
+        "role": "Process Optimization Expert"
+      },
+      "lisaAnderson": {
+        "name": "Lisa Anderson",
+        "role": "AI Implementation Consultant"
+      },
+      "jenniferWalsh": {
+        "name": "Jennifer Walsh",
+        "role": "VP of Customer Success"
+      },
+      "drMichaelRodriguez": {
+        "name": "Dr. Michael Rodriguez",
+        "role": "CTO & Co-Founder"
+      },
+      "sarahChen": {
+        "name": "Sarah Chen",
+        "role": "CEO & Co-Founder"
+      },
+      "davidKim": {
+        "name": "David Kim",
+        "role": "Head of AI Engineering"
+      },
+      "amandaFoster": {
+        "name": "Amanda Foster",
+        "role": "Head of Product"
+      },
+      "robertJohnson": {
+        "name": "Robert Johnson",
+        "role": "VP of Sales"
+      }
+    },
+    "tags": {
+      "aiStrategy": "AI Strategy",
+      "automation": "Automation",
+      "caseStudy": "Case Study",
+      "roi": "ROI",
+      "manufacturing": "Manufacturing",
+      "businessIntelligence": "Business Intelligence",
+      "customerService": "Customer Service",
+      "dataAnalytics": "Data Analytics",
+      "processOptimization": "Process Optimization",
+      "implementation": "Implementation",
+      "smallBusiness": "Small Business",
+      "growth": "Growth",
+      "aiTrends": "AI Trends",
+      "futureTech": "Future Tech",
+      "innovation": "Innovation",
+      "businessStrategy": "Business Strategy",
+      "businessAnalysis": "Business Analysis",
+      "financialPlanning": "Financial Planning",
+      "aiChatbots": "AI Chatbots",
+      "cxOptimization": "CX Optimization",
+      "decisionMaking": "Decision Making",
+      "aiInsights": "AI Insights",
+      "affordableAi": "Affordable AI",
+      "growthStrategy": "Growth Strategy",
+      "smbSolutions": "SMB Solutions"
+    },
+    "posts": {
+      "aiTransformationManufacturing": {
+        "title": "How AI Transformed Manufacturing Operations at TechCorp: A Complete Case Study",
+        "excerpt": "Discover how TechCorp reduced production costs by 35% and increased efficiency by 50% through strategic AI implementation in their manufacturing processes."
+      },
+      "futureOfAiBusiness": {
+        "title": "The Future of AI in Business: 10 Trends That Will Shape 2024",
+        "excerpt": "Explore the emerging AI trends that will revolutionize business operations, from autonomous decision-making to predictive analytics."
+      },
+      "automationRoiCalculator": {
+        "title": "Building an ROI Calculator for Process Automation: A Step-by-Step Guide",
+        "excerpt": "Learn how to create a comprehensive ROI calculator that helps businesses understand the financial impact of automation initiatives."
+      },
+      "aiCustomerService": {
+        "title": "Revolutionizing Customer Service with AI: Best Practices and Implementation",
+        "excerpt": "Discover how leading companies are using AI to enhance customer experiences while reducing operational costs."
+      },
+      "dataDrivenDecisions": {
+        "title": "Making Data-Driven Decisions: How AI Analytics Transform Business Intelligence",
+        "excerpt": "Learn how AI-powered analytics platforms are helping businesses make smarter, faster decisions based on real-time data insights."
+      },
+      "smallBusinessAi": {
         "title": "AI for Small Businesses: Affordable Solutions That Drive Growth",
         "excerpt": "Explore cost-effective AI solutions specifically designed for small and medium businesses looking to compete with larger enterprises."
       }
@@ -1951,191 +542,578 @@
       "timeline": "Timeline",
       "investment": "Investment",
       "roi": "ROI"
+    },
+    "post": {
+      "tags": "Tags",
+      "actions": "Actions",
+      "like": "Like",
+      "liked": "Liked",
+      "save": "Save",
+      "saved": "Saved",
+      "share": "Share",
+      "relatedArticles": "Related Articles",
+      "loading": "Loading article...",
+      "views": "views",
+      "likes": "likes",
+      "comments": "comments",
+      "minRead": "min read",
+      "min": "min"
+    },
+    "notFound": {
+      "title": "Article Not Found",
+      "message": "The article you're looking for doesn't exist.",
+      "backButton": "Back to Blog"
     }
   },
-  "contact": {
-    "title": "Contact Us",
-    "subtitle": "Get in touch with our team",
-    "success": {
-      "title": "Thank You!",
-      "message": "We've received your message and will get back to you within 24 hours. Our team is excited to discuss how we can help transform your business with AI.",
-      "referenceId": "Reference ID",
-      "status": "Status",
-      "sendAnother": "Send Another Message"
+  "footer": {
+    "description": "Transforming businesses through AI-driven automation and intelligent process optimization.",
+    "sections": {
+      "solutions": "Solutions",
+      "resources": "Resources",
+      "company": "Company"
     },
-    "form": {
-      "title": "Get Started Today",
-      "description": "Tell us about your project and we'll provide a customized solution that fits your needs and budget.",
-      "fullName": "Full Name",
-      "emailAddress": "Email Address",
-      "companyName": "Company Name",
-      "phoneNumber": "Phone Number",
-      "subject": "Subject",
-      "message": "Project Details",
-      "budgetRange": "Budget Range",
-      "selectBudgetRange": "Select budget range",
-      "timeline": "Timeline",
-      "selectTimeline": "Select timeline",
-      "marketingConsent": "I agree to receive marketing communications from XTeam.Pro. You can unsubscribe at any time.",
-      "sendingMessage": "Sending Message...",
-      "sendMessage": "Send Message",
-      "positionPlaceholder": "CEO, CTO, Manager, etc.",
-      "inquiryType": "Inquiry Type",
-      "servicesInterestedIn": "Services Interested In",
-      "success": "Message sent successfully!",
-      "error": "Error"
+    "links": {
+      "processAutomation": "Process Automation",
+      "dataIntegration": "Data Integration",
+      "aiImplementation": "AI Implementation",
+      "customDevelopment": "Custom Development",
+      "caseStudies": "Case Studies",
+      "blog": "Blog",
+      "roiCalculator": "ROI Calculator",
+      "freeAudit": "Free Audit",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "contact": "Contact",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy"
     },
-    "consultation": {
-      "title": "Schedule a Free Consultation",
-      "description": "Book a 30-minute strategy session with our AI experts to discuss your specific needs and explore how we can help transform your business.",
-      "benefits": {
-        "consultation": "Free 30-minute consultation",
-        "strategy": "Custom AI strategy roadmap",
-        "projections": "ROI projections & timeline",
-        "noPressure": "No sales pressure"
+    "contact": {
+      "email": "hello@xteam.pro",
+      "phone": "+1 (555) 123-4567",
+      "address": "San Francisco, CA"
+    },
+    "copyright": "© {{year}} XTeam.Pro. All rights reserved."
+  },
+  "auditResults": {
+    "title": "Your AI Automation Audit Results",
+    "processing": {
+      "complete": "complete",
+      "title": "Processing Your AI Audit",
+      "subtitle": "Our AI is analyzing your responses to generate personalized recommendations",
+      "timeEstimate": "This usually takes 2-3 minutes"
+    },
+    "completed": "Audit Completed",
+    "score": "AI Readiness Score",
+    "recommendations": "Recommendations",
+    "downloadReport": "Download Full Report",
+    "categories": {
+      "infrastructure": "Infrastructure",
+      "data": "Data Quality",
+      "processes": "Business Processes",
+      "team": "Team Readiness",
+      "security": "Security"
+    },
+    "subtitle": "Comprehensive analysis of your business's AI automation potential",
+    "loading": "Analyzing your responses...",
+    "error": {
+      "title": "Unable to Load Results",
+      "subtitle": "There was an issue loading your audit results. Please try again.",
+      "button": "Retry"
+    },
+    "maturityScore": {
+      "title": "AI Maturity Score"
+    },
+    "roiForecast": {
+      "title": "ROI Forecast"
+    },
+    "maturityAssessment": {
+      "title": "Maturity Assessment"
+    },
+    "sections": {
+      "strengths": "Key Strengths",
+      "weaknesses": "Areas for Improvement",
+      "opportunities": "Opportunities",
+      "recommendations": "Strategic Recommendations",
+      "priorities": "Implementation Priorities"
+    },
+    "metrics": {
+      "annualSavings": "Annual Savings",
+      "implementationCost": "Implementation Cost",
+      "paybackPeriod": "Payback Period",
+      "automationPotential": "Automation Potential",
+      "investment": "Investment",
+      "savings": "Savings",
+      "netBenefit": "Net Benefit",
+      "currentScore": "Current Score",
+      "currentState": "Current State"
+    },
+    "ratings": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "fair": "Fair",
+      "needsImprovement": "Needs Improvement"
+    },
+    "cta": {
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Get personalized guidance from our AI experts",
+      "downloadReport": "Download Full Report",
+      "bookConsultation": "Book Free Consultation"
+    },
+    "messages": {
+      "priorityAreasAvailable": "Priority areas will be available after analysis completion"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Pioneering the Future of",
+      "titleHighlight": "Business AI",
+      "subtitle": "We're a team of AI experts, engineers, and business strategists dedicated to transforming how companies operate through intelligent automation."
+    },
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "XTeam.Pro was born from a simple observation: while AI technology was advancing rapidly, most businesses struggled to implement it effectively. The gap between AI's potential and practical business applications was enormous.",
+      "paragraph2": "Our founders, Sarah Chen and Dr. Michael Rodriguez, had spent years building AI systems at tech giants like Google and Microsoft. They witnessed firsthand how AI could transform operations, but also saw how complex and expensive implementations often were.",
+      "paragraph3": "In 2019, they decided to bridge this gap by creating XTeam.Pro - a company focused on making enterprise-grade AI accessible, practical, and profitable for businesses of all sizes.",
+      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value.",
+      "officeImageAlt": "XTeam.Pro Office"
+    },
+    "journey": {
+      "title": "Our Journey",
+      "subtitle": "Key milestones in our mission to democratize AI for businesses worldwide."
+    },
+    "team": {
+      "title": "Meet Our Team",
+      "subtitle": "World-class experts in AI, engineering, and business strategy working together to deliver exceptional results for our clients.",
+      "expertise": "Expertise"
+    },
+    "contact": {
+      "title": "Get in Touch",
+      "subtitle": "Ready to transform your business with AI? We'd love to hear from you.",
+      "headquarters": {
+        "title": "Headquarters",
+        "address": "123 Innovation Drive\nSan Francisco, CA 94105\nUnited States"
       },
-      "features": {
-        "freeConsultation": "Free 30-minute consultation",
-        "customRoadmap": "Custom AI strategy roadmap",
-        "roiProjections": "ROI projections & timeline",
-        "noSalesPressure": "No sales pressure"
+      "contactInfo": {
+        "title": "Contact",
+        "details": "+1 (555) 123-4567\nhello@xteam.pro\nAvailable 24/7"
       },
-      "cta": "Book Free Consultation"
+      "schedule": {
+        "title": "Schedule",
+        "details": "Book a free consultation\n30-minute strategy session\nNo commitment required"
+      }
     },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "questions": {
-        "projectStart": {
-          "question": "How quickly can you start a project?",
-          "answer": "We can typically begin discovery within 1-2 weeks of signing the agreement."
+    "cta": {
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Join thousands of companies already using our AI solutions to drive growth and efficiency.",
+      "scheduleButton": "Schedule Consultation",
+      "downloadButton": "Download Case Studies"
+    },
+    "teamMembers": {
+      "sarahChen": {
+        "name": "Sarah Chen",
+        "position": "CEO & Co-Founder",
+        "bio": "Former AI Research Director at Google with 15+ years in machine learning and enterprise automation. Led teams that deployed AI solutions for Fortune 500 companies, generating over $2B in cost savings.",
+        "expertise": [
+          "AI Strategy",
+          "Machine Learning",
+          "Enterprise Architecture",
+          "Team Leadership"
+        ]
+      },
+      "michaelRodriguez": {
+        "name": "Dr. Michael Rodriguez",
+        "position": "CTO & Co-Founder",
+        "bio": "PhD in Computer Science from MIT, former Principal Engineer at Microsoft Azure AI. Architect of scalable AI systems serving millions of users. Published 50+ research papers in top-tier AI conferences.",
+        "expertise": [
+          "Deep Learning",
+          "Cloud Architecture",
+          "AI Research",
+          "System Design"
+        ]
+      },
+      "jenniferWalsh": {
+        "name": "Jennifer Walsh",
+        "position": "VP of Customer Success",
+        "bio": "Former McKinsey consultant with 12+ years helping enterprises optimize operations. Led digital transformation initiatives for 100+ companies across various industries.",
+        "expertise": [
+          "Business Strategy",
+          "Change Management",
+          "Customer Success",
+          "Process Optimization"
+        ]
+      },
+      "davidKim": {
+        "name": "David Kim",
+        "position": "Head of AI Engineering",
+        "bio": "Former Senior ML Engineer at Tesla Autopilot team. Expert in computer vision, NLP, and real-time AI systems. Built AI models that process millions of data points daily.",
+        "expertise": [
+          "Computer Vision",
+          "NLP",
+          "MLOps",
+          "Real-time Systems"
+        ]
+      },
+      "amandaFoster": {
+        "name": "Amanda Foster",
+        "position": "Head of Product",
+        "bio": "Former Product Manager at Salesforce with 10+ years designing enterprise software. Led product teams that launched AI features used by millions of businesses worldwide.",
+        "expertise": [
+          "Product Strategy",
+          "UX Design",
+          "Enterprise Software",
+          "Agile Development"
+        ]
+      },
+      "robertJohnson": {
+        "name": "Robert Johnson",
+        "position": "VP of Sales",
+        "bio": "Former Enterprise Sales Director at IBM with 15+ years in B2B technology sales. Closed $500M+ in enterprise deals and built high-performing sales teams.",
+        "expertise": [
+          "Enterprise Sales",
+          "Business Development",
+          "Client Relations",
+          "Team Building"
+        ]
+      }
+    },
+    "milestones": {
+      "founded": {
+        "year": "2019",
+        "title": "Company Founded",
+        "description": "Started with a vision to democratize AI for businesses of all sizes"
+      },
+      "firstClient": {
+        "year": "2020",
+        "title": "First Enterprise Client",
+        "description": "Successfully deployed our first AI automation solution, saving our client $2M annually."
+      },
+      "seriesA": {
+        "year": "2021",
+        "title": "Series A Funding",
+        "description": "Raised $15M Series A to expand our AI platform and grow the team."
+      },
+      "hundredClients": {
+        "year": "2022",
+        "title": "100+ Successful Deployments",
+        "description": "Reached milestone of 100 successful AI implementations across various industries."
+      },
+      "aiAward": {
+        "year": "2023",
+        "title": "AI Innovation Award",
+        "description": "Recognized as \"AI Innovation Company of the Year\" by TechCrunch."
+      },
+      "globalExpansion": {
+        "year": "2024",
+        "title": "Global Expansion",
+        "description": "Expanded operations to Europe and Asia, serving clients across 25+ countries."
+      }
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "The principles that guide everything we do and every decision we make.",
+      "resultsDriven": {
+        "title": "Results-Driven",
+        "description": "We measure success by the tangible impact we create for our clients - cost savings, efficiency gains, and revenue growth."
+      },
+      "humanCenteredAI": {
+        "title": "Human-Centered AI",
+        "description": "Our AI solutions augment human capabilities rather than replace them, creating better experiences for employees and customers."
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "We maintain the highest standards in everything we do, from code quality to customer service."
+      },
+      "transparency": {
+        "title": "Transparency",
+        "description": "We believe in open communication, clear pricing, and honest assessments of what AI can and cannot do."
+      }
+    },
+    "stats": {
+      "clientsServed": {
+        "number": "500+",
+        "label": "AI Projects Delivered",
+        "description": "Enterprise clients across 25+ countries"
+      },
+      "costSavings": {
+        "number": "$100M+",
+        "label": "Client Cost Savings",
+        "description": "Measurable ROI for our clients"
+      },
+      "uptime": {
+        "number": "25+",
+        "label": "Countries Served",
+        "description": "Reliable AI systems you can count on"
+      },
+      "support": {
+        "number": "98%",
+        "label": "Client Satisfaction",
+        "description": "Round-the-clock assistance when you need it"
+      }
+    }
+  },
+  "solutions": {
+    "hero": {
+      "title": "AI Solutions That Transform",
+      "titleHighlight": "Your Business",
+      "subtitle": "Discover how our AI-powered automation solutions can revolutionize your operations, reduce costs, and accelerate growth across every aspect of your business.",
+      "ctaButton": "Start Your AI Journey"
+    },
+    "coreSolutions": {
+      "title": "Core AI Solutions",
+      "subtitle": "Comprehensive automation solutions designed to address your most critical business challenges.",
+      "benefits": "Key Benefits",
+      "useCases": "Use Cases",
+      "roiImpact": "ROI Impact",
+      "implementation": "Implementation"
+    },
+    "industryStories": {
+      "title": "Industry Success Stories",
+      "subtitle": "Real results from companies that transformed their business with our AI solutions.",
+      "challenge": "Challenge",
+      "solution": "Solution",
+      "results": "Results"
+    },
+    "industryScenarios": {
+      "healthcare": {
+        "industry": "Healthcare",
+        "challenge": "Healthcare organizations spend 60% of their time on administrative tasks instead of patient care",
+        "solution": "Automate patient intake, insurance processing, and medical documentation with AI",
+        "results": [
+          "40% reduction in administrative time",
+          "25% improvement in patient satisfaction",
+          "Faster claims processing",
+          "More time for patient care"
+        ]
+      },
+      "finance": {
+        "industry": "Finance",
+        "challenge": "Banks process thousands of credit applications manually, leading to delays and errors",
+        "solution": "Automated risk scoring and application processing using machine learning",
+        "results": [
+          "70% faster application processing",
+          "35% reduction in credit risk",
+          "Lower operational costs",
+          "Better customer experience"
+        ]
+      },
+      "retail": {
+        "industry": "Retail",
+        "challenge": "E-commerce stores lose 70% of potential sales due to poor customer service",
+        "solution": "AI chatbots for instant support and personalized product recommendations",
+        "results": [
+          "45% increase in conversion rate",
+          "60% reduction in response time",
+          "24/7 customer support",
+          "Higher customer retention"
+        ]
+      },
+      "manufacturing": {
+        "industry": "Manufacturing",
+        "challenge": "High defect rates and inefficient resource utilization on production lines",
+        "solution": "AI quality control and process optimization with computer vision",
+        "results": [
+          "85% reduction in defects",
+          "40% increase in productivity",
+          "$2.3M annual savings",
+          "More predictable operations"
+        ]
+      }
+    },
+    "aiWorkforce": {
+      "title": "Meet Your AI Team",
+      "subtitle": "Specialized AI agents designed to handle specific business functions with human-like intelligence and 24/7 availability.",
+      "capabilities": "Capabilities",
+      "industries": "Industries",
+      "moreCapabilities": "more capabilities"
+    },
+    "aiAgents": {
+      "salesassistant": {
+        "name": "Sales Assistant",
+        "description": "An AI sales agent that qualifies leads, schedules meetings, and nurtures prospects 24/7.",
+        "capabilities": {
+          "0": "Lead qualification and scoring",
+          "1": "Automated outreach sequences",
+          "2": "Meeting scheduling and coordination",
+          "3": "CRM integration and data sync",
+          "4": "Personalized campaigns"
         },
-        "smallBusiness": {
-          "question": "Do you work with small businesses?",
-          "answer": "Yes! We have solutions for businesses of all sizes, from startups to Fortune 500 companies."
+        "industries": {
+          "0": "SaaS",
+          "1": "Consulting",
+          "2": "E-commerce",
+          "3": "Technology"
+        }
+      },
+      "customerservicebot": {
+        "name": "Customer Service Bot",
+        "description": "An intelligent customer support agent that handles inquiries, resolves issues, and escalates complex cases.",
+        "capabilities": {
+          "0": "Multilingual support",
+          "1": "Instant answers to common questions",
+          "2": "Order tracking and updates",
+          "3": "Complaint resolution workflows",
+          "4": "Knowledge base integration"
         },
-        "consultationIncluded": {
-          "question": "What's included in the consultation?",
-          "answer": "A comprehensive assessment of your current processes, AI opportunities, and a custom roadmap."
+        "industries": {
+          "0": "Retail",
+          "1": "Finance",
+          "2": "Healthcare",
+          "3": "E-commerce"
+        }
+      },
+      "dataanalyst": {
+        "name": "Data Analyst",
+        "description": "Advanced AI that analyzes business data, generates insights, and creates automated reports.",
+        "capabilities": {
+          "0": "Real-time data processing",
+          "1": "Predictive trend analysis",
+          "2": "Automated report generation",
+          "3": "Anomaly detection",
+          "4": "Interactive dashboards"
         },
-        "ongoingSupport": {
-          "question": "Do you provide ongoing support?",
-          "answer": "Yes, we offer 24/7 support, training, and continuous optimization services."
+        "industries": {
+          "0": "Manufacturing",
+          "1": "Retail",
+          "2": "Logistics",
+          "3": "Finance"
+        }
+      },
+      "contentcreator": {
+        "name": "Content Creator",
+        "description": "Creative AI that generates marketing content, social posts, and personalized communications at scale.",
+        "capabilities": {
+          "0": "Blog and article writing",
+          "1": "Social media content creation",
+          "2": "Email campaign personalization",
+          "3": "SEO optimization",
+          "4": "Multi-format adaptation"
+        },
+        "industries": {
+          "0": "Marketing",
+          "1": "SaaS",
+          "2": "E-commerce",
+          "3": "Media"
+        }
+      },
+      "processautomator": {
+        "name": "Process Automator",
+        "description": "Workflow automation specialist that optimizes business processes and eliminates manual tasks.",
+        "capabilities": {
+          "0": "Document processing automation",
+          "1": "Approval workflow management",
+          "2": "Data entry and validation",
+          "3": "System integration",
+          "4": "Exception handling"
+        },
+        "industries": {
+          "0": "Operations",
+          "1": "Finance",
+          "2": "HR",
+          "3": "Logistics"
+        }
+      },
+      "qualitycontroller": {
+        "name": "Quality Controller",
+        "description": "AI quality assurance agent that monitors, tests, and ensures compliance with quality standards.",
+        "capabilities": {
+          "0": "Automated testing protocols",
+          "1": "Real-time quality monitoring",
+          "2": "Defect pattern recognition",
+          "3": "Compliance verification",
+          "4": "Quality reporting and analytics"
+        },
+        "industries": {
+          "0": "Manufacturing",
+          "1": "Healthcare",
+          "2": "Software",
+          "3": "Retail"
         }
       }
     },
-    "directContact": {
-      "title": "Prefer to Talk Directly?",
-      "description": "Our team is available 24/7 to answer your questions and discuss your AI transformation needs.",
-      "liveChat": "Live chat available on our website"
+    "cta": {
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Take our free AI audit to discover which solutions will have the greatest impact on your operations.",
+      "auditButton": "Take Free AI Audit",
+      "consultationButton": "Book a Consultation"
+    },
+    "title": "AI Solutions",
+    "subtitle": "Comprehensive AI solutions tailored to your business needs",
+    "items": {
+      "customer-service": {
+        "title": "AI Customer Service Automation",
+        "description": "Transform your customer support with intelligent chatbots and automated response systems that provide 24/7 assistance.",
+        "benefits": [
+          "24/7 customer support availability",
+          "Reduce response time by 90%",
+          "Handle 80% of inquiries automatically",
+          "Improve customer satisfaction scores"
+        ],
+        "useCases": [
+          "Live chat automation",
+          "Email response automation",
+          "FAQ and knowledge base integration",
+          "Ticket routing and prioritization"
+        ],
+        "roi": "300% ROI within 6 months",
+        "implementation": "2-4 weeks"
+      },
+      "data-analysis": {
+        "title": "Intelligent Data Analytics",
+        "description": "Automate data processing, analysis, and reporting to uncover insights and drive data-driven decision making.",
+        "benefits": [
+          "Real-time data processing",
+          "Automated report generation",
+          "Predictive analytics capabilities",
+          "Reduce manual analysis time by 85%"
+        ],
+        "useCases": [
+          "Sales performance analysis",
+          "Customer behavior insights",
+          "Financial reporting automation",
+          "Market trend analysis"
+        ],
+        "roi": "250% ROI within 4 months",
+        "implementation": "3-6 weeks"
+      },
+      "workflow-automation": {
+        "title": "Business Process Automation",
+        "description": "Streamline repetitive tasks and workflows with intelligent automation that adapts to your business needs.",
+        "benefits": [
+          "Eliminate manual repetitive tasks",
+          "Reduce processing time by 70%",
+          "Minimize human errors",
+          "Improve operational efficiency"
+        ],
+        "useCases": [
+          "Invoice processing",
+          "Employee onboarding",
+          "Inventory management",
+          "Quality assurance workflows"
+        ],
+        "roi": "400% ROI within 3 months",
+        "implementation": "1-3 weeks"
+      },
+      "content-generation": {
+        "title": "AI Content & Communication",
+        "description": "Generate high-quality content, emails, and communications automatically while maintaining your brand voice.",
+        "benefits": [
+          "Generate content 10x faster",
+          "Maintain consistent brand voice",
+          "Personalize communications at scale",
+          "Reduce content creation costs by 60%"
+        ],
+        "useCases": [
+          "Marketing content creation",
+          "Email campaign automation",
+          "Social media management",
+          "Documentation generation"
+        ],
+        "roi": "200% ROI within 2 months",
+        "implementation": "1-2 weeks"
+      }
     }
   },
-  "admin": {
-     "title": "Admin Dashboard",
-     "login": {
-       "title": "Admin Login",
-       "subtitle": "Sign in to access the admin dashboard",
-       "username": "Username",
-       "email": "Email",
-       "password": "Password",
-       "submit": "Sign In",
-       "submitting": "Signing in...",
-       "error": "Invalid credentials"
-     },
-     "loading": "Loading admin dashboard...",
-     "dashboard": {
-       "title": "Admin Dashboard",
-       "subtitle": "Manage audit submissions and analytics",
-       "welcome": "Welcome to Admin Dashboard",
-       "exportData": "Export Data",
-       "settings": "Settings",
-       "stats": {
-         "users": "Total Users",
-         "audits": "Audits Completed",
-         "revenue": "Monthly Revenue",
-         "growth": "Growth Rate",
-         "avgMaturityScore": "Avg. Maturity Score",
-         "industryAverage": "Industry average: 58",
-         "totalEstROI": "Total Est. ROI",
-         "conversionRate": "Conversion rate: {{rate}}%"
-       },
-       "charts": {
-         "monthlySubmissions": "Monthly Submissions & Conversions",
-         "industryBreakdown": "Industry Breakdown",
-         "companySizeDistribution": "Company Size Distribution",
-         "maturityScoreDistribution": "Maturity Score Distribution"
-       },
-       "search": {
-         "placeholder": "Search submissions...",
-         "contactsPlaceholder": "Search contacts..."
-       },
-       "filters": {
-         "allStatus": "All Status",
-         "pending": "Pending",
-         "processing": "Processing",
-         "completed": "Completed"
-       },
-       "table": {
-         "company": "Company",
-         "contact": "Contact",
-         "industry": "Industry",
-         "status": "Status",
-         "maturityScore": "Maturity Score",
-         "estROI": "Est. ROI",
-         "submitted": "Submitted",
-         "actions": "Actions",
-         "inquiryType": "Inquiry Type",
-         "date": "Date"
-       },
-       "actions": {
-         "manageUsers": "Manage Users",
-         "viewAudits": "View Audits",
-         "settings": "Settings",
-         "logout": "Logout",
-         "viewResults": "View Results",
-         "editSubmission": "Edit Submission",
-         "deleteSubmission": "Delete Submission",
-         "viewDetails": "View Details",
-         "editContact": "Edit Contact"
-       },
-       "contactInquiries": "Contact Inquiries",
-       "configuration": {
-         "title": "Audit Configuration",
-         "aiModel": "AI Model",
-         "analysisDepth": "Analysis Depth",
-         "pdfGeneration": "PDF Generation",
-         "autoSendReports": "Auto-send Reports",
-         "emailNotifications": "Email Notifications",
-         "customAnalysisPrompts": "Custom Analysis Prompts",
-         "enablePdfGeneration": "Enable PDF report generation",
-         "autoSendToClients": "Automatically send reports to clients",
-         "enableEmailNotifications": "Enable email notifications for new submissions",
-         "models": {
-           "gpt4": "GPT-4",
-           "gpt35": "GPT-3.5 Turbo",
-           "claude": "Claude",
-           "gemini": "Gemini"
-         },
-         "depths": {
-           "basic": "Basic",
-           "detailed": "Detailed",
-           "standard": "Standard",
-           "comprehensive": "Comprehensive"
-         },
-         "pdfGeneration": "Enable PDF report generation",
-         "autoSend": "Automatically send reports to clients",
-         "emailNotifications": "Email notifications",
-         "customPrompts": "Custom analysis prompts",
-         "customPromptsPlaceholder": "Enter custom prompts for AI analysis...",
-         "newSubmissionNotifications": "New submission notifications",
-         "weeklySummaryReports": "Weekly summary reports",
-         "auditCompletionAlerts": "Audit completion alerts",
-         "reset": "Reset",
-         "save": "Save Configuration",
-         "pdfGeneration": "PDF Generation",
-         "autoSendReports": "Auto-send Reports"
-       }
-     }
-   },
   "pricing": {
     "title": "Pricing Plans",
     "subtitle": "Choose the perfect plan for your business needs",
@@ -2430,28 +1408,174 @@
       }
     }
   },
+  "audit": {
+    "title": "AI Business Audit",
+    "subtitle": "Discover how AI can transform your business operations",
+    "progress": {
+      "step": "Step {{current}} of {{total}}",
+      "complete": "{{percent}}% Complete"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "complete": "Complete Audit",
+      "processing": "Processing..."
+    },
+    "steps": {
+      "businessType": {
+        "title": "Business Type",
+        "question": "What type of business do you operate?",
+        "options": {
+          "ecommerce": "E-commerce",
+          "saas": "SaaS/Technology",
+          "manufacturing": "Manufacturing",
+          "healthcare": "Healthcare",
+          "finance": "Finance/Banking",
+          "retail": "Retail",
+          "consulting": "Consulting",
+          "other": "Other"
+        }
+      },
+      "companySize": {
+        "title": "Company Size",
+        "question": "How many employees does your company have?",
+        "options": {
+          "startup": "1-10 employees (Startup)",
+          "small": "11-50 employees (Small)",
+          "medium": "51-200 employees (Medium)",
+          "large": "201-1000 employees (Large)",
+          "enterprise": "1000+ employees (Enterprise)"
+        }
+      },
+      "currentChallenges": {
+        "title": "Current Challenges",
+        "question": "What are your biggest operational challenges? (Select all that apply)",
+        "options": {
+          "manualProcesses": "Too many manual processes",
+          "dataAnalysis": "Difficulty analyzing data",
+          "customerService": "Customer service bottlenecks",
+          "inventoryManagement": "Inventory management issues",
+          "qualityControl": "Quality control problems",
+          "costReduction": "Need to reduce operational costs",
+          "scalingIssues": "Scaling difficulties",
+          "competitiveAdvantage": "Lack of competitive advantage"
+        }
+      },
+      "aiExperience": {
+        "title": "AI Experience",
+        "question": "What's your current experience with AI technologies?",
+        "options": {
+          "none": "No experience with AI",
+          "basic": "Basic understanding, no implementation",
+          "some": "Some AI tools in use",
+          "advanced": "Advanced AI implementation",
+          "expert": "AI-first organization"
+        }
+      },
+      "budget": {
+        "title": "Investment Budget",
+        "question": "What's your estimated budget for AI implementation?",
+        "options": {
+          "under10k": "Under $10,000",
+          "10k-50k": "$10,000 - $50,000",
+          "50k-100k": "$50,000 - $100,000",
+          "100k-500k": "$100,000 - $500,000",
+          "over500k": "Over $500,000"
+        }
+      },
+      "timeline": {
+        "title": "Implementation Timeline",
+        "question": "When would you like to start implementing AI solutions?",
+        "options": {
+          "immediately": "Immediately",
+          "1-3months": "Within 1-3 months",
+          "3-6months": "Within 3-6 months",
+          "6-12months": "Within 6-12 months",
+          "exploring": "Just exploring options"
+        }
+      },
+      "contact": {
+        "title": "Contact Information",
+        "question": "Please provide your contact details to receive your personalized audit report",
+        "fields": {
+          "name": "Full Name",
+          "email": "Email Address *",
+          "company": "Company Name",
+          "phone": "Phone Number (Optional)",
+          "namePlaceholder": "Your Full Name",
+          "emailPlaceholder": "your.email@company.com",
+          "companyPlaceholder": "Your Company Name",
+          "phonePlaceholder": "+1 (555) 123-4567"
+        },
+        "privacyNotice": "Privacy Notice: Your information will only be used to generate and deliver your personalized audit report. We respect your privacy and will not share your data with third parties."
+      }
+    },
+    "validation": {
+      "industryRequired": "Industry is required",
+      "companySizeRequired": "Company size is required",
+      "painPointsRequired": "At least one pain point is required",
+      "currentSystemsRequired": "At least one current system is required",
+      "kpisRequired": "At least one KPI is required",
+      "emailRequired": "Email is required",
+      "validEmailRequired": "Valid email is required",
+      "companyNameRequired": "Company name is required",
+      "currentProcessRequired": "At least one current process/system is required",
+      "automationGoalsRequired": "At least one automation goal/KPI is required",
+      "contactNameRequired": "Contact name is required"
+    },
+    "errors": {
+      "unknownError": "Unknown error occurred",
+      "networkError": "Network error: Please check your internet connection and try again.",
+      "validationError": "Validation error: Please check all required fields are filled correctly.",
+      "serverError": "Server error: Please try again later or contact support.",
+      "submissionFailed": "Audit submission failed",
+      "unexpectedResponse": "Unexpected response format"
+    },
+    "completion": {
+      "title": "Audit Complete!",
+      "message": "Your AI automation audit has been processed. Redirecting to your personalized results..."
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "complete": "Complete Audit",
+      "processing": "Processing..."
+    }
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our AI experts",
     "info": {
       "email": {
         "title": "Email Us",
-        "details": ["hello@xteam.pro", "support@xteam.pro"],
+        "details": [
+          "hello@xteam.pro",
+          "support@xteam.pro"
+        ],
         "action": "Send Email"
       },
       "phone": {
         "title": "Call Us",
-        "details": ["+1 (555) 123-4567", "Available 24/7"],
+        "details": [
+          "+1 (555) 123-4567",
+          "Available 24/7"
+        ],
         "action": "Call Now"
       },
       "address": {
         "title": "Visit Us",
-        "details": ["123 Innovation Drive", "San Francisco, CA 94105"],
+        "details": [
+          "123 Innovation Drive",
+          "San Francisco, CA 94105"
+        ],
         "action": "Get Directions"
       },
       "hours": {
         "title": "Business Hours",
-        "details": ["Mon-Fri: 9:00 AM - 6:00 PM PST", "Emergency support: 24/7"]
+        "details": [
+          "Mon-Fri: 9:00 AM - 6:00 PM PST",
+          "Emergency support: 24/7"
+        ]
       }
     },
     "form": {
@@ -2521,269 +1645,654 @@
         "servicesRequired": "Please select at least one service",
         "budgetRequired": "Please select a budget range",
         "timelineRequired": "Please select a timeline"
+      },
+      "title": "Send us a message",
+      "description": "Tell us about your goals and we will get back to you.",
+      "error": "Unable to submit form",
+      "submitErrors": {
+        "validation": "Please correct the errors below.",
+        "server": "Server error. Please try again later.",
+        "network": "Network error. Please check your connection and try again.",
+        "generic": "Failed to send message. Please try again.",
+        "unexpected": "An unexpected error occurred. Please try again."
+      }
+    },
+    "success": {
+      "title": "Message Sent Successfully",
+      "message": "Thanks for reaching out. Our team will respond shortly.",
+      "referenceId": "Reference ID",
+      "status": "Status",
+      "sendAnother": "Send Another Message"
+    },
+    "consultation": {
+      "title": "Schedule a Free Consultation",
+      "description": "Book a call with our team and get a tailored automation roadmap.",
+      "cta": "Start with a Free Audit",
+      "features": {
+        "freeConsultation": "Free consultation call",
+        "customRoadmap": "Custom implementation roadmap",
+        "roiProjections": "ROI projections for your case",
+        "noSalesPressure": "No sales pressure"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "projectStart": {
+          "question": "How quickly can we start?",
+          "answer": "Most projects can be kicked off within 1-2 weeks after discovery."
+        },
+        "smallBusiness": {
+          "question": "Do you work with small businesses?",
+          "answer": "Yes. We support startups and SMBs with right-sized implementation plans."
+        },
+        "consultationIncluded": {
+          "question": "Is consultation free?",
+          "answer": "Yes, the first consultation is free and includes high-level recommendations."
+        },
+        "ongoingSupport": {
+          "question": "Do you provide post-launch support?",
+          "answer": "Yes, we provide ongoing optimization and support after launch."
+        }
+      }
+    },
+    "directContact": {
+      "title": "Direct Contact",
+      "description": "Prefer direct communication? Reach out any time.",
+      "liveChat": "Live chat available during business hours"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "Sign in to access the admin dashboard",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "error": "Invalid credentials"
+    },
+    "loading": "Loading admin dashboard...",
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Manage audit submissions and analytics",
+      "welcome": "Welcome to Admin Dashboard",
+      "exportData": "Export Data",
+      "settings": "Settings",
+      "stats": {
+        "users": "Total Users",
+        "audits": "Audits Completed",
+        "revenue": "Monthly Revenue",
+        "growth": "Growth Rate",
+        "avgMaturityScore": "Avg. Maturity Score",
+        "industryAverage": "Industry average: 58",
+        "totalEstROI": "Total Est. ROI",
+        "conversionRate": "Conversion rate: {{rate}}%"
+      },
+      "charts": {
+        "monthlySubmissions": "Monthly Submissions & Conversions",
+        "industryBreakdown": "Industry Breakdown",
+        "companySizeDistribution": "Company Size Distribution",
+        "maturityScoreDistribution": "Maturity Score Distribution"
+      },
+      "search": {
+        "placeholder": "Search submissions...",
+        "contactsPlaceholder": "Search contacts..."
+      },
+      "filters": {
+        "allStatus": "All Status",
+        "pending": "Pending",
+        "processing": "Processing",
+        "completed": "Completed"
+      },
+      "table": {
+        "company": "Company",
+        "contact": "Contact",
+        "industry": "Industry",
+        "status": "Status",
+        "maturityScore": "Maturity Score",
+        "estROI": "Est. ROI",
+        "submitted": "Submitted",
+        "actions": "Actions",
+        "inquiryType": "Inquiry Type",
+        "date": "Date"
+      },
+      "actions": {
+        "manageUsers": "Manage Users",
+        "viewAudits": "View Audits",
+        "settings": "Settings",
+        "logout": "Logout",
+        "viewResults": "View Results",
+        "editSubmission": "Edit Submission",
+        "deleteSubmission": "Delete Submission",
+        "viewDetails": "View Details",
+        "editContact": "Edit Contact"
+      },
+      "contactInquiries": "Contact Inquiries",
+      "configuration": {
+        "title": "Audit Configuration",
+        "aiModel": "AI Model",
+        "analysisDepth": "Analysis Depth",
+        "pdfGeneration": "PDF Generation",
+        "autoSendReports": "Auto-send Reports",
+        "emailNotifications": "Email notifications",
+        "customAnalysisPrompts": "Custom Analysis Prompts",
+        "enablePdfGeneration": "Enable PDF report generation",
+        "autoSendToClients": "Automatically send reports to clients",
+        "enableEmailNotifications": "Enable email notifications for new submissions",
+        "models": {
+          "gpt4": "GPT-4",
+          "gpt35": "GPT-3.5 Turbo",
+          "claude": "Claude",
+          "gemini": "Gemini"
+        },
+        "depths": {
+          "basic": "Basic",
+          "detailed": "Detailed",
+          "standard": "Standard",
+          "comprehensive": "Comprehensive"
+        },
+        "autoSend": "Automatically send reports to clients",
+        "customPrompts": "Custom analysis prompts",
+        "customPromptsPlaceholder": "Enter custom prompts for AI analysis...",
+        "newSubmissionNotifications": "New submission notifications",
+        "weeklySummaryReports": "Weekly summary reports",
+        "auditCompletionAlerts": "Audit completion alerts",
+        "reset": "Reset",
+        "save": "Save Configuration"
       }
     }
   },
-  "solutions": {
-    "hero": {
-      "title": "AI Solutions That Transform",
-      "titleHighlight": "Your Business",
-      "subtitle": "Discover how our AI-powered automation solutions can revolutionize your operations, reduce costs, and accelerate growth across every aspect of your business.",
-      "ctaButton": "Start Your AI Journey"
-    },
-    "coreSolutions": {
-      "title": "Core AI Solutions",
-      "subtitle": "Comprehensive automation solutions designed to address your most critical business challenges.",
-      "benefits": "Key Benefits",
-      "useCases": "Use Cases",
-      "roiImpact": "ROI Impact",
-      "implementation": "Implementation"
-    },
-    "industryStories": {
-      "title": "Industry Success Stories",
-      "subtitle": "Real results from companies that transformed their business with our AI solutions.",
-      "challenge": "Challenge",
-      "solution": "Solution",
-      "results": "Results"
-    },
-    "industryScenarios": {
-      "healthcare": {
-        "industry": "Healthcare",
-        "challenge": "Healthcare organizations spend 60% of their time on administrative tasks instead of patient care",
-        "solution": "Automate patient intake, insurance processing, and medical documentation with AI",
-        "results": [
-          "40% reduction in administrative time",
-          "25% improvement in patient satisfaction",
-          "Faster claims processing",
-          "More time for patient care"
-        ]
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go Home",
+    "goBack": "Go Back"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated",
+    "lastUpdatedDate": "January 1, 2025",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing or using XTeam.Pro services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services."
       },
-      "finance": {
-        "industry": "Finance",
-        "challenge": "Banks process thousands of credit applications manually, leading to delays and errors",
-        "solution": "Automated risk scoring and application processing using machine learning",
-        "results": [
-          "70% faster application processing",
-          "35% reduction in credit risk",
-          "Lower operational costs",
-          "Better customer experience"
-        ]
+      "services": {
+        "title": "2. Description of Services",
+        "content": "XTeam.Pro provides AI-powered business process automation assessment, consulting, and implementation services. We reserve the right to modify, suspend, or discontinue any aspect of our services at any time."
       },
-      "retail": {
-        "industry": "Retail",
-        "challenge": "E-commerce stores lose 70% of potential sales due to poor customer service",
-        "solution": "AI chatbots for instant support and personalized product recommendations",
-        "results": [
-          "45% increase in conversion rate",
-          "60% reduction in response time",
-          "24/7 customer support",
-          "Higher customer retention"
-        ]
+      "userObligations": {
+        "title": "3. User Obligations",
+        "intro": "When using our services, you agree to:",
+        "item1": "Provide accurate and complete information",
+        "item2": "Not use our services for any unlawful purpose",
+        "item3": "Not attempt to gain unauthorized access to our systems",
+        "item4": "Respect intellectual property rights"
       },
-      "manufacturing": {
-        "industry": "Manufacturing",
-        "challenge": "High defect rates and inefficient resource utilization on production lines",
-        "solution": "AI quality control and process optimization with computer vision",
-        "results": [
-          "85% reduction in defects",
-          "40% increase in productivity",
-          "$2.3M annual savings",
-          "More predictable operations"
-        ]
-      }
-    },
-    "aiWorkforce": {
-      "title": "Meet Your AI Team",
-      "subtitle": "Specialized AI agents designed to handle specific business functions with human-like intelligence and 24/7 availability.",
-      "capabilities": "Capabilities",
-      "industries": "Industries",
-      "moreCapabilities": "more capabilities"
-    },
-    "aiAgents": {
-      "salesassistant": {
-        "name": "Sales Assistant",
-        "description": "An AI sales agent that qualifies leads, schedules meetings, and nurtures prospects 24/7.",
-        "capabilities": {
-          "0": "Lead qualification and scoring",
-          "1": "Automated outreach sequences",
-          "2": "Meeting scheduling and coordination",
-          "3": "CRM integration and data sync",
-          "4": "Personalized campaigns"
-        },
-        "industries": {
-          "0": "SaaS",
-          "1": "Consulting",
-          "2": "E-commerce",
-          "3": "Technology"
-        }
+      "intellectualProperty": {
+        "title": "4. Intellectual Property",
+        "content": "All content, features, and functionality on XTeam.Pro are owned by XTeam.Pro and are protected by international copyright, trademark, and other intellectual property laws."
       },
-      "customerservicebot": {
-        "name": "Customer Service Bot",
-        "description": "An intelligent customer support agent that handles inquiries, resolves issues, and escalates complex cases.",
-        "capabilities": {
-          "0": "Multilingual support",
-          "1": "Instant answers to common questions",
-          "2": "Order tracking and updates",
-          "3": "Complaint resolution workflows",
-          "4": "Knowledge base integration"
-        },
-        "industries": {
-          "0": "Retail",
-          "1": "Finance",
-          "2": "Healthcare",
-          "3": "E-commerce"
-        }
+      "limitation": {
+        "title": "5. Limitation of Liability",
+        "content": "XTeam.Pro shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services. Our total liability shall not exceed the amount paid by you in the twelve months preceding the claim."
       },
-      "dataanalyst": {
-        "name": "Data Analyst",
-        "description": "Advanced AI that analyzes business data, generates insights, and creates automated reports.",
-        "capabilities": {
-          "0": "Real-time data processing",
-          "1": "Predictive trend analysis",
-          "2": "Automated report generation",
-          "3": "Anomaly detection",
-          "4": "Interactive dashboards"
-        },
-        "industries": {
-          "0": "Manufacturing",
-          "1": "Retail",
-          "2": "Logistics",
-          "3": "Finance"
-        }
+      "termination": {
+        "title": "6. Termination",
+        "content": "We reserve the right to terminate or suspend your access to our services at our sole discretion, without notice, for conduct that we believe violates these Terms of Service or is harmful to other users, us, or third parties."
       },
-      "contentcreator": {
-        "name": "Content Creator",
-        "description": "Creative AI that generates marketing content, social posts, and personalized communications at scale.",
-        "capabilities": {
-          "0": "Blog and article writing",
-          "1": "Social media content creation",
-          "2": "Email campaign personalization",
-          "3": "SEO optimization",
-          "4": "Multi-format adaptation"
-        },
-        "industries": {
-          "0": "Marketing",
-          "1": "SaaS",
-          "2": "E-commerce",
-          "3": "Media"
-        }
+      "governing": {
+        "title": "7. Governing Law",
+        "content": "These Terms shall be governed by applicable law. Any disputes shall be resolved through binding arbitration or in a court of competent jurisdiction."
       },
-      "processautomator": {
-        "name": "Process Automator",
-        "description": "Workflow automation specialist that optimizes business processes and eliminates manual tasks.",
-        "capabilities": {
-          "0": "Document processing automation",
-          "1": "Approval workflow management",
-          "2": "Data entry and validation",
-          "3": "System integration",
-          "4": "Exception handling"
-        },
-        "industries": {
-          "0": "Operations",
-          "1": "Finance",
-          "2": "HR",
-          "3": "Logistics"
-        }
-      },
-      "qualitycontroller": {
-        "name": "Quality Controller",
-        "description": "AI quality assurance agent that monitors, tests, and ensures compliance with quality standards.",
-        "capabilities": {
-          "0": "Automated testing protocols",
-          "1": "Real-time quality monitoring",
-          "2": "Defect pattern recognition",
-          "3": "Compliance verification",
-          "4": "Quality reporting and analytics"
-        },
-        "industries": {
-          "0": "Manufacturing",
-          "1": "Healthcare",
-          "2": "Software",
-          "3": "Retail"
-        }
-      }
-    },
-    "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Take our free AI audit to discover which solutions will have the greatest impact on your operations.",
-      "auditButton": "Take Free AI Audit",
-      "consultationButton": "Book a Consultation"
-    },
-    "title": "AI Solutions",
-    "subtitle": "Comprehensive AI solutions tailored to your business needs",
-    "items": {
-      "customer-service": {
-        "title": "AI Customer Service Automation",
-        "description": "Transform your customer support with intelligent chatbots and automated response systems that provide 24/7 assistance.",
-        "benefits": [
-          "24/7 customer support availability",
-          "Reduce response time by 90%",
-          "Handle 80% of inquiries automatically",
-          "Improve customer satisfaction scores"
-        ],
-        "useCases": [
-          "Live chat automation",
-          "Email response automation",
-          "FAQ and knowledge base integration",
-          "Ticket routing and prioritization"
-        ],
-        "roi": "300% ROI within 6 months",
-        "implementation": "2-4 weeks"
-      },
-      "data-analysis": {
-        "title": "Intelligent Data Analytics",
-        "description": "Automate data processing, analysis, and reporting to uncover insights and drive data-driven decision making.",
-        "benefits": [
-          "Real-time data processing",
-          "Automated report generation",
-          "Predictive analytics capabilities",
-          "Reduce manual analysis time by 85%"
-        ],
-        "useCases": [
-          "Sales performance analysis",
-          "Customer behavior insights",
-          "Financial reporting automation",
-          "Market trend analysis"
-        ],
-        "roi": "250% ROI within 4 months",
-        "implementation": "3-6 weeks"
-      },
-      "workflow-automation": {
-        "title": "Business Process Automation",
-        "description": "Streamline repetitive tasks and workflows with intelligent automation that adapts to your business needs.",
-        "benefits": [
-          "Eliminate manual repetitive tasks",
-          "Reduce processing time by 70%",
-          "Minimize human errors",
-          "Improve operational efficiency"
-        ],
-        "useCases": [
-          "Invoice processing",
-          "Employee onboarding",
-          "Inventory management",
-          "Quality assurance workflows"
-        ],
-        "roi": "400% ROI within 3 months",
-        "implementation": "1-3 weeks"
-      },
-      "content-generation": {
-        "title": "AI Content & Communication",
-        "description": "Generate high-quality content, emails, and communications automatically while maintaining your brand voice.",
-        "benefits": [
-          "Generate content 10x faster",
-          "Maintain consistent brand voice",
-          "Personalize communications at scale",
-          "Reduce content creation costs by 60%"
-        ],
-        "useCases": [
-          "Marketing content creation",
-          "Email campaign automation",
-          "Social media management",
-          "Documentation generation"
-        ],
-        "roi": "200% ROI within 2 months",
-        "implementation": "1-2 weeks"
+      "contact": {
+        "title": "8. Contact Us",
+        "content": "If you have questions about these Terms of Service, please contact us at:"
       }
     }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated",
+    "lastUpdatedDate": "January 1, 2025",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "XTeam.Pro (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services."
+      },
+      "dataCollected": {
+        "title": "2. Information We Collect",
+        "intro": "We may collect the following types of information:",
+        "item1": "Personal identification information (name, email address, phone number)",
+        "item2": "Business information (company name, industry, company size)",
+        "item3": "Usage data (pages visited, time spent, browser type)",
+        "item4": "Audit submission data you provide through our assessment tools"
+      },
+      "dataUse": {
+        "title": "3. How We Use Your Information",
+        "item1": "To provide and maintain our services",
+        "item2": "To send you audit results and recommendations",
+        "item3": "To respond to your inquiries and support requests",
+        "item4": "To improve our platform and services",
+        "item5": "To send marketing communications (with your consent)"
+      },
+      "dataSharing": {
+        "title": "4. Information Sharing",
+        "content": "We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties. This does not include trusted third parties who assist us in operating our website and conducting our business, so long as those parties agree to keep this information confidential."
+      },
+      "dataSecurity": {
+        "title": "5. Data Security",
+        "content": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure."
+      },
+      "yourRights": {
+        "title": "6. Your Rights",
+        "intro": "Depending on your location, you may have the following rights:",
+        "item1": "Right to access your personal data",
+        "item2": "Right to correct inaccurate data",
+        "item3": "Right to request deletion of your data",
+        "item4": "Right to withdraw consent at any time"
+      },
+      "contact": {
+        "title": "7. Contact Us",
+        "content": "If you have questions about this Privacy Policy, please contact us at:"
+      }
+    }
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated",
+    "lastUpdatedDate": "January 1, 2025",
+    "sections": {
+      "whatAreCookies": {
+        "title": "1. What Are Cookies",
+        "content": "Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners."
+      },
+      "howWeUse": {
+        "title": "2. How We Use Cookies",
+        "intro": "We use cookies for the following purposes:",
+        "essential": {
+          "title": "Essential Cookies",
+          "description": "These cookies are necessary for the website to function properly. They enable core functionality such as security and network management."
+        },
+        "analytics": {
+          "title": "Analytics Cookies",
+          "description": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously."
+        },
+        "preferences": {
+          "title": "Preference Cookies",
+          "description": "These cookies allow us to remember your preferences, such as language selection, to provide a more personalized experience."
+        }
+      },
+      "thirdParty": {
+        "title": "3. Third-Party Cookies",
+        "content": "In addition to our own cookies, we may also use various third-party cookies to report usage statistics and deliver advertisements. These cookies are governed by the respective privacy policies of the third parties."
+      },
+      "control": {
+        "title": "4. Controlling Cookies",
+        "content": "You can control and manage cookies in various ways. Most web browsers allow you to manage your cookie preferences. You can set your browser to refuse cookies, or to alert you when cookies are being sent. However, disabling cookies may affect the functionality of our website."
+      },
+      "contact": {
+        "title": "5. Contact Us",
+        "content": "If you have questions about our use of cookies, please contact us at:"
+      }
+    }
+  },
+  "careers": {
+    "hero": {
+      "title": "Join Our Team",
+      "subtitle": "Help us transform how businesses operate with AI. We're building the future of business automation and we want you to be part of it.",
+      "cta": "Get in Touch"
+    },
+    "values": {
+      "title": "Why Work With Us",
+      "growth": {
+        "title": "Career Growth",
+        "description": "Continuous learning opportunities, mentorship programs, and clear career progression paths."
+      },
+      "remote": {
+        "title": "Remote-First",
+        "description": "Work from anywhere in the world with flexible hours and a focus on results, not hours logged."
+      },
+      "innovation": {
+        "title": "Innovation Culture",
+        "description": "Work on cutting-edge AI technology and have a direct impact on product direction."
+      }
+    },
+    "openPositions": {
+      "title": "Open Positions"
+    },
+    "positions": {
+      "aiEngineer": {
+        "title": "AI/ML Engineer",
+        "department": "Engineering",
+        "location": "Remote",
+        "type": "Full-time",
+        "description": "Design and implement AI models for business process automation. Work with cutting-edge ML frameworks and large language models."
+      },
+      "fullstackDev": {
+        "title": "Full-Stack Developer",
+        "department": "Engineering",
+        "location": "Remote / Hybrid",
+        "type": "Full-time",
+        "description": "Build scalable web applications using React, TypeScript, and Python FastAPI. Contribute to our core platform development."
+      },
+      "consultant": {
+        "title": "Business Automation Consultant",
+        "department": "Consulting",
+        "location": "Remote",
+        "type": "Full-time",
+        "description": "Help clients identify automation opportunities and implement AI solutions. Strong background in process optimization required."
+      }
+    },
+    "apply": "Apply Now",
+    "openApplication": {
+      "title": "Don't See Your Role?",
+      "description": "We're always looking for talented people. Send us your CV and we'll reach out when there's a match.",
+      "cta": "Send Open Application"
+    }
+  },
+  "caseStudies": {
+    "title": "Case Studies",
+    "subtitle": "Real Results from Real Businesses",
+    "description": "Discover how our AI solutions have transformed businesses across industries, delivering measurable results and exceptional ROI.",
+    "filterByIndustry": "Filter by Industry",
+    "searchPlaceholder": "Search case studies...",
+    "viewDetails": "View Details",
+    "details": "Details",
+    "featured": "Featured",
+    "challenge": "Challenge",
+    "stats": {
+      "projects": {
+        "value": "50+",
+        "label": "Successful Projects"
+      },
+      "savings": {
+        "value": "$50M+",
+        "label": "Cost Savings Generated"
+      },
+      "efficiency": {
+        "value": "85%",
+        "label": "Average Efficiency Gain"
+      },
+      "timeline": {
+        "value": "6 Months",
+        "label": "Average ROI Timeline"
+      }
+    },
+    "tags": {
+      "aiMl": "AI/ML",
+      "customerService": "Customer Service",
+      "ecommerce": "E-commerce",
+      "automation": "Automation",
+      "costReduction": "Cost Reduction",
+      "healthcare": "Healthcare",
+      "dataAnalytics": "Data Analytics",
+      "machineLearning": "Machine Learning",
+      "optimization": "Optimization",
+      "efficiency": "Efficiency",
+      "financialServices": "Financial Services",
+      "security": "Security",
+      "realTimeProcessing": "Real-time Processing",
+      "fraudDetection": "Fraud Detection",
+      "riskManagement": "Risk Management",
+      "manufacturing": "Manufacturing",
+      "iot": "IoT",
+      "predictiveAnalytics": "Predictive Analytics",
+      "processOptimization": "Process Optimization",
+      "predictiveMaintenance": "Predictive Maintenance",
+      "qualityControl": "Quality Control",
+      "retail": "Retail",
+      "personalization": "Personalization",
+      "revenueGrowth": "Revenue Growth",
+      "logistics": "Logistics",
+      "supplyChain": "Supply Chain"
+    },
+    "cta": {
+      "title": "Ready to Write Your Success Story?",
+      "description": "Join the growing list of companies transforming their operations with AI. Let's discuss how we can help you achieve similar results.",
+      "button": "Start Your AI Journey",
+      "downloadButton": "Download Case Study PDF"
+    },
+    "studies": {
+      "ecommerceAutomation": {
+        "title": "AI-Powered Customer Service Automation",
+        "company": "ShopSmart Inc",
+        "industry": "E-commerce",
+        "challenge": "High customer service costs and slow response times were affecting customer satisfaction and retention rates.",
+        "solution": "Implemented AI chatbots and automated customer service workflows with natural language processing.",
+        "implementation": "Gradual rollout over 6 weeks with extensive testing and staff training.",
+        "timeline": "6 weeks",
+        "investment": "$150K",
+        "roi": "500% in 8 months",
+        "testimonial": {
+          "quote": "The AI customer service system has transformed our support operations. Response times dropped dramatically while customer satisfaction soared.",
+          "author": "Sarah Johnson",
+          "position": "Customer Experience Director"
+        },
+        "results": {
+          "responseTime": {
+            "metric": "Response Time",
+            "value": "2 minutes",
+            "improvement": "95% faster"
+          },
+          "satisfaction": {
+            "metric": "Customer Satisfaction",
+            "value": "94%",
+            "improvement": "+40%"
+          },
+          "tickets": {
+            "metric": "Support Tickets Resolved",
+            "value": "85%",
+            "improvement": "Automated"
+          },
+          "savings": {
+            "metric": "Annual Cost Savings",
+            "value": "$750K",
+            "improvement": "60% reduction"
+          }
+        }
+      },
+      "healthcareAnalytics": {
+        "title": "Predictive Healthcare Analytics",
+        "company": "MedCenter Plus",
+        "industry": "Healthcare",
+        "challenge": "Manual diagnostic processes and inefficient patient flow management were causing delays and increased costs.",
+        "solution": "Deployed AI-powered diagnostic assistance and predictive analytics for patient flow optimization.",
+        "implementation": "Careful integration over 8 weeks with medical staff training and compliance validation.",
+        "timeline": "8 weeks",
+        "investment": "$300K",
+        "roi": "700% in 12 months",
+        "testimonial": {
+          "quote": "The predictive analytics system has revolutionized our patient care. We can now anticipate needs and provide faster, more accurate diagnoses.",
+          "author": "Dr. Michael Chen",
+          "position": "Chief Medical Officer"
+        },
+        "results": {
+          "accuracy": {
+            "metric": "Diagnostic Accuracy",
+            "value": "96%",
+            "improvement": "+15%"
+          },
+          "waitTime": {
+            "metric": "Patient Wait Time",
+            "value": "12 minutes",
+            "improvement": "70% reduction"
+          },
+          "cost": {
+            "metric": "Cost per Patient",
+            "value": "$45",
+            "improvement": "55% reduction"
+          },
+          "efficiency": {
+            "metric": "Staff Efficiency",
+            "value": "3x",
+            "improvement": "Tripled productivity"
+          }
+        }
+      },
+      "financialFraudDetection": {
+        "title": "Advanced Fraud Detection System",
+        "company": "SecureBank Corp",
+        "industry": "Financial Services",
+        "challenge": "Traditional fraud detection was catching only 60% of fraudulent transactions, resulting in $5M annual losses and numerous false positives affecting customer experience.",
+        "solution": "Implemented AI-driven fraud detection with real-time transaction analysis, behavioral pattern recognition, and automated risk scoring.",
+        "implementation": "Gradual rollout over 10 weeks with extensive testing and regulatory compliance validation.",
+        "timeline": "10 weeks",
+        "investment": "$500K",
+        "roi": "2400% in 6 months",
+        "results": {
+          "detectionRate": {
+            "metric": "Fraud Detection Rate",
+            "value": "98.5%",
+            "improvement": "+38.5%"
+          },
+          "falsePositives": {
+            "metric": "False Positives",
+            "value": "2%",
+            "improvement": "80% reduction"
+          },
+          "processingTime": {
+            "metric": "Processing Speed",
+            "value": "50ms",
+            "improvement": "95% faster"
+          },
+          "savings": {
+            "metric": "Annual Loss Prevention",
+            "value": "$12M",
+            "improvement": "85% reduction"
+          }
+        },
+        "testimonial": {
+          "quote": "The AI fraud detection system has exceeded all our expectations. We're catching fraud we never could before while dramatically improving the customer experience by reducing false alarms.",
+          "author": "Jennifer Walsh",
+          "position": "Head of Risk Management"
+        }
+      },
+      "manufacturingOptimization": {
+        "title": "Smart Manufacturing Optimization",
+        "company": "AutoParts Industries",
+        "industry": "Manufacturing",
+        "challenge": "Frequent equipment breakdowns and quality control issues were causing 20% production downtime and $3M annual losses in defective products.",
+        "solution": "Deployed predictive maintenance AI and automated quality control systems with IoT sensor integration and real-time monitoring.",
+        "implementation": "Phased deployment across 3 production lines over 12 weeks with minimal disruption to operations.",
+        "timeline": "12 weeks",
+        "investment": "$400K",
+        "roi": "650% in 10 months",
+        "results": {
+          "downtime": {
+            "metric": "Production Downtime",
+            "value": "4%",
+            "improvement": "80% reduction"
+          },
+          "defectRate": {
+            "metric": "Defect Rate",
+            "value": "0.5%",
+            "improvement": "90% improvement"
+          },
+          "maintenance": {
+            "metric": "Maintenance Costs",
+            "value": "$800K",
+            "improvement": "60% reduction"
+          },
+          "efficiency": {
+            "metric": "Overall Efficiency",
+            "value": "94%",
+            "improvement": "+35%"
+          }
+        },
+        "testimonial": {
+          "quote": "The predictive maintenance system has transformed our operations. We now fix issues before they become problems, and our quality has never been better. The ROI was evident within the first quarter.",
+          "author": "Robert Kim",
+          "position": "Operations Director"
+        }
+      },
+      "retailPersonalization": {
+        "title": "AI-Powered Retail Personalization",
+        "company": "FashionForward",
+        "industry": "Retail",
+        "challenge": "Low conversion rates (2.1%) and high cart abandonment (78%) due to generic shopping experiences and poor product recommendations.",
+        "solution": "Implemented an AI personalization engine with a real-time recommendation system, dynamic pricing, and personalized marketing automation.",
+        "implementation": "Integrated over 8 weeks with A/B testing and gradual feature rollout to optimize performance.",
+        "timeline": "8 weeks",
+        "investment": "$200K",
+        "roi": "2100% in 6 months",
+        "testimonial": {
+          "quote": "The personalization AI has completely transformed our customer experience. Sales have tripled, and customers are genuinely excited about the recommendations they receive.",
+          "author": "Amanda Foster",
+          "position": "Chief Marketing Officer"
+        },
+        "results": {
+          "conversionRate": {
+            "metric": "Conversion Rate",
+            "value": "6.8%",
+            "improvement": "+224%"
+          },
+          "cartAbandonment": {
+            "metric": "Cart Abandonment",
+            "value": "45%",
+            "improvement": "42% reduction"
+          },
+          "averageOrderValue": {
+            "metric": "Average Order Value",
+            "value": "$127",
+            "improvement": "+85%"
+          },
+          "revenueGrowth": {
+            "metric": "Revenue Growth",
+            "value": "$4.2M",
+            "improvement": "340% increase"
+          }
+        }
+      },
+      "logisticsOptimization": {
+        "title": "Supply Chain Intelligence System",
+        "company": "GlobalLogistics Pro",
+        "industry": "Logistics",
+        "challenge": "Inefficient route planning and inventory management were causing 25% higher delivery costs and frequent stockouts affecting customer satisfaction.",
+        "solution": "Deployed AI-powered supply chain optimization with predictive analytics, dynamic routing, and automated inventory management.",
+        "implementation": "Rolled out across 15 distribution centers over 14 weeks with comprehensive staff training.",
+        "timeline": "14 weeks",
+        "investment": "$350K",
+        "roi": "600% in 8 months",
+        "testimonial": {
+          "quote": "The AI system has revolutionized our supply chain operations. We are delivering faster, cheaper, and more reliably than ever before.",
+          "author": "Carlos Martinez",
+          "position": "VP of Operations"
+        },
+        "results": {
+          "deliveryCosts": {
+            "metric": "Delivery Costs",
+            "value": "$2.1M",
+            "improvement": "35% reduction"
+          },
+          "onTimeDelivery": {
+            "metric": "On-time Delivery",
+            "value": "97%",
+            "improvement": "+22%"
+          },
+          "inventoryTurnover": {
+            "metric": "Inventory Turnover",
+            "value": "12x",
+            "improvement": "+50%"
+          },
+          "customerSatisfaction": {
+            "metric": "Customer Satisfaction",
+            "value": "92%",
+            "improvement": "+28%"
+          }
+        }
+      }
+    },
+    "solution": "Solution",
+    "implementation": "Implementation",
+    "results": "Results",
+    "testimonial": "Testimonial",
+    "timeline": "Timeline",
+    "investment": "Investment",
+    "roi": "ROI",
+    "allIndustries": "All Industries"
   }
 }

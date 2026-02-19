@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Linkedin, Twitter, Github } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { buildContactPath } from '@/utils/contactQuery';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -108,15 +109,24 @@ const Footer: React.FC = () => {
 
             {/* Social Links */}
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <Link
+                to={buildContactPath({ source: 'social_link' })}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              </Link>
+              <Link
+                to={buildContactPath({ source: 'social_link' })}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              </Link>
+              <Link
+                to={buildContactPath({ source: 'social_link' })}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 <Github className="h-5 w-5" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

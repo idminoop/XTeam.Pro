@@ -24,7 +24,9 @@ env/
 .env.*
 !.env.example
 backend/venv/
+backend/.venv*/
 backend/test_xteam_pro.db
+output/
 
 # Editor directories and files
 .vscode/*
@@ -36,3 +38,4 @@ backend/test_xteam_pro.db
 *.njsproj
 *.sln
 *.sw?
+.playwright-cli/

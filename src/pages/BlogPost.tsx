@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User, Share2, BookOpen, Tag, TrendingUp, MessageCircle, Heart, Bookmark } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Share2, BookOpen, TrendingUp, MessageCircle, Heart, Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 

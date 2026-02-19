@@ -32,12 +32,12 @@ const Header: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden xl:flex items-center gap-3 whitespace-nowrap">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
+                className="text-gray-700 hover:text-primary px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
               >
                 {item.name}
               </Link>
@@ -45,11 +45,13 @@ const Header: React.FC = () => {
           </nav>
 
           {/* CTA Button */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center gap-2 whitespace-nowrap">
             <LanguageSwitcher />
-            <Button variant="outline" size="sm">
-              {t('nav.login')}
-            </Button>
+            <Link to="/admin">
+              <Button variant="outline" size="sm">
+                {t('nav.login')}
+              </Button>
+            </Link>
             <Link to="/audit">
               <Button size="sm">
                 {t('nav.startAudit')}
@@ -58,7 +60,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="xl:hidden">
             <Button
               variant="ghost"
               size="icon"
@@ -71,7 +73,7 @@ const Header: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden">
+          <div className="xl:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t">
               {navigation.map((item) => (
                 <Link
@@ -87,9 +89,11 @@ const Header: React.FC = () => {
                 <div className="pb-2">
                   <LanguageSwitcher />
                 </div>
-                <Button variant="outline" className="w-full">
-                  {t('nav.login')}
-                </Button>
+                <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    {t('nav.login')}
+                  </Button>
+                </Link>
                 <Link to="/audit" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full">
                     {t('nav.startAudit')}

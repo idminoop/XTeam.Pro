@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle, Zap, Users, BarChart3, Clock, DollarSign, Target, Bot, MessageSquare, FileText, Calculator, ShoppingCart, Headphones, Database, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { buildContactPath } from '@/utils/contactQuery';
 
 interface Solution {
   id: string;
@@ -302,10 +304,13 @@ export default function Solutions() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               {t('solutions.hero.subtitle')}
             </p>
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center">
+            <Link
+              to="/audit"
+              className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center"
+            >
               {t('solutions.hero.ctaButton')}
               <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -525,13 +530,19 @@ export default function Solutions() {
               {t('solutions.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+              <Link
+                to="/audit"
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
+              >
                 {t('solutions.cta.auditButton')}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+              </Link>
+              <Link
+                to={buildContactPath({ source: 'solutions_cta' })}
+                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              >
                 {t('solutions.cta.consultationButton')}
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

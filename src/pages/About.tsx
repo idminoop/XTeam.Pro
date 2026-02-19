@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Target, Award, Globe, ArrowRight, Linkedin, Twitter, Mail, MapPin, Phone, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { buildContactPath } from '@/utils/contactQuery';
 
 interface TeamMember {
   id: string;
@@ -469,13 +471,19 @@ export default function About() {
               {t('about.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+              <Link
+                to={buildContactPath({ source: 'about_cta' })}
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
+              >
                 {t('about.cta.scheduleButton')}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+              </Link>
+              <Link
+                to="/case-studies"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center"
+              >
                 {t('about.cta.downloadButton')}
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

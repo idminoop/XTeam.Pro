@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { apiCall } from '../utils/api';
-import { Mail, Phone, MapPin, Clock, Send, Calendar, MessageSquare, Users, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Clock, Calendar, MessageSquare, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface ContactForm {
@@ -42,6 +42,12 @@ interface ContactInfo {
 
 export default function Contact() {
   const { t } = useTranslation();
+  const localizedInfo = t('contact.info', { returnObjects: true }) as {
+    email: { title: string; details: string[]; action?: string };
+    phone: { title: string; details: string[]; action?: string };
+    address: { title: string; details: string[]; action?: string };
+    hours: { title: string; details: string[]; action?: string };
+  };
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
     email: '',
@@ -66,72 +72,49 @@ export default function Contact() {
   const contactInfo: ContactInfo[] = [
     {
       icon: <Mail className="w-6 h-6" />,
-      title: t('contact.info.email'),
-      details: ['hello@xteam.pro', 'support@xteam.pro'],
+      title: t('contact.info.email.title'),
+      details: localizedInfo.email.details,
       action: {
-        text: 'Send Email',
-        href: 'mailto:hello@xteam.pro'
+        text: t('contact.info.email.action'),
+        href: `mailto:${localizedInfo.email.details[0] ?? 'hello@xteam.pro'}`
       }
     },
     {
       icon: <Phone className="w-6 h-6" />,
-      title: t('contact.info.phone'),
-      details: ['+1 (555) 123-4567', 'Available 24/7'],
+      title: t('contact.info.phone.title'),
+      details: localizedInfo.phone.details,
       action: {
-        text: 'Call Now',
+        text: t('contact.info.phone.action'),
         href: 'tel:+15551234567'
       }
     },
     {
       icon: <MapPin className="w-6 h-6" />,
-      title: t('contact.info.address'),
-      details: ['123 Innovation Drive', 'San Francisco, CA 94105'],
+      title: t('contact.info.address.title'),
+      details: localizedInfo.address.details,
       action: {
-        text: 'Get Directions',
+        text: t('contact.info.address.action'),
         href: 'https://maps.google.com/?q=123+Innovation+Drive+San+Francisco+CA'
       }
     },
     {
       icon: <Clock className="w-6 h-6" />,
-      title: t('contact.info.hours'),
-      details: ['Mon-Fri: 9:00 AM - 6:00 PM PST', 'Emergency support: 24/7']
+      title: t('contact.info.hours.title'),
+      details: localizedInfo.hours.details
     }
   ];
 
   const inquiryTypes = [
-    { value: 'consultation', label: t('contact.form.inquiryType.consultation') },
-    { value: 'demo', label: t('contact.form.inquiryType.demo') },
-    { value: 'partnership', label: t('contact.form.inquiryType.partnership') },
-    { value: 'support', label: t('contact.form.inquiryType.support') },
-    { value: 'other', label: t('contact.form.inquiryType.other') }
+    { value: 'consultation', label: t('contact.form.inquiryTypes.consultation') },
+    { value: 'demo', label: t('contact.form.inquiryTypes.demo') },
+    { value: 'partnership', label: t('contact.form.inquiryTypes.partnership') },
+    { value: 'support', label: t('contact.form.inquiryTypes.support') },
+    { value: 'other', label: t('contact.form.inquiryTypes.other') }
   ];
 
-  const serviceOptions = [
-    t('contact.form.services.strategy'),
-    t('contact.form.services.automation'),
-    t('contact.form.services.development'),
-    t('contact.form.services.analytics'),
-    t('contact.form.services.training'),
-    t('contact.form.services.transformation')
-  ];
-
-  const budgetRanges = [
-    t('contact.form.budget.under50k'),
-    t('contact.form.budget.50k-100k'),
-    t('contact.form.budget.100k-250k'),
-    t('contact.form.budget.250k-500k'),
-    t('contact.form.budget.over500k'),
-    t('contact.form.budget.notSure')
-  ];
-
-  const timelineOptions = [
-    t('contact.form.timeline.asap'),
-    t('contact.form.timeline.quarter'),
-    t('contact.form.timeline.halfYear'),
-    t('contact.form.timeline.year'),
-    t('contact.form.timeline.longTerm'),
-    t('contact.form.timeline.exploring')
-  ];
+  const serviceOptions = t('contact.form.services', { returnObjects: true }) as string[];
+  const budgetRanges = t('contact.form.budgetRanges', { returnObjects: true }) as string[];
+  const timelineOptions = t('contact.form.timelineOptions', { returnObjects: true }) as string[];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -174,7 +157,7 @@ export default function Contact() {
     if (!formData.email.trim()) {
       errors.email = t('contact.form.validation.emailRequired');
     } else {
-      const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+      const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
       if (!emailRegex.test(formData.email)) {
         errors.email = t('contact.form.validation.emailInvalid');
       }
@@ -282,29 +265,31 @@ export default function Contact() {
         // Handle validation errors (422)
         if (response.status === 422 && errorData.errors) {
           setValidationErrors(errorData.errors);
-          setSubmitError('Please correct the errors below.');
+          setSubmitError(t('contact.form.submitErrors.validation'));
         }
         // Handle server errors (500+)
         else if (response.status >= 500) {
-          setSubmitError('Server error. Please try again later.');
+          setSubmitError(t('contact.form.submitErrors.server'));
         }
         // Handle other errors
         else {
-          setSubmitError(errorData.error || errorData.message || 'Failed to send message. Please try again.');
+          setSubmitError(errorData.error || errorData.message || t('contact.form.submitErrors.generic'));
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error submitting contact form:', error);
-      
+
+      const maybeError = error as { name?: string; message?: string; status?: number };
+
       // Handle different types of errors
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        setSubmitError('Network error. Please check your connection and try again.');
-      } else if (error.status === 422) {
-        setSubmitError('Please check your input data and try again.');
-      } else if (error.status >= 500) {
-        setSubmitError('Server error. Please try again later.');
+      if (maybeError.name === 'TypeError' && maybeError.message?.includes('fetch')) {
+        setSubmitError(t('contact.form.submitErrors.network'));
+      } else if (maybeError.status === 422) {
+        setSubmitError(t('contact.form.submitErrors.validation'));
+      } else if (typeof maybeError.status === 'number' && maybeError.status >= 500) {
+        setSubmitError(t('contact.form.submitErrors.server'));
       } else {
-        setSubmitError('An unexpected error occurred. Please try again.');
+        setSubmitError(t('contact.form.submitErrors.unexpected'));
       }
     } finally {
       setIsSubmitting(false);
@@ -472,13 +457,13 @@ export default function Contact() {
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                         validationErrors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
-                      placeholder={t('contact.form.name')}
+                      placeholder={t('contact.form.fullName')}
                     />
                     {validationErrors.name && <ErrorMessage error={validationErrors.name} />}
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('contact.form.emailAddress')} *
+                      {t('contact.form.email')} *
                     </label>
                     <input
                       type="email"
@@ -499,7 +484,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('contact.form.companyName')} *
+                        {t('contact.form.company')} *
                       </label>
                       <input
                         type="text"
@@ -517,7 +502,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('contact.form.phoneNumber')}
+                        {t('contact.form.phone')}
                       </label>
                       <input
                         type="tel"
@@ -735,10 +720,13 @@ export default function Contact() {
                   </div>
                 </div>
                 
-                <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors inline-flex items-center justify-center">
+                <Link
+                  to="/audit"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors inline-flex items-center justify-center"
+                >
                   {t('contact.consultation.cta')}
                   <Calendar className="w-5 h-5 ml-2" />
-                </button>
+                </Link>
               </div>
 
               {/* FAQ */}
@@ -778,11 +766,11 @@ export default function Contact() {
                 <div className="space-y-4">
                   <a href="tel:+15551234567" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
                     <Phone className="w-5 h-5" />
-                    <span>+1 (555) 123-4567</span>
+                    <span>{localizedInfo.phone.details[0]}</span>
                   </a>
-                  <a href="mailto:hello@xteam.pro" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                  <a href={`mailto:${localizedInfo.email.details[0] ?? 'hello@xteam.pro'}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
                     <Mail className="w-5 h-5" />
-                    <span>hello@xteam.pro</span>
+                    <span>{localizedInfo.email.details[0]}</span>
                   </a>
                   <div className="flex items-center space-x-3">
                     <MessageSquare className="w-5 h-5" />

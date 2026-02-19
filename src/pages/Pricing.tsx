@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { apiCall } from '../utils/api';
-import { Check, ArrowRight, Calculator, TrendingUp, Users, Clock, DollarSign, Zap, Shield, Star, Info } from 'lucide-react';
+import { Check, ArrowRight, Calculator, TrendingUp, Zap, Shield, Star, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { buildContactPath } from '@/utils/contactQuery';
 
 interface PricingTier {
   id: string;
@@ -203,7 +205,7 @@ export default function Pricing() {
   const [roiLoading, setROILoading] = useState(false);
   const [roiError, setROIError] = useState<string | null>(null);
 
-  const calculateROI = async () => {
+  const calculateROI = useCallback(async () => {
     // Validate inputs first
     const validationErrors = validateROIInputs();
     if (validationErrors.length > 0) {
@@ -277,18 +279,18 @@ export default function Pricing() {
     } finally {
       setROILoading(false);
     }
-  };
+  }, [extendedInputs, roiInputs, t]);
 
   const [roiResults, setROIResults] = useState<ROIResults | null>(null);
 
-  const handleCalculateROI = async () => {
+  const handleCalculateROI = useCallback(async () => {
     const results = await calculateROI();
     setROIResults(results);
-  };
+  }, [calculateROI]);
 
   useEffect(() => {
-    handleCalculateROI();
-  }, [roiInputs]);
+    void handleCalculateROI();
+  }, [handleCalculateROI]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -397,13 +399,16 @@ export default function Pricing() {
                   )}
                 </div>
                 
-                <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
-                  tier.popular
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                }`}>
+                <Link
+                  to={buildContactPath({ source: 'pricing_tier', tier: tier.id })}
+                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors inline-flex items-center justify-center ${
+                    tier.popular
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  }`}
+                >
                   {tier.cta}
-                </button>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -841,9 +846,12 @@ export default function Pricing() {
                   ))}
                 </div>
                 
-                <button className="w-full py-2 px-4 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                <Link
+                  to={buildContactPath({ source: 'pricing_addon', addon: addon.id })}
+                  className="w-full py-2 px-4 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors inline-flex items-center justify-center"
+                >
                   {t('pricing.addOns.addToPlan')}
-                </button>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -913,13 +921,19 @@ export default function Pricing() {
               {t('pricing.finalCta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+              <Link
+                to={buildContactPath({ source: 'pricing_final_cta' })}
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
+              >
                 {t('pricing.finalCta.scheduleConsultation')}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+              </Link>
+              <Link
+                to="/audit"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              >
                 {t('pricing.finalCta.startFreeTrial')}
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

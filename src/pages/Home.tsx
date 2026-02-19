@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Bot, Zap, Target, TrendingUp, CheckCircle, Users } from 'lucide-react';
+import { buildContactPath } from '@/utils/contactQuery';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -50,12 +52,16 @@ export default function Home() {
               {t('home.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8 py-3">
-                {t('home.hero.ctaPrimary')}
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button asChild size="lg" className="text-lg px-8 py-3">
+                <Link to="/audit">
+                  {t('home.hero.ctaPrimary')}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-                {t('home.hero.ctaSecondary')}
+              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-3">
+                <Link to="/solutions">
+                  {t('home.hero.ctaSecondary')}
+                </Link>
               </Button>
             </div>
           </div>
@@ -146,9 +152,11 @@ export default function Home() {
                 <p className="text-gray-600 mb-6">
                   {t('home.benefits.cta.subtitle')}
                 </p>
-                <Button size="lg" className="w-full">
-                  {t('home.benefits.cta.button')}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button asChild size="lg" className="w-full">
+                  <Link to={buildContactPath({ source: 'home_benefits_cta' })}>
+                    {t('home.benefits.cta.button')}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -166,11 +174,20 @@ export default function Home() {
             {t('home.finalCta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-3">
-              {t('home.finalCta.consultation')}
+            <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-3">
+              <Link to={buildContactPath({ source: 'home_final_cta' })}>
+                {t('home.finalCta.consultation')}
+              </Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary">
-              {t('home.finalCta.caseStudies')}
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
+            >
+              <Link to="/case-studies">
+                {t('home.finalCta.caseStudies')}
+              </Link>
             </Button>
           </div>
         </div>

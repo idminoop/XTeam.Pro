@@ -2,7 +2,7 @@
   "watch": ["backend"],
   "ext": "py",
   "ignore": ["backend/venv/*", "backend/__pycache__/*"],
-  "exec": "cd backend && .\\venv\\Scripts\\python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001",
+  "exec": "cd backend && .\\venv\\Scripts\\python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000",
   "env": {
     "NODE_ENV": "development"
   },
