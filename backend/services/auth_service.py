@@ -16,9 +16,11 @@ logger = logging.getLogger(__name__)
 class AuthService:
     def __init__(self):
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-        self.secret_key = os.getenv("JWT_SECRET_KEY")
+        self.secret_key = os.getenv("JWT_SECRET_KEY") or os.getenv("SECRET_KEY")
         if not self.secret_key:
-            raise RuntimeError("JWT_SECRET_KEY environment variable is required and must not be empty")
+            raise RuntimeError(
+                "JWT_SECRET_KEY or SECRET_KEY environment variable is required and must not be empty"
+            )
         self.algorithm = "HS256"
         self.access_token_expire_minutes = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
         self.refresh_token_expire_days = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRE_DAYS", "7"))

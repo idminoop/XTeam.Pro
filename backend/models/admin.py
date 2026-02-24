@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, JSON
 from sqlalchemy.sql import func
 from database.config import Base
 
@@ -78,3 +78,18 @@ class AuditConfiguration(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     created_by = Column(Integer, nullable=False)  # Admin user ID
+
+
+class SystemSettings(Base):
+    """Key-value store for system-wide configuration (SMTP, branding, etc.)."""
+    __tablename__ = "system_settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String(100), unique=True, nullable=False, index=True)
+    value = Column(Text, nullable=True)              # plain scalar values
+    value_json = Column(JSON, nullable=True)          # structured values
+    description = Column(String(255), nullable=True)
+    category = Column(String(50), default="general") # general, smtp, branding, …
+    is_sensitive = Column(Boolean, default=False)     # hide value in API responses
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_by = Column(Integer, nullable=True)

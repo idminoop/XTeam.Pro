@@ -50,9 +50,11 @@ class EmailService:
             "contact_confirmation.html": self._get_contact_confirmation_template(),
             "contact_notification.html": self._get_contact_notification_template(),
             "audit_completed.html": self._get_audit_completed_template(),
-            "welcome.html": self._get_welcome_template()
+            "welcome.html": self._get_welcome_template(),
+            "admin_invitation.html": self._get_admin_invitation_template(),
+            "password_reset.html": self._get_password_reset_template(),
         }
-        
+
         for filename, content in templates.items():
             filepath = os.path.join(self.templates_dir, filename)
             with open(filepath, 'w', encoding='utf-8') as f:
@@ -491,6 +493,143 @@ class EmailService:
             logger.error(f"Error sending welcome email: {str(e)}")
             return False
     
+    def _get_admin_invitation_template(self) -> str:
+        return """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>You're invited to XTeam.Pro Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; background: #f8fafc; }
+        .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        .button { display: inline-block; padding: 12px 24px; background: #2563eb; color: white !important; text-decoration: none; border-radius: 5px; }
+        .credentials { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .credential-row { display: flex; margin: 8px 0; }
+        .label { font-weight: bold; width: 140px; color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to XTeam.Pro Admin</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ username }},</p>
+            <p>You have been invited to access the XTeam.Pro administration panel. Here are your login credentials:</p>
+            <div class="credentials">
+                <div class="credential-row">
+                    <span class="label">Username:</span>
+                    <span>{{ username }}</span>
+                </div>
+                <div class="credential-row">
+                    <span class="label">Temporary Password:</span>
+                    <span><strong>{{ temp_password }}</strong></span>
+                </div>
+            </div>
+            <p>Please log in and change your password immediately.</p>
+            <p style="text-align: center; margin: 24px 0;">
+                <a href="{{ admin_url }}" class="button">Go to Admin Panel</a>
+            </p>
+            <p style="color: #ef4444; font-size: 14px;">
+                ⚠️ This is a temporary password. Change it after your first login for security.
+            </p>
+        </div>
+        <div class="footer">
+            <p>XTeam.Pro &mdash; Business Automation Platform</p>
+        </div>
+    </div>
+</body>
+</html>"""
+
+    def _get_password_reset_template(self) -> str:
+        return """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Password Reset - XTeam.Pro Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; background: #f8fafc; }
+        .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        .button { display: inline-block; padding: 12px 24px; background: #2563eb; color: white !important; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Password Reset Request</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ username }},</p>
+            <p>A password reset has been requested for your XTeam.Pro admin account.</p>
+            <p>Click the button below to reset your password. This link is valid for 1 hour.</p>
+            <p style="text-align: center; margin: 24px 0;">
+                <a href="{{ reset_url }}" class="button">Reset My Password</a>
+            </p>
+            <p style="font-size: 14px; color: #64748b;">
+                If you didn't request a password reset, please ignore this email or contact your administrator.
+            </p>
+            <p style="font-size: 12px; color: #94a3b8; word-break: break-all;">
+                Or copy this link: {{ reset_url }}
+            </p>
+        </div>
+        <div class="footer">
+            <p>XTeam.Pro &mdash; Business Automation Platform</p>
+        </div>
+    </div>
+</body>
+</html>"""
+
+    async def send_admin_invitation(
+        self,
+        email: str,
+        username: str,
+        temp_password: str,
+        admin_url: str = "https://xteam.pro/admin/login",
+    ) -> bool:
+        """Send invitation email to a newly created admin user."""
+        try:
+            template = self.jinja_env.get_template("admin_invitation.html")
+            html_content = template.render(
+                username=username,
+                temp_password=temp_password,
+                admin_url=admin_url,
+            )
+            return await self.send_email(
+                to_email=email,
+                subject="You're invited to XTeam.Pro Admin Panel",
+                html_content=html_content,
+            )
+        except Exception as e:
+            logger.error(f"Error sending admin invitation: {str(e)}")
+            return False
+
+    async def send_password_reset(
+        self,
+        email: str,
+        username: str,
+        reset_token: str,
+        base_url: str = "https://xteam.pro",
+    ) -> bool:
+        """Send password reset email to an admin user."""
+        try:
+            reset_url = f"{base_url}/admin/reset-password?token={reset_token}"
+            template = self.jinja_env.get_template("password_reset.html")
+            html_content = template.render(username=username, reset_url=reset_url)
+            return await self.send_email(
+                to_email=email,
+                subject="Password Reset - XTeam.Pro Admin",
+                html_content=html_content,
+            )
+        except Exception as e:
+            logger.error(f"Error sending password reset email: {str(e)}")
+            return False
+
     def is_configured(self) -> bool:
         """
         Check if email service is properly configured

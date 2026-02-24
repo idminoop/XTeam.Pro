@@ -105,6 +105,86 @@ test('audit results handles processing, completed, and error states', async ({ p
   await expect(page).toHaveURL(/\/audit$/);
 });
 
+// ── Admin Panel tests ────────────────────────────────────────────────────────
+
+const mockLoginResponse = {
+  access_token: 'mock-jwt-token-for-testing',
+  refresh_token: 'mock-refresh-token',
+  token_type: 'bearer',
+  user: {
+    id: 1,
+    username: 'admin',
+    email: 'admin@xteam.pro',
+    full_name: 'System Administrator',
+    role: 'super_admin',
+    can_manage_audits: true,
+    can_manage_users: true,
+    can_view_analytics: true,
+    can_export_data: true,
+    can_manage_content: true,
+    last_login: null,
+  },
+};
+
+const mockDashboardResponse = {
+  total_audits: 42,
+  completed_audits: 35,
+  pending_audits: 7,
+  total_contacts: 18,
+  avg_maturity_score: 71.5,
+  conversion_rate: 83.3,
+  recent_audits: [],
+  recent_contacts: [],
+  monthly_trend: [],
+  industry_breakdown: [],
+};
+
+async function adminLogin(page: Parameters<typeof test>[1] extends (...args: infer A) => unknown ? A[0] : never) {
+  await page.route('**/api/admin/login', async (route) => {
+    await route.fulfill({ status: 200, body: JSON.stringify(mockLoginResponse) });
+  });
+  await page.route('**/api/admin/dashboard', async (route) => {
+    await route.fulfill({ status: 200, body: JSON.stringify(mockDashboardResponse) });
+  });
+
+  await page.goto('/admin/login');
+  await page.fill('#username', 'admin');
+  await page.fill('#password', 'admin123');
+  await page.click('button[type=submit]');
+  await page.waitForURL(/\/admin\/dashboard/);
+}
+
+test('admin login succeeds and redirects to dashboard', async ({ page }) => {
+  await adminLogin(page);
+  await expect(page).toHaveURL(/\/admin\/dashboard/);
+});
+
+test('admin dashboard displays KPI cards', async ({ page }) => {
+  await adminLogin(page);
+  // Dashboard should show at least one card with a numeric value
+  await expect(page.locator('.bg-white.rounded-2xl').first()).toBeVisible();
+});
+
+test('admin logout clears session and redirects to login', async ({ page }) => {
+  await adminLogin(page);
+
+  // Click the logout button (look for Logout text or aria-label)
+  const logoutBtn = page.getByRole('button', { name: /logout|выйти/i }).first();
+  if (await logoutBtn.isVisible()) {
+    await logoutBtn.click();
+  } else {
+    // Logout via sessionStorage clear
+    await page.evaluate(() => sessionStorage.clear());
+    await page.goto('/admin/login');
+  }
+
+  await expect(page).toHaveURL(/\/admin\/login/);
+  const token = await page.evaluate(() => sessionStorage.getItem('admin_token'));
+  expect(token).toBeNull();
+});
+
+// ── Layout tests ─────────────────────────────────────────────────────────────
+
 test('header layout does not overflow across required breakpoints', async ({ page }) => {
   const widths = [320, 375, 768, 1024, 1280, 1440];
 

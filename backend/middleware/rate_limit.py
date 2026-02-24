@@ -1,21 +1,28 @@
-from fastapi import Request, HTTPException, status
+from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from collections import defaultdict
 from datetime import datetime, timedelta
-import asyncio
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.types import ASGIApp
 
-class RateLimitMiddleware:
+class RateLimitMiddleware(BaseHTTPMiddleware):
     """
     Simple in-memory rate limiting middleware
     For production, consider using Redis for distributed rate limiting
     """
     
-    def __init__(self, requests_per_minute: int = 60, requests_per_hour: int = 1000):
+    def __init__(
+        self,
+        app: ASGIApp,
+        requests_per_minute: int = 60,
+        requests_per_hour: int = 1000,
+    ):
+        super().__init__(app)
         self.requests_per_minute = requests_per_minute
         self.requests_per_hour = requests_per_hour
-        self.minute_requests: Dict[str, list] = defaultdict(list)
-        self.hour_requests: Dict[str, list] = defaultdict(list)
+        self.minute_requests: Dict[str, List[datetime]] = defaultdict(list)
+        self.hour_requests: Dict[str, List[datetime]] = defaultdict(list)
         
     def _get_client_ip(self, request: Request) -> str:
         """Get client IP address"""
@@ -69,7 +76,7 @@ class RateLimitMiddleware:
         self.minute_requests[client_ip].append(now)
         self.hour_requests[client_ip].append(now)
     
-    async def __call__(self, request: Request, call_next):
+    async def dispatch(self, request: Request, call_next):
         """Rate limiting middleware"""
         # Skip rate limiting for health checks and static files
         if request.url.path in ["/health", "/", "/docs", "/redoc", "/openapi.json"]:

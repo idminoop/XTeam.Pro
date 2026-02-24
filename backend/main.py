@@ -16,6 +16,7 @@ from routes.audit import router as audit_router
 from routes.contact import router as contact_router
 from routes.calculator import router as calculator_router
 from routes.admin import router as admin_router
+from routes.blog import router as blog_router
 
 # Import services
 from services.auth_service import AuthService
@@ -222,6 +223,12 @@ app.include_router(
     admin_router,
     prefix="/api/admin",
     tags=["Admin"]
+)
+
+app.include_router(
+    blog_router,
+    prefix="/api/blog",
+    tags=["Blog"]
 )
 
 # Mount static files (for serving PDF reports and uploads)

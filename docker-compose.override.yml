@@ -2,8 +2,6 @@
 # This file is automatically loaded by docker-compose
 # Use: docker-compose up -d for development with hot reload
 
-version: '3.8'
-
 services:
   backend:
     environment:
@@ -19,17 +17,19 @@ services:
     ]
 
   frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
     environment:
+      - VITE_API_URL=http://localhost:8000
       - VITE_DEV_MODE=true
       - VITE_DEBUG_MODE=true
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-      - ./package.json:/app/package.json
-      - ./vite.config.ts:/app/vite.config.ts
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./tailwind.config.js:/app/tailwind.config.js
+      - ./:/app
       - /app/node_modules  # Exclude node_modules from bind mount
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "80"]
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
     ports:
-      - "5173:80"  # Use Vite's default port for development
+      - "5173:5173"
+    healthcheck:
+      disable: true

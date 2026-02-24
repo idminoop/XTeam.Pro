@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run check:*)",
+      "Bash(npx tsc:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(./venv/Scripts/python:*)",
+      "Bash(powershell -Command \"New-Item -ItemType Directory -Force -Path ''c:\\\\Users\\\\Novik\\\\OneDrive\\\\Рабочий стол\\\\Trae\\\\XTeam\\\\XTeam.Pro\\\\backend\\\\migrations\\\\versions'' | Out-Null; Write-Output ''created''\")",
+      "Bash(powershell -Command \"\n$mako = @''\n\\\\`\\\\`\\\\`{message}\n\nRevision ID: {up_revision}\nRevises: {down_revision | comma,n}\nCreate Date: {create_date}\n\n\\\\`\\\\`\\\\`\nfrom typing import Sequence, Union\nfrom alembic import op\nimport sqlalchemy as sa\n\nrevision = repr\\(up_revision\\)\ndown_revision = repr\\(down_revision\\)\nbranch_labels = repr\\(branch_labels\\)\ndepends_on = repr\\(depends_on\\)\n\ndef upgrade\\(\\):\n    pass\n\ndef downgrade\\(\\):\n    pass\n''@\nWrite-Output ''skip mako - not writeable easily''\n\")",
+      "Bash(echo:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npx vite build:*)",
+      "Bash(\"c:/Users/Novik/OneDrive/Рабочий стол/Trae/XTeam/XTeam.Pro/backend/venv/Scripts/pip.exe\" install alembic)",
+      "Bash(BACKEND=\"c:/Users/Novik/OneDrive/Рабочий стол/Trae/XTeam/XTeam.Pro/backend\")",
+      "Bash(\"$BACKEND/venv/Scripts/python.exe\" -m alembic -c \"$BACKEND/alembic.ini\" revision --autogenerate -m \"initial_schema\")",
+      "Bash(VENV_PYTHON=\"c:/Users/Novik/OneDrive/Рабочий стол/Trae/XTeam/XTeam.Pro/backend/venv/Scripts/python.exe\":*)",
+      "Bash(\"c:/Users/Novik/OneDrive/Рабочий стол/Trae/XTeam/XTeam.Pro/backend/venv/Scripts/pip.exe\" install python-dotenv aiosqlite)"
     ]
   }
 }
