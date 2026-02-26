@@ -1,20 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Globe, ArrowRight, Linkedin, Twitter, Mail, MapPin, Phone, Calendar } from 'lucide-react';
+import { Users, Target, Award, Globe, ArrowRight, Mail, MapPin, MessageSquare, Calendar, Bot, BookOpen, Server, UserCheck, Layers } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { buildContactPath } from '@/utils/contactQuery';
 
-interface TeamMember {
+interface DomainArea {
   id: string;
-  name: string;
-  position: string;
-  bio: string;
-  expertise: string[];
-  image: string;
-  linkedin?: string;
-  twitter?: string;
-  email?: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
 }
 
 interface Milestone {
@@ -25,67 +20,36 @@ interface Milestone {
 
 export default function About() {
   const { t } = useTranslation();
-  const teamMembers: TeamMember[] = [
+  const domainAreas: DomainArea[] = [
     {
-      id: 'sarah-chen',
-      name: t('about.teamMembers.sarahChen.name'),
-      position: t('about.teamMembers.sarahChen.position'),
-      bio: t('about.teamMembers.sarahChen.bio'),
-      expertise: t('about.teamMembers.sarahChen.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20Asian%20woman%20CEO%20in%20business%20attire%2C%20confident%20smile%2C%20modern%20office%20background%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/sarahchen',
-      twitter: 'https://twitter.com/sarahchen_ai',
-      email: 'sarah@xteam.pro'
+      id: 'ai-ml',
+      icon: <Bot className="w-8 h-8" />,
+      title: t('about.teamDomains.aiMl.title'),
+      description: t('about.teamDomains.aiMl.description')
     },
     {
-      id: 'michael-rodriguez',
-      name: t('about.teamMembers.michaelRodriguez.name'),
-      position: t('about.teamMembers.michaelRodriguez.position'),
-      bio: t('about.teamMembers.michaelRodriguez.bio'),
-      expertise: t('about.teamMembers.michaelRodriguez.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20Hispanic%20male%20CTO%20with%20glasses%2C%20friendly%20expression%2C%20tech%20office%20background%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/michaelrodriguez',
-      email: 'michael@xteam.pro'
+      id: 'edtech',
+      icon: <BookOpen className="w-8 h-8" />,
+      title: t('about.teamDomains.edtech.title'),
+      description: t('about.teamDomains.edtech.description')
     },
     {
-      id: 'jennifer-walsh',
-      name: t('about.teamMembers.jenniferWalsh.name'),
-      position: t('about.teamMembers.jenniferWalsh.position'),
-      bio: t('about.teamMembers.jenniferWalsh.bio'),
-      expertise: t('about.teamMembers.jenniferWalsh.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20Caucasian%20woman%20VP%20in%20business%20suit%2C%20warm%20smile%2C%20corporate%20office%20setting%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/jenniferwalsh',
-      email: 'jennifer@xteam.pro'
+      id: 'backend',
+      icon: <Server className="w-8 h-8" />,
+      title: t('about.teamDomains.backend.title'),
+      description: t('about.teamDomains.backend.description')
     },
     {
-      id: 'david-kim',
-      name: t('about.teamMembers.davidKim.name'),
-      position: t('about.teamMembers.davidKim.position'),
-      bio: t('about.teamMembers.davidKim.bio'),
-      expertise: t('about.teamMembers.davidKim.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20Korean%20male%20engineer%20in%20casual%20business%20attire%2C%20confident%20look%2C%20modern%20tech%20office%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/davidkim',
-      email: 'david@xteam.pro'
+      id: 'hr-automation',
+      icon: <UserCheck className="w-8 h-8" />,
+      title: t('about.teamDomains.hrAutomation.title'),
+      description: t('about.teamDomains.hrAutomation.description')
     },
     {
-      id: 'amanda-foster',
-      name: t('about.teamMembers.amandaFoster.name'),
-      position: t('about.teamMembers.amandaFoster.position'),
-      bio: t('about.teamMembers.amandaFoster.bio'),
-      expertise: t('about.teamMembers.amandaFoster.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20African%20American%20woman%20product%20manager%2C%20bright%20smile%2C%20creative%20office%20space%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/amandafoster',
-      email: 'amanda@xteam.pro'
-    },
-    {
-      id: 'robert-johnson',
-      name: t('about.teamMembers.robertJohnson.name'),
-      position: t('about.teamMembers.robertJohnson.position'),
-      bio: t('about.teamMembers.robertJohnson.bio'),
-      expertise: t('about.teamMembers.robertJohnson.expertise', { returnObjects: true }) as string[],
-      image: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20headshot%20of%20Caucasian%20male%20VP%20sales%20in%20navy%20suit%2C%20professional%20smile%2C%20executive%20office%20background%2C%20high%20quality%20portrait&image_size=square',
-      linkedin: 'https://linkedin.com/in/robertjohnson',
-      email: 'robert@xteam.pro'
+      id: 'product',
+      icon: <Layers className="w-8 h-8" />,
+      title: t('about.teamDomains.productDesign.title'),
+      description: t('about.teamDomains.productDesign.description')
     }
   ];
 
@@ -234,11 +198,24 @@ export default function About() {
               animate={{ opacity: 1, x: 0 }}
               className="relative"
             >
-              <img
-                src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Modern%20tech%20office%20with%20diverse%20team%20collaborating%20on%20AI%20projects%2C%20multiple%20monitors%20showing%20data%20visualizations%2C%20bright%20and%20innovative%20workspace&image_size=landscape_4_3"
-                alt={t('about.story.officeImageAlt')}
-                className="rounded-2xl shadow-lg"
-              />
+              <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-10 text-white space-y-6">
+                <div className="flex items-center gap-3">
+                  <Globe className="w-8 h-8 opacity-80" />
+                  <span className="text-lg font-semibold">Baku / Moscow</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Award className="w-8 h-8 opacity-80" />
+                  <span className="text-lg font-semibold">{t('about.story.recognition')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Target className="w-8 h-8 opacity-80" />
+                  <span className="text-lg font-semibold">{t('about.story.mission')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Users className="w-8 h-8 opacity-80" />
+                  <span className="text-lg font-semibold">{t('about.story.team')}</span>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -341,54 +318,19 @@ export default function About() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
+            {domainAreas.map((domain, index) => (
               <motion.div
-                key={member.id}
+                key={domain.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index }}
                 className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow"
               >
-                <div className="text-center mb-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-semibold mb-3">{member.position}</p>
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full mb-4">
+                  {domain.icon}
                 </div>
-                
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{member.bio}</p>
-                
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-2">{t('about.team.expertise')}:</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {member.expertise.map((skill, idx) => (
-                      <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex justify-center space-x-3 pt-4 border-t border-gray-100">
-                  {member.linkedin && (
-                    <a href={member.linkedin} className="text-gray-400 hover:text-blue-600 transition-colors">
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                  )}
-                  {member.twitter && (
-                    <a href={member.twitter} className="text-gray-400 hover:text-blue-400 transition-colors">
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                  )}
-                  {member.email && (
-                    <a href={`mailto:${member.email}`} className="text-gray-400 hover:text-gray-600 transition-colors">
-                      <Mail className="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{domain.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{domain.description}</p>
               </motion.div>
             ))}
           </div>
@@ -432,7 +374,7 @@ export default function About() {
               className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full mb-4">
-                <Phone className="w-6 h-6" />
+                <MessageSquare className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('about.contact.contactInfo.title')}</h3>
               <p className="text-gray-600">
@@ -479,7 +421,7 @@ export default function About() {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
               <Link
-                to="/case-studies"
+                to="/solutions"
                 className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center"
               >
                 {t('about.cta.downloadButton')}

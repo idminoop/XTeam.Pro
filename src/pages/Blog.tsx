@@ -91,7 +91,10 @@ export default function Blog() {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString(i18n.language, {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
+    const locale = (i18n.resolvedLanguage || i18n.language || 'en').startsWith('ru') ? 'ru-RU' : 'en-US';
+    return date.toLocaleDateString(locale, {
       year: 'numeric', month: 'long', day: 'numeric',
     });
   };

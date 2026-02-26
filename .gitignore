@@ -39,3 +39,5 @@ output/
 *.sln
 *.sw?
 .playwright-cli/
+.trae/documents/user_doc
+tmp/docs

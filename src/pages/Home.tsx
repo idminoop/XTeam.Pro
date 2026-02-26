@@ -33,10 +33,10 @@ export default function Home() {
   ];
 
   const stats = [
-    { number: "500+", label: t('home.stats.businessesTransformed') },
-    { number: "300%", label: t('home.stats.averageROI') },
-    { number: "75%", label: t('home.stats.processingTime') },
-    { number: "99%", label: t('home.stats.clientSatisfaction') }
+    { number: "3-5x", label: t('home.stats.businessesTransformed') },
+    { number: "10%+", label: t('home.stats.averageROI') },
+    { number: "6-9", label: t('home.stats.processingTime') },
+    { number: "RUB 50k-300k", label: t('home.stats.clientSatisfaction') }
   ];
 
   return (
@@ -53,7 +53,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8 py-3">
-                <Link to="/audit">
+                <Link to={buildContactPath({ source: 'home_hero_pilot' })}>
                   {t('home.hero.ctaPrimary')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -63,6 +63,20 @@ export default function Home() {
                   {t('home.hero.ctaSecondary')}
                 </Link>
               </Button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-6 text-sm text-gray-500">
+              <span className="flex items-center gap-1">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                {t('home.hero.trustMarker1')}
+              </span>
+              <span className="flex items-center gap-1">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                {t('home.hero.trustMarker2')}
+              </span>
+              <span className="flex items-center gap-1">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                {t('home.hero.trustMarker3')}
+              </span>
             </div>
           </div>
         </div>
@@ -112,6 +126,14 @@ export default function Home() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button asChild variant="outline" size="lg">
+              <Link to="/solutions">
+                {t('home.hero.ctaSecondary')}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -183,9 +205,9 @@ export default function Home() {
               asChild
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
+              className="bg-transparent text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
             >
-              <Link to="/case-studies">
+              <Link to="/solutions">
                 {t('home.finalCta.caseStudies')}
               </Link>
             </Button>

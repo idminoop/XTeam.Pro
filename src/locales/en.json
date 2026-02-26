@@ -3,7 +3,7 @@
     "home": "Home",
     "solutions": "Solutions",
     "caseStudies": "Case Studies",
-    "pricing": "Pricing",
+    "pricing": "Engagement",
     "about": "About",
     "contact": "Contact",
     "blog": "Blog",
@@ -40,59 +40,59 @@
   },
   "home": {
     "hero": {
-      "title": "Transform Your Business with AI Solutions",
-      "subtitle": "Unlock unprecedented efficiency and growth with our cutting-edge artificial intelligence platform designed for modern enterprises",
-      "ctaPrimary": "Start Free Audit",
-      "ctaSecondary": "Learn More"
+      "title": "We build AI automation for complex business processes",
+      "subtitle": "We work with medium and large companies (from RUB 300M annual turnover). Decision makers: CEO, HR Director, IT Director, Commercial Director, Production Director.",
+      "ctaPrimary": "Request a pilot",
+      "ctaSecondary": "View solutions"
     },
     "features": {
-      "title": "Why Choose Our AI Platform",
-      "subtitle": "Discover the powerful features that set us apart",
+      "title": "Common business problems we solve",
+      "subtitle": "Cut losses, speed up operations, and make processes measurable.",
       "aiAudit": {
-        "title": "AI-Powered Analysis",
-        "description": "Advanced algorithms analyze your business processes to identify optimization opportunities"
+        "title": "AI & Multi-agent Systems",
+        "description": "LLM orchestration, autonomous agents, RAG pipelines, knowledge graphs — for automation of complex business and educational processes"
       },
       "processAutomation": {
-        "title": "Process Automation",
-        "description": "Streamline workflows and reduce manual tasks with intelligent automation solutions"
+        "title": "X-LogOS Knowledge OS",
+        "description": "Corporate knowledge management platform: documentation, HR development, training, certification — in one unified system replacing Wiki + LMS"
       },
       "roiOptimization": {
-        "title": "ROI Optimization",
-        "description": "Maximize return on investment through data-driven insights and strategic recommendations"
+        "title": "HRXteam L&D",
+        "description": "Personnel automation: competency assessment, selection, onboarding pipelines, certification tracking and productivity analytics"
       },
       "scalableGrowth": {
-        "title": "Scalable Growth",
-        "description": "Build sustainable growth with AI solutions that scale with your business needs"
+        "title": "Industry Pilots",
+        "description": "Turnkey pilots in 4–8 weeks. Aviation, logistics, security, manufacturing, HR/L&D — modular architecture, no vendor lock-in"
       }
     },
     "stats": {
-      "businessesTransformed": "Businesses Transformed",
-      "averageROI": "Average ROI Increase",
-      "processingTime": "Faster Processing",
-      "clientSatisfaction": "Client Satisfaction",
+      "businessesTransformed": "Order processing speed",
+      "averageROI": "Loss reduction from errors",
+      "processingTime": "Typical payback period",
+      "clientSatisfaction": "Pilot budget range",
       "successfulProjects": "Successful Projects",
       "happyClients": "Happy Clients"
     },
     "benefits": {
-      "title": "Unlock Your Business Potential",
-      "subtitle": "Our AI-powered platform analyzes your current operations and provides actionable insights to drive efficiency, reduce costs, and accelerate growth.",
+      "title": "What we automate",
+      "subtitle": "Any complex business process can be made faster, cheaper and more accurate. The higher the qualifications required of your current staff — the greater the impact of our solutions.",
       "list": {
-        "automation": "Identify automation opportunities in minutes",
-        "roi": "Get personalized ROI forecasts and recommendations",
-        "roadmaps": "Receive detailed implementation roadmaps",
-        "support": "Access ongoing support and optimization"
+        "automation": "Customer interaction automation in all channels",
+        "roi": "Document flow and intelligent report generation",
+        "roadmaps": "Personnel selection, training and onboarding",
+        "support": "CRM analytics and business process optimization"
       },
       "cta": {
-        "title": "Ready to Get Started?",
-        "subtitle": "Take our free 5-minute AI audit and discover how much you could save.",
-        "button": "Start Your Free Audit Now"
+        "title": "Discuss your process",
+        "subtitle": "We propose an online meeting to select tasks for a pilot express project at any convenient time.",
+        "button": "Request a pilot"
       }
     },
     "finalCta": {
-      "title": "Transform Your Business Today",
-      "subtitle": "Join hundreds of companies that have already revolutionized their operations with our AI-powered automation solutions.",
-      "consultation": "Schedule Consultation",
-      "caseStudies": "View Case Studies"
+      "title": "Ready to discuss?",
+      "subtitle": "We test and use the most advanced AI solutions daily. Pilot results in days after task discussion.",
+      "consultation": "Book a discovery call",
+      "caseStudies": "View solutions"
     },
     "cta": {
       "title": "Ready to Transform Your Business?",
@@ -101,8 +101,8 @@
     }
   },
   "blog": {
-    "title": "AI Insights & Industry Expertise",
-    "subtitle": "Stay ahead of the curve with our latest insights on AI trends, implementation strategies, and success stories from leading organizations.",
+    "title": "XTeam Insights",
+    "subtitle": "Practical notes from our pilots: AI automation, knowledge systems, and implementation playbooks.",
     "searchPlaceholder": "Search articles, topics, or tags...",
     "categories": {
       "all": "All Posts",
@@ -126,8 +126,8 @@
     "noResults": "No articles found matching your search.",
     "tryDifferentSearch": "Try different keywords or browse our categories.",
     "newsletter": {
-      "title": "Stay Updated with AI Insights",
-      "subtitle": "Get the latest AI trends, implementation strategies, and success stories delivered straight to your inbox.",
+      "title": "Get practical AI implementation notes",
+      "subtitle": "Updates from real pilots, architecture decisions, and lessons learned.",
       "placeholder": "Enter your email",
       "subscribe": "Subscribe",
       "success": "Thank you for subscribing!",
@@ -566,21 +566,21 @@
     }
   },
   "footer": {
-    "description": "Transforming businesses through AI-driven automation and intelligent process optimization.",
+    "description": "R&D ecosystem at the intersection of AI, new mathematics and human-machine symbiosis. From educational platforms to complex B2B process automation.",
     "sections": {
-      "solutions": "Solutions",
+      "solutions": "Products",
       "resources": "Resources",
       "company": "Company"
     },
     "links": {
-      "processAutomation": "Process Automation",
-      "dataIntegration": "Data Integration",
-      "aiImplementation": "AI Implementation",
-      "customDevelopment": "Custom Development",
+      "processAutomation": "FastAI / DealMaster",
+      "dataIntegration": "X-LogOS Knowledge OS",
+      "aiImplementation": "StudyNinja",
+      "customDevelopment": "HRXteam",
       "caseStudies": "Case Studies",
       "blog": "Blog",
-      "roiCalculator": "ROI Calculator",
-      "freeAudit": "Free Audit",
+      "roiCalculator": "Engagement Models",
+      "freeAudit": "AI Audit",
       "aboutUs": "About Us",
       "careers": "Careers",
       "contact": "Contact",
@@ -589,9 +589,9 @@
       "cookiePolicy": "Cookie Policy"
     },
     "contact": {
-      "email": "hello@xteam.pro",
-      "phone": "+1 (555) 123-4567",
-      "address": "San Francisco, CA"
+      "email": "info@xteam.pro",
+      "phone": "@xteampro",
+      "address": "Baku · Moscow"
     },
     "copyright": "© {{year}} XTeam.Pro. All rights reserved."
   },
@@ -666,514 +666,617 @@
   },
   "about": {
     "hero": {
-      "title": "Pioneering the Future of",
-      "titleHighlight": "Business AI",
-      "subtitle": "We're a team of AI experts, engineers, and business strategists dedicated to transforming how companies operate through intelligent automation."
+      "title": "R&D Ecosystem at the Intersection of",
+      "titleHighlight": "AI and Business",
+      "subtitle": "We connect fundamental research with industrial development — from school AI tutors to complex B2B process automation. Modular. Open. Vendor-lock-free."
     },
     "story": {
       "title": "Our Story",
-      "paragraph1": "XTeam.Pro was born from a simple observation: while AI technology was advancing rapidly, most businesses struggled to implement it effectively. The gap between AI's potential and practical business applications was enormous.",
-      "paragraph2": "Our founders, Sarah Chen and Dr. Michael Rodriguez, had spent years building AI systems at tech giants like Google and Microsoft. They witnessed firsthand how AI could transform operations, but also saw how complex and expensive implementations often were.",
-      "paragraph3": "In 2019, they decided to bridge this gap by creating XTeam.Pro - a company focused on making enterprise-grade AI accessible, practical, and profitable for businesses of all sizes.",
-      "paragraph4": "Today, we've helped over 500 companies across 25+ countries implement AI solutions that deliver real, measurable results. Our approach combines cutting-edge technology with deep business expertise to ensure every AI implementation drives tangible value.",
-      "officeImageAlt": "XTeam.Pro Office"
+      "paragraph1": "XTeam.Pro is an ecosystem that bridges advanced technology research and real business implementations. We create products and deploy them in live processes: from educational AI to full-scale B2B automation.",
+      "paragraph2": "Our focus is applied AI for education and business, new-class computational libraries, and turnkey integrations. We stand for modularity, openness and scalability: vendor-lock-free architectures, transparent interfaces, fast integration.",
+      "paragraph3": "Our mission — Human-Magic: Human Machine Artificial General Intelligence Core Symbiosis. We believe the greatest impact comes when AI and human expertise work together, not as a replacement.",
+      "paragraph4": "Confirmed institutional base: pilots, agreements and statuses. The StudyNinja project is supported by the Russian Ministry of Education and Science and the State Innovation Fund.",
+      "officeImageAlt": "XTeam.Pro Team",
+      "recognition": "Ministry of Education support",
+      "mission": "Human-Magic — AI & Human Symbiosis",
+      "team": "Engineers across Baku & Moscow"
     },
     "journey": {
       "title": "Our Journey",
-      "subtitle": "Key milestones in our mission to democratize AI for businesses worldwide."
+      "subtitle": "Key milestones in building the XTeam.Pro ecosystem."
     },
     "team": {
-      "title": "Meet Our Team",
-      "subtitle": "World-class experts in AI, engineering, and business strategy working together to deliver exceptional results for our clients.",
+      "title": "Our Team",
+      "subtitle": "AI engineers, data scientists, and business analysts across Baku and Moscow — working at the intersection of technology and real business problems.",
       "expertise": "Expertise"
+    },
+    "teamDomains": {
+      "aiMl": {
+        "title": "AI / ML Engineering",
+        "description": "LLM orchestration, multi-agent systems, RAG pipelines, PyTorch, vector databases (Qdrant), Elasticsearch"
+      },
+      "edtech": {
+        "title": "EdTech & Knowledge Systems",
+        "description": "Adaptive learning, psychometric profiling (HBDI/Big Five), knowledge graphs, competency taxonomies"
+      },
+      "backend": {
+        "title": "Backend & DevOps",
+        "description": "FastAPI, Python, PostgreSQL, Redis, Docker, GitHub Actions, Traefik, Grafana, Prometheus, CapRover"
+      },
+      "hrAutomation": {
+        "title": "HR Automation",
+        "description": "Personnel assessment systems, onboarding pipelines, certification management, productivity analytics"
+      },
+      "productDesign": {
+        "title": "Product & Integration",
+        "description": "React/TypeScript, Flutter, n8n, Typebot, API-first design, OpenAPI/Swagger, Agile/Kanban"
+      }
     },
     "contact": {
       "title": "Get in Touch",
-      "subtitle": "Ready to transform your business with AI? We'd love to hear from you.",
+      "subtitle": "Ready to discuss your automation challenge? We'd love to help.",
       "headquarters": {
-        "title": "Headquarters",
-        "address": "123 Innovation Drive\nSan Francisco, CA 94105\nUnited States"
+        "title": "Locations",
+        "address": "Baku, Azerbaijan\nMoscow, Russia"
       },
       "contactInfo": {
         "title": "Contact",
-        "details": "+1 (555) 123-4567\nhello@xteam.pro\nAvailable 24/7"
+        "details": "info@xteam.pro\n@xteampro (Telegram)"
       },
       "schedule": {
         "title": "Schedule",
-        "details": "Book a free consultation\n30-minute strategy session\nNo commitment required"
+        "details": "Book a discovery call\n30-minute task discussion\nNo commitment required"
       }
     },
     "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Join thousands of companies already using our AI solutions to drive growth and efficiency.",
-      "scheduleButton": "Schedule Consultation",
-      "downloadButton": "Download Case Studies"
+      "title": "Ready to discuss your project?",
+      "subtitle": "Pilot results in days after task discussion. Modular approach — start small, scale fast.",
+      "scheduleButton": "Book a discovery call",
+      "downloadButton": "View solutions"
     },
     "teamMembers": {
       "sarahChen": {
-        "name": "Sarah Chen",
-        "position": "CEO & Co-Founder",
-        "bio": "Former AI Research Director at Google with 15+ years in machine learning and enterprise automation. Led teams that deployed AI solutions for Fortune 500 companies, generating over $2B in cost savings.",
+        "name": "AI / ML Engineering",
+        "position": "Core Team",
+        "bio": "LLM orchestration, multi-agent systems, RAG pipelines, PyTorch, vector databases — building autonomous agents for complex business and educational processes.",
         "expertise": [
           "AI Strategy",
           "Machine Learning",
-          "Enterprise Architecture",
-          "Team Leadership"
+          "Multi-agent Systems",
+          "Knowledge Graphs"
         ]
       },
       "michaelRodriguez": {
-        "name": "Dr. Michael Rodriguez",
-        "position": "CTO & Co-Founder",
-        "bio": "PhD in Computer Science from MIT, former Principal Engineer at Microsoft Azure AI. Architect of scalable AI systems serving millions of users. Published 50+ research papers in top-tier AI conferences.",
+        "name": "EdTech & Knowledge Systems",
+        "position": "Core Team",
+        "bio": "Adaptive learning trajectories, psychometric profiling (HBDI/Big Five), competency taxonomies — powering StudyNinja and X-LogOS Knowledge OS.",
         "expertise": [
-          "Deep Learning",
-          "Cloud Architecture",
-          "AI Research",
-          "System Design"
+          "EdTech",
+          "Knowledge Graphs",
+          "Adaptive Learning",
+          "Psychometrics"
         ]
       },
       "jenniferWalsh": {
-        "name": "Jennifer Walsh",
-        "position": "VP of Customer Success",
-        "bio": "Former McKinsey consultant with 12+ years helping enterprises optimize operations. Led digital transformation initiatives for 100+ companies across various industries.",
+        "name": "Backend & DevOps",
+        "position": "Core Team",
+        "bio": "FastAPI, Python, PostgreSQL, Redis, Docker, Traefik, GitHub Actions, Prometheus — reliable production infrastructure for all XTeam products.",
         "expertise": [
-          "Business Strategy",
-          "Change Management",
-          "Customer Success",
-          "Process Optimization"
+          "FastAPI",
+          "DevOps",
+          "Cloud Infrastructure",
+          "CI/CD"
         ]
       },
       "davidKim": {
-        "name": "David Kim",
-        "position": "Head of AI Engineering",
-        "bio": "Former Senior ML Engineer at Tesla Autopilot team. Expert in computer vision, NLP, and real-time AI systems. Built AI models that process millions of data points daily.",
+        "name": "HR Automation",
+        "position": "Core Team",
+        "bio": "Personnel assessment, competency modeling, automated onboarding pipelines, certification management, productivity analytics — HRXteam direction.",
         "expertise": [
-          "Computer Vision",
-          "NLP",
-          "MLOps",
-          "Real-time Systems"
+          "HR Tech",
+          "Process Automation",
+          "Competency Models",
+          "L&D"
         ]
       },
       "amandaFoster": {
-        "name": "Amanda Foster",
-        "position": "Head of Product",
-        "bio": "Former Product Manager at Salesforce with 10+ years designing enterprise software. Led product teams that launched AI features used by millions of businesses worldwide.",
+        "name": "Product & Integration",
+        "position": "Core Team",
+        "bio": "React/TypeScript, Flutter, n8n, Typebot, API-first design, OpenAPI — seamless product experiences and third-party integrations.",
         "expertise": [
-          "Product Strategy",
-          "UX Design",
-          "Enterprise Software",
-          "Agile Development"
+          "Product Design",
+          "React/TypeScript",
+          "Flutter",
+          "n8n"
         ]
       },
       "robertJohnson": {
-        "name": "Robert Johnson",
-        "position": "VP of Sales",
-        "bio": "Former Enterprise Sales Director at IBM with 15+ years in B2B technology sales. Closed $500M+ in enterprise deals and built high-performing sales teams.",
+        "name": "Business Development",
+        "position": "Core Team",
+        "bio": "Industry pilots, client discovery, partnership development across aviation, security systems, manufacturing, finance and HR/L&D sectors.",
         "expertise": [
-          "Enterprise Sales",
-          "Business Development",
-          "Client Relations",
-          "Team Building"
+          "Business Strategy",
+          "Industry Pilots",
+          "Partnerships",
+          "B2B"
         ]
       }
     },
     "milestones": {
       "founded": {
-        "year": "2019",
-        "title": "Company Founded",
-        "description": "Started with a vision to democratize AI for businesses of all sizes"
+        "year": "2022",
+        "title": "XTeam.Pro Founded",
+        "description": "Ecosystem launched connecting R&D research with industrial AI implementations"
       },
       "firstClient": {
-        "year": "2020",
-        "title": "First Enterprise Client",
-        "description": "Successfully deployed our first AI automation solution, saving our client $2M annually."
+        "year": "2023",
+        "title": "StudyNinja Platform",
+        "description": "Educational AI platform with personal learning trajectories, multi-agent AI tutor and psychometric profiling"
       },
       "seriesA": {
-        "year": "2021",
-        "title": "Series A Funding",
-        "description": "Raised $15M Series A to expand our AI platform and grow the team."
+        "year": "2023",
+        "title": "Ministry of Education Support",
+        "description": "StudyNinja project supported by Russian Ministry of Education and Science and State Innovation Fund"
       },
       "hundredClients": {
-        "year": "2022",
-        "title": "100+ Successful Deployments",
-        "description": "Reached milestone of 100 successful AI implementations across various industries."
+        "year": "2024",
+        "title": "Aviation Pilot (FastAI)",
+        "description": "AI email ingestion pipeline for aircraft parts RFQ processing — first major B2B automation case study"
       },
       "aiAward": {
-        "year": "2023",
-        "title": "AI Innovation Award",
-        "description": "Recognized as \"AI Innovation Company of the Year\" by TechCrunch."
+        "year": "2024",
+        "title": "X-LogOS Knowledge OS",
+        "description": "Corporate knowledge management platform deployed — combining Wiki, LMS, and process documentation in one system"
       },
       "globalExpansion": {
-        "year": "2024",
-        "title": "Global Expansion",
-        "description": "Expanded operations to Europe and Asia, serving clients across 25+ countries."
+        "year": "2025",
+        "title": "Multi-industry Expansion",
+        "description": "Active pilots across aviation, security systems, manufacturing, financial analytics and HR/L&D sectors"
       }
     },
     "values": {
-      "title": "Our Values",
-      "subtitle": "The principles that guide everything we do and every decision we make.",
+      "title": "Our Principles",
+      "subtitle": "The architecture decisions and working principles that define how we build and deliver.",
       "resultsDriven": {
-        "title": "Results-Driven",
-        "description": "We measure success by the tangible impact we create for our clients - cost savings, efficiency gains, and revenue growth."
+        "title": "Modularity & Openness",
+        "description": "Vendor-lock-free architectures, API-first design, transparent interfaces. You can change LLM providers, cloud vendors, or add modules without redesigning the core."
       },
       "humanCenteredAI": {
-        "title": "Human-Centered AI",
-        "description": "Our AI solutions augment human capabilities rather than replace them, creating better experiences for employees and customers."
+        "title": "Applied Science",
+        "description": "We bridge fundamental research (new mathematics, knowledge graphs, psychometrics) with real industrial implementations — not theoretical showcases."
       },
       "excellence": {
-        "title": "Excellence",
-        "description": "We maintain the highest standards in everything we do, from code quality to customer service."
+        "title": "Speed to Value",
+        "description": "Discovery in 1-2 weeks, MVP in 4-8 weeks, working pilot in 4-12 weeks. Results in days after task discussion, not months after a lengthy sales process."
       },
       "transparency": {
-        "title": "Transparency",
-        "description": "We believe in open communication, clear pricing, and honest assessments of what AI can and cannot do."
+        "title": "Transparency & Ethics",
+        "description": "OpenAPI/Swagger documentation, explainable AI decisions, data minimization, clear human/machine responsibility boundaries, option to delete data on request."
       }
     },
     "stats": {
       "clientsServed": {
-        "number": "500+",
-        "label": "AI Projects Delivered",
-        "description": "Enterprise clients across 25+ countries"
+        "number": "6+",
+        "label": "Active Products",
+        "description": "StudyNinja, X-LogOS, VILAVI AI, FastAI, HRXteam, Balansis"
       },
       "costSavings": {
-        "number": "$100M+",
-        "label": "Client Cost Savings",
-        "description": "Measurable ROI for our clients"
+        "number": "1.5×",
+        "label": "Operational Efficiency",
+        "description": "Achieved in aviation process automation pilot"
       },
       "uptime": {
-        "number": "25+",
-        "label": "Countries Served",
-        "description": "Reliable AI systems you can count on"
+        "number": "30%+",
+        "label": "Productivity Gain",
+        "description": "HR effectiveness improvement in knowledge base case"
       },
       "support": {
-        "number": "98%",
-        "label": "Client Satisfaction",
-        "description": "Round-the-clock assistance when you need it"
+        "number": "2",
+        "label": "Office Locations",
+        "description": "Baku, Azerbaijan · Moscow, Russia"
       }
     }
   },
   "solutions": {
     "hero": {
-      "title": "AI Solutions That Transform",
-      "titleHighlight": "Your Business",
-      "subtitle": "Discover how our AI-powered automation solutions can revolutionize your operations, reduce costs, and accelerate growth across every aspect of your business.",
-      "ctaButton": "Start Your AI Journey"
+      "title": "Products & Solutions",
+      "titleHighlight": "by XTeam.Pro",
+      "subtitle": "From educational AI and corporate knowledge management to B2B process automation and digital health — applied technology for real business challenges.",
+      "ctaButton": "Discuss a pilot"
     },
     "coreSolutions": {
-      "title": "Core AI Solutions",
-      "subtitle": "Comprehensive automation solutions designed to address your most critical business challenges.",
+      "title": "Our Products",
+      "subtitle": "Six active solutions at the intersection of AI, knowledge systems, and business automation.",
       "benefits": "Key Benefits",
       "useCases": "Use Cases",
-      "roiImpact": "ROI Impact",
-      "implementation": "Implementation"
+      "roiImpact": "Business Value",
+      "implementation": "Timeline / Status"
+    },
+    "xlogos": {
+      "title": "X-LogOS — Corporate Knowledge Platform",
+      "subtitle": "Flagship product",
+      "description": "A graph platform for designing, storing, and leveraging corporate knowledge as a managed strategic asset. Creates a Knowledge OS — the company's knowledge operating system — as the foundation for AI automation.",
+      "forWhom": "For companies with 300+ employees losing value to slow onboarding, duplicated information, and dependency on key experts.",
+      "benefits": [
+        "Unified knowledge network: experts, processes, standards, regulations",
+        "Structured knowledge for AI agents — they work with context, not in a vacuum",
+        "3x faster onboarding for new employees",
+        "Identifies processes with the highest automation ROI",
+        "Foundation for long-term digital transformation"
+      ],
+      "cta": "Get X-LogOS demo"
+    },
+    "hrxteam": {
+      "title": "HRXteam — AI-Powered HR Automation",
+      "subtitle": "Business line",
+      "description": "AI is changing workforce requirements faster than companies can adapt. HRXteam is a mass testing, reskilling, and productivity growth system for people in the AI era.",
+      "problems": [
+        "Recruitment takes months with unpredictable candidate flow",
+        "Onboarding is slow and expensive without a system",
+        "Competency assessment is subjective with no proper tools",
+        "Reskilling for new requirements is ad hoc"
+      ],
+      "solutions": [
+        "Smart candidate search and pre-screening with psychological profiling",
+        "Automated onboarding from the corporate knowledge base + AI tutor",
+        "Comprehensive knowledge and competency testing without limits",
+        "Individual reskilling scenarios with measurable outcomes"
+      ],
+      "roi": "100%+ ROI return on investment across cases",
+      "cta": "Discuss HR automation"
+    },
+    "blocks": {
+      "automation": {
+        "pain": "Manual work is eating your margins",
+        "title": "Client Operations Automation",
+        "description": "We automate incoming request processing, document workflows, and routine communications — managers focus on sales and growth, not data entry.",
+        "benefits": [
+          "Process requests 3-5x faster without adding headcount",
+          "Automatic data validation and enrichment",
+          "10%+ reduction in errors and lost clients",
+          "Complete communication history in one system"
+        ],
+        "metric": "3-5x",
+        "metricLabel": "request processing speed — real B2B case",
+        "caseRef": "View case study",
+        "cta": "Discuss automation"
+      },
+      "xlogos": {
+        "pain": "Knowledge leaves with people",
+        "metric": "3x",
+        "metricLabel": "faster onboarding for new employees",
+        "caseRef": "View case: Corporate knowledge base",
+        "cta": "Get X-LogOS demo"
+      },
+      "analytics": {
+        "pain": "No cross-system analytics — decisions based on gut feel",
+        "title": "Analytics & Data Management",
+        "description": "We consolidate data from disparate systems, automate reports, and give leadership a single dashboard for fact-based decisions.",
+        "benefits": [
+          "Automated reports without manual data collection",
+          "Single executive dashboard",
+          "Forecasting of key business metrics",
+          "CRM, ERP, and external source integration"
+        ],
+        "metric": "80%",
+        "metricLabel": "of reports automated — energy sector case",
+        "caseRef": "View case: Energy sector",
+        "cta": "Discuss analytics"
+      },
+      "hrxteam": {
+        "pain": "Staff can't keep up with changes",
+        "metric": "100%+",
+        "metricLabel": "ROI return on investment across HRXteam cases",
+        "caseRef": "Discuss HR challenge",
+        "cta": "Discuss HR automation"
+      }
     },
     "industryStories": {
-      "title": "Industry Success Stories",
-      "subtitle": "Real results from companies that transformed their business with our AI solutions.",
+      "title": "Where We Apply",
+      "subtitle": "Industry directions where XTeam solutions deliver measurable results.",
       "challenge": "Challenge",
       "solution": "Solution",
       "results": "Results"
     },
     "industryScenarios": {
       "healthcare": {
-        "industry": "Healthcare",
-        "challenge": "Healthcare organizations spend 60% of their time on administrative tasks instead of patient care",
-        "solution": "Automate patient intake, insurance processing, and medical documentation with AI",
+        "industry": "Aviation & Procurement",
+        "challenge": "Aircraft parts trading companies receive hundreds of RFQ emails daily — manual processing leads to lost deals, no prioritization, and slow response",
+        "solution": "AI email ingestion pipeline with BPM stages, automated nomenclature classification (P/N / ALT P/N) and priority deal inbox",
         "results": [
-          "40% reduction in administrative time",
-          "25% improvement in patient satisfaction",
-          "Faster claims processing",
-          "More time for patient care"
+          "~1.5× operational efficiency gain",
+          "10%+ revenue growth from fewer lost requests",
+          "Automated routine nomenclature tasks",
+          "Smart deal prioritization and filtering"
         ]
       },
       "finance": {
-        "industry": "Finance",
-        "challenge": "Banks process thousands of credit applications manually, leading to delays and errors",
-        "solution": "Automated risk scoring and application processing using machine learning",
+        "industry": "HR & L&D",
+        "challenge": "High training costs, scattered corporate knowledge, slow onboarding, and inconsistent staff performance across departments",
+        "solution": "X-LogOS knowledge platform combined with HRXteam effectiveness program: competency models, succession planning, structured roles",
         "results": [
-          "70% faster application processing",
-          "35% reduction in credit risk",
-          "Lower operational costs",
-          "Better customer experience"
+          "30-50% productivity improvement",
+          "~20% HR efficiency increase",
+          "~1.5× overall effectiveness gain",
+          "Standardized onboarding in 8-12 months"
         ]
       },
       "retail": {
-        "industry": "Retail",
-        "challenge": "E-commerce stores lose 70% of potential sales due to poor customer service",
-        "solution": "AI chatbots for instant support and personalized product recommendations",
+        "industry": "Security Systems & Distribution",
+        "challenge": "Distributors with 4,700+ SKUs and large partner networks need AI to monitor markets, optimize product mix, and train partners at scale",
+        "solution": "AI video analytics extension, intelligent partner support assistant, automated incoming request processing and predictive warehouse analytics",
         "results": [
-          "45% increase in conversion rate",
-          "60% reduction in response time",
-          "24/7 customer support",
-          "Higher customer retention"
+          "Real-time competitor and price monitoring",
+          "Personalized recommendations for 4,700+ partners",
+          "AI assistant for partner technical training",
+          "Predictive logistics and inventory optimization"
         ]
       },
       "manufacturing": {
-        "industry": "Manufacturing",
-        "challenge": "High defect rates and inefficient resource utilization on production lines",
-        "solution": "AI quality control and process optimization with computer vision",
+        "industry": "Manufacturing & Engineering",
+        "challenge": "Complex manufacturing processes require intelligent cost estimation, quality control, production scheduling and predictive maintenance",
+        "solution": "Automated project cost estimation, intelligent quality control systems, production schedule optimization and predictive equipment maintenance",
         "results": [
-          "85% reduction in defects",
-          "40% increase in productivity",
-          "$2.3M annual savings",
-          "More predictable operations"
+          "Quick rough price estimation for project bids",
+          "Improved order fulfillment times",
+          "Reduced equipment downtime",
+          "Optimized inventory turnover"
         ]
       }
     },
     "aiWorkforce": {
-      "title": "Meet Your AI Team",
-      "subtitle": "Specialized AI agents designed to handle specific business functions with human-like intelligence and 24/7 availability.",
-      "capabilities": "Capabilities",
-      "industries": "Industries",
-      "moreCapabilities": "more capabilities"
+      "title": "Technology Stack",
+      "subtitle": "The core technologies and frameworks powering XTeam products and client implementations.",
+      "capabilities": "Details",
+      "industries": "Used in",
+      "moreCapabilities": "more"
     },
     "aiAgents": {
       "salesassistant": {
-        "name": "Sales Assistant",
-        "description": "An AI sales agent that qualifies leads, schedules meetings, and nurtures prospects 24/7.",
+        "name": "AI / LLM Layer",
+        "description": "Large language model orchestration and autonomous agent systems for reasoning, planning and knowledge extraction.",
         "capabilities": {
-          "0": "Lead qualification and scoring",
-          "1": "Automated outreach sequences",
-          "2": "Meeting scheduling and coordination",
-          "3": "CRM integration and data sync",
-          "4": "Personalized campaigns"
+          "0": "LLM orchestration (provider-agnostic)",
+          "1": "Autonomous agents: planning, QA, analysis",
+          "2": "RAG pipelines with vector databases (Qdrant)",
+          "3": "Knowledge graph integration",
+          "4": "Hybrid search: Elasticsearch + semantic"
         },
         "industries": {
-          "0": "SaaS",
-          "1": "Consulting",
-          "2": "E-commerce",
-          "3": "Technology"
+          "0": "StudyNinja",
+          "1": "X-LogOS",
+          "2": "FastAI",
+          "3": "VILAVI AI"
         }
       },
       "customerservicebot": {
-        "name": "Customer Service Bot",
-        "description": "An intelligent customer support agent that handles inquiries, resolves issues, and escalates complex cases.",
+        "name": "Backend / ML",
+        "description": "Production-grade Python backend with machine learning pipelines and async processing.",
         "capabilities": {
-          "0": "Multilingual support",
-          "1": "Instant answers to common questions",
-          "2": "Order tracking and updates",
-          "3": "Complaint resolution workflows",
-          "4": "Knowledge base integration"
+          "0": "FastAPI, SQLModel, PyTorch",
+          "1": "Celery / RabbitMQ / Redis for async tasks",
+          "2": "Data pipeline: collection → cleaning → indexing → inference",
+          "3": "PostgreSQL + SQLite, migrations (Alembic)",
+          "4": "PDF/Excel report generation"
         },
         "industries": {
-          "0": "Retail",
-          "1": "Finance",
-          "2": "Healthcare",
-          "3": "E-commerce"
+          "0": "All products",
+          "1": "FastAPI backend",
+          "2": "Pilot projects",
+          "3": "Enterprise deployments"
         }
       },
       "dataanalyst": {
-        "name": "Data Analyst",
-        "description": "Advanced AI that analyzes business data, generates insights, and creates automated reports.",
+        "name": "Frontend / Mobile",
+        "description": "React SPA and Flutter mobile applications for field work and thin client scenarios.",
         "capabilities": {
-          "0": "Real-time data processing",
-          "1": "Predictive trend analysis",
-          "2": "Automated report generation",
-          "3": "Anomaly detection",
-          "4": "Interactive dashboards"
+          "0": "React / TypeScript (SPA/SSR)",
+          "1": "Tailwind CSS + shadcn/ui component kits",
+          "2": "Flutter (iOS/Android) for mobile apps",
+          "3": "Real-time dashboards and data visualization",
+          "4": "Bilingual (EN/RU) i18n support"
         },
         "industries": {
-          "0": "Manufacturing",
-          "1": "Retail",
-          "2": "Logistics",
-          "3": "Finance"
+          "0": "StudyNinja",
+          "1": "VILAVI AI",
+          "2": "Field operations",
+          "3": "Admin panels"
         }
       },
       "contentcreator": {
-        "name": "Content Creator",
-        "description": "Creative AI that generates marketing content, social posts, and personalized communications at scale.",
+        "name": "DevOps / SRE",
+        "description": "Container orchestration, observability and secure deployment infrastructure.",
         "capabilities": {
-          "0": "Blog and article writing",
-          "1": "Social media content creation",
-          "2": "Email campaign personalization",
-          "3": "SEO optimization",
-          "4": "Multi-format adaptation"
+          "0": "Docker / Compose, Traefik / ACME, CapRover",
+          "1": "GitHub Actions CI/CD pipelines",
+          "2": "Prometheus, Grafana, Sentry, structured logs",
+          "3": "MinIO object storage, PostgreSQL backups",
+          "4": "dev/stage/prod environment segmentation"
         },
         "industries": {
-          "0": "Marketing",
-          "1": "SaaS",
-          "2": "E-commerce",
-          "3": "Media"
+          "0": "All products",
+          "1": "Client pilots",
+          "2": "Enterprise deployments",
+          "3": "SRE support"
         }
       },
       "processautomator": {
-        "name": "Process Automator",
-        "description": "Workflow automation specialist that optimizes business processes and eliminates manual tasks.",
+        "name": "Integration Layer",
+        "description": "No-code and API-based integration tools connecting XTeam products with existing business systems.",
         "capabilities": {
-          "0": "Document processing automation",
-          "1": "Approval workflow management",
-          "2": "Data entry and validation",
-          "3": "System integration",
-          "4": "Exception handling"
+          "0": "n8n workflow automation",
+          "1": "Typebot / Telegram bot gateways",
+          "2": "YouTrack/Jira + GitHub Projects V2 sync",
+          "3": "Google Sheets, MinIO, Grafana BI",
+          "4": "JWT/OAuth, SSO, temporary pilot passes"
         },
         "industries": {
-          "0": "Operations",
-          "1": "Finance",
-          "2": "HR",
-          "3": "Logistics"
+          "0": "FastAI/DealMaster",
+          "1": "VILAVI AI",
+          "2": "Client integrations",
+          "3": "Workflow automation"
         }
       },
       "qualitycontroller": {
-        "name": "Quality Controller",
-        "description": "AI quality assurance agent that monitors, tests, and ensures compliance with quality standards.",
+        "name": "Security & Architecture",
+        "description": "Enterprise security principles and vendor-lock-free architectural patterns.",
         "capabilities": {
-          "0": "Automated testing protocols",
-          "1": "Real-time quality monitoring",
-          "2": "Defect pattern recognition",
-          "3": "Compliance verification",
-          "4": "Quality reporting and analytics"
+          "0": "RBAC/ABAC, traffic and secret encryption",
+          "1": "API-first: OpenAPI/Swagger, DDD context boundaries",
+          "2": "Zero LLM vendor dependency — swap providers freely",
+          "3": "Event audit, DPA, data validation",
+          "4": "Pentests and secure development regulations"
         },
         "industries": {
-          "0": "Manufacturing",
-          "1": "Healthcare",
-          "2": "Software",
-          "3": "Retail"
+          "0": "Enterprise clients",
+          "1": "B2G projects",
+          "2": "Healthcare",
+          "3": "Financial services"
         }
       }
     },
     "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Take our free AI audit to discover which solutions will have the greatest impact on your operations.",
-      "auditButton": "Take Free AI Audit",
-      "consultationButton": "Book a Consultation"
+      "title": "Ready to discuss your use case?",
+      "subtitle": "We start with discovery to understand your goals, constraints and KPIs — then propose a pilot scope.",
+      "auditButton": "Request a pilot",
+      "consultationButton": "Book a discovery call",
+      "casesButton": "View solutions"
     },
-    "title": "AI Solutions",
-    "subtitle": "Comprehensive AI solutions tailored to your business needs",
+    "title": "Products & Solutions",
+    "subtitle": "Applied AI at the intersection of technology and real business",
     "items": {
       "customer-service": {
-        "title": "AI Customer Service Automation",
-        "description": "Transform your customer support with intelligent chatbots and automated response systems that provide 24/7 assistance.",
+        "title": "StudyNinja — Educational AI Platform",
+        "description": "Personal learning trajectories for grades 4-11, students and teachers. Multi-agent AI tutor that explains, checks, plans and motivates. Supported by Russian Ministry of Education and Science.",
         "benefits": [
-          "24/7 customer support availability",
-          "Reduce response time by 90%",
-          "Handle 80% of inquiries automatically",
-          "Improve customer satisfaction scores"
+          "Knowledge diagnostics and psychoprofile (HBDI + Big Five)",
+          "Multi-agent AI tutor: explains, checks, plans, motivates",
+          "EGE/OGE preparation and topic catch-up roadmaps",
+          "Parent cabinet, reports and B2B/B2G school integrations"
         ],
         "useCases": [
-          "Live chat automation",
-          "Email response automation",
-          "FAQ and knowledge base integration",
-          "Ticket routing and prioritization"
+          "Individual student learning trajectories",
+          "Adaptive testing and competency assessment",
+          "School and university platform integrations",
+          "Teacher productivity and class analytics"
         ],
-        "roi": "300% ROI within 6 months",
-        "implementation": "2-4 weeks"
+        "roi": "Ministry of Education and Science support",
+        "implementation": "Active pilots — B2C, B2B, B2G"
       },
       "data-analysis": {
-        "title": "Intelligent Data Analytics",
-        "description": "Automate data processing, analysis, and reporting to uncover insights and drive data-driven decision making.",
+        "title": "X-LogOS — Corporate Knowledge OS",
+        "description": "Unified platform for documentation, knowledge management and optimization of corporate knowledge flows. Combines Wiki + LMS + process mapping in one system — no separate tools needed.",
         "benefits": [
-          "Real-time data processing",
-          "Automated report generation",
-          "Predictive analytics capabilities",
-          "Reduce manual analysis time by 85%"
+          "Single source of truth for all corporate knowledge",
+          "Integrated training, certification and HR development",
+          "AI-powered search across all documentation",
+          "Standardized best practices and process mapping"
         ],
         "useCases": [
-          "Sales performance analysis",
-          "Customer behavior insights",
-          "Financial reporting automation",
-          "Market trend analysis"
+          "Corporate knowledge base and documentation",
+          "Employee onboarding and training programs",
+          "Change management and retraining",
+          "Compliance and standards management"
         ],
-        "roi": "250% ROI within 4 months",
-        "implementation": "3-6 weeks"
+        "roi": "Reduced onboarding time, standardized knowledge, accelerated capability",
+        "implementation": "4-8 weeks implementation"
       },
       "workflow-automation": {
-        "title": "Business Process Automation",
-        "description": "Streamline repetitive tasks and workflows with intelligent automation that adapts to your business needs.",
+        "title": "HRXteam — HR & L&D Automation",
+        "description": "Comprehensive HR automation covering personnel assessment, selection pipelines, onboarding, certification tracking and productivity analytics. ROI-oriented approach with measurable metrics.",
         "benefits": [
-          "Eliminate manual repetitive tasks",
-          "Reduce processing time by 70%",
-          "Minimize human errors",
-          "Improve operational efficiency"
+          "Automated personnel assessment and competency modeling",
+          "Structured roles, responsibilities and succession planning",
+          "Optimized selection and hiring procedures",
+          "Productivity and engagement analytics"
         ],
         "useCases": [
-          "Invoice processing",
-          "Employee onboarding",
-          "Inventory management",
-          "Quality assurance workflows"
+          "Strategic workforce development programs",
+          "Management team selection and development",
+          "Competency gap analysis and training targeting",
+          "Continuous HR effectiveness improvement"
         ],
-        "roi": "400% ROI within 3 months",
-        "implementation": "1-3 weeks"
+        "roi": "30-50% productivity improvement, ~20% HR efficiency gain",
+        "implementation": "6-12 months full program"
       },
       "content-generation": {
-        "title": "AI Content & Communication",
-        "description": "Generate high-quality content, emails, and communications automatically while maintaining your brand voice.",
+        "title": "FastAI / DealMaster — B2B Process Automation",
+        "description": "Ingestion of incoming business requests (RFQ/email) into unified database. BPM pipeline with agent-automated stages, smart nomenclature classifier, priority deal inbox UI. Aviation, logistics, procurement.",
         "benefits": [
-          "Generate content 10x faster",
-          "Maintain consistent brand voice",
-          "Personalize communications at scale",
-          "Reduce content creation costs by 60%"
+          "Automated email/request ingestion into structured DB",
+          "BPM pipeline with agent-automated routine tasks",
+          "Smart nomenclature classifier (P/N, ALT P/N)",
+          "Priority deal inbox with smart filters"
         ],
         "useCases": [
-          "Marketing content creation",
-          "Email campaign automation",
-          "Social media management",
-          "Documentation generation"
+          "Aircraft parts RFQ processing (aviation)",
+          "Procurement and supply chain automation",
+          "Logistics request management",
+          "Any high-volume B2B request handling"
         ],
-        "roi": "200% ROI within 2 months",
-        "implementation": "1-2 weeks"
+        "roi": "~1.5× operational efficiency, 10%+ revenue growth",
+        "implementation": "4-8 weeks pilot"
       }
     }
   },
   "pricing": {
-    "title": "Pricing Plans",
-    "subtitle": "Choose the perfect plan for your business needs",
+    "title": "Engagement Models",
+    "subtitle": "Flexible collaboration formats — from exploratory pilots to full-scale product licensing",
     "hero": {
-      "title": "Transparent Pricing for",
-      "titleHighlight": " AI Transformation",
-      "subtitle": "Choose the perfect AI automation package for your business. All plans include implementation, training, and ongoing support.",
+      "title": "How We Work",
+      "titleHighlight": "Together",
+      "subtitle": "No fixed price lists — we agree on scope and budget after discovery. Turnkey pilot: 1.5–3 months, budget from agreed minimum after discovery call.",
       "monthly": "Monthly",
       "annual": "Annual",
       "save": "(Save 17%)"
     },
     "tiers": {
-      "mostPopular": "Most Popular",
+      "mostPopular": "Most Common",
       "whatsIncluded": "What's included:",
-      "limitations": "Limitations:",
+      "limitations": "Best for:",
       "starter": {
-        "name": "AI Starter",
-        "description": "Perfect for small businesses looking to explore AI automation",
-        "price": "$2,999",
-        "period": "/month",
+        "name": "Time & Materials",
+        "description": "Flexible R&D, integrations and exploratory pilots. Iterative delivery with agreed KPIs and weekly syncs.",
+        "price": "RUB 50k-300k",
+        "period": "1-4 weeks",
         "features": [
-          "AI Readiness Assessment",
-          "Basic Process Automation",
-          "Email Support",
-          "Monthly Reports",
-          "Up to 5 Users"
+          "Discovery and requirements definition",
+          "Iterative MVP delivery",
+          "Weekly demos and feedback loops",
+          "Flexible scope adjustments",
+          "Agreed Definition of Done"
         ],
-        "cta": "Start Free Trial",
+        "cta": "Book discovery call",
         "popular": false
       },
       "professional": {
-        "name": "AI Professional",
-        "description": "Comprehensive AI solutions for growing businesses",
-        "price": "$7,999",
-        "period": "/month",
+        "name": "Fixed Scope",
+        "description": "Clearly defined releases and modules. Fixed budget, defined deliverables and acceptance criteria.",
+        "price": "RUB 350k-3.5M",
+        "period": "1-4 months",
         "features": [
-          "Everything in Starter",
-          "Advanced AI Implementation",
-          "Custom Integrations",
-          "Priority Support",
-          "Up to 25 Users",
-          "Advanced Analytics"
+          "Detailed technical specification",
+          "Fixed timeline and deliverables",
+          "Acceptance criteria agreed upfront",
+          "Quality assurance and testing",
+          "Deployment and documentation"
         ],
-        "cta": "Get Started",
+        "cta": "Request a brief",
         "popular": true
       },
       "enterprise": {
-        "name": "AI Enterprise",
-        "description": "Full-scale AI transformation for large organizations",
+        "name": "Subscription / License",
+        "description": "For products (StudyNinja, VILAVI AI) and enterprise support. Ongoing value delivery and continuous improvement.",
         "price": "Custom",
-        "period": "",
+        "period": "per agreement",
         "features": [
-          "Everything in Professional",
-          "Dedicated AI Consultant",
-          "Custom AI Development",
-          "24/7 Support",
-          "Unlimited Users",
-          "White-label Solutions"
+          "Product licensing (StudyNinja, VILAVI AI, X-LogOS)",
+          "Enterprise support and SLA",
+          "Continuous improvement releases",
+          "Dedicated support contacts",
+          "Custom integrations included"
         ],
-        "cta": "Contact Sales",
+        "cta": "Contact us",
         "popular": false
       }
     },
@@ -1273,10 +1376,46 @@
       ]
     },
     "finalCta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Join hundreds of companies already benefiting from AI automation. Start your journey today.",
-      "scheduleConsultation": "Schedule Free Consultation",
-      "startFreeTrial": "Start Free Trial"
+      "title": "Ready to Start?",
+      "subtitle": "Turnkey pilot: 1.5–3 months, budget agreed after discovery call. No commitment required for the first conversation.",
+      "scheduleConsultation": "Book discovery call",
+      "startFreeTrial": "Request a brief"
+    },
+    "process": {
+      "title": "How We Deliver",
+      "subtitle": "From first conversation to production deployment — a structured, transparent process.",
+      "steps": {
+        "discovery": {
+          "step": "01",
+          "title": "Discovery",
+          "duration": "1–2 weeks",
+          "description": "Goals, constraints, KPIs. We define what success looks like before writing a single line of code."
+        },
+        "architecture": {
+          "step": "02",
+          "title": "Architecture & Plan",
+          "duration": "1 week",
+          "description": "System contours, API contracts, data flows. Pilot plan with agreed deliverables and acceptance criteria."
+        },
+        "mvp": {
+          "step": "03",
+          "title": "MVP",
+          "duration": "4–8 weeks",
+          "description": "Minimum valuable version in a controlled environment. First metrics and feedback loops established."
+        },
+        "pilot": {
+          "step": "04",
+          "title": "Pilot",
+          "duration": "4–12 weeks",
+          "description": "Real-data operation, iterations, KPI validation. You see results before full-scale investment."
+        },
+        "scale": {
+          "step": "05",
+          "title": "Scale",
+          "duration": "ongoing",
+          "description": "Load testing, SLO/SLA agreements, staff training, long-term support. From pilot to production."
+        }
+      }
     },
     "roi": {
       "title": "ROI Calculator",
@@ -1544,37 +1683,36 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "Get in touch with our AI experts",
+    "subtitle": "Pilot results in days after task discussion. Share your context and we will propose the best next step.",
     "info": {
       "email": {
-        "title": "Email Us",
+        "title": "Email",
         "details": [
-          "hello@xteam.pro",
-          "support@xteam.pro"
+          "info@xteam.pro"
         ],
         "action": "Send Email"
       },
       "phone": {
-        "title": "Call Us",
+        "title": "Telegram",
         "details": [
-          "+1 (555) 123-4567",
-          "Available 24/7"
+          "@xteampro",
+          "Quick response"
         ],
-        "action": "Call Now"
+        "action": "Write on Telegram"
       },
       "address": {
-        "title": "Visit Us",
+        "title": "Locations",
         "details": [
-          "123 Innovation Drive",
-          "San Francisco, CA 94105"
+          "Baku, Azerbaijan",
+          "Moscow, Russia"
         ],
-        "action": "Get Directions"
+        "action": "Get in Touch"
       },
       "hours": {
-        "title": "Business Hours",
+        "title": "Discovery Call",
         "details": [
-          "Mon-Fri: 9:00 AM - 6:00 PM PST",
-          "Emergency support: 24/7"
+          "30-min task discussion",
+          "Book at any convenient time"
         ]
       }
     },
@@ -1604,28 +1742,24 @@
         "other": "Other"
       },
       "services": [
-        "AI Strategy Consulting",
-        "Process Automation",
-        "Custom AI Development",
-        "Data Analytics & Insights",
-        "AI Training & Support",
-        "Digital Transformation"
+        "AI & multi-agent systems",
+        "X-LogOS knowledge platform",
+        "HRXteam effectiveness and L&D",
+        "Process automation pilot (FastAI / DealMaster)",
+        "System integration and API architecture",
+        "Post-launch support and scaling"
       ],
       "budgetRanges": [
-        "Under $50K",
-        "$50K - $100K",
-        "$100K - $250K",
-        "$250K - $500K",
-        "$500K+",
-        "Not sure yet"
+        "Pilot: RUB 50k-300k",
+        "Scale project: RUB 350k-3.5M",
+        "Support by agreement",
+        "Need recommendation"
       ],
       "timelineOptions": [
-        "ASAP (Within 1 month)",
-        "1-3 months",
-        "3-6 months",
-        "6-12 months",
-        "12+ months",
-        "Just exploring options"
+        "1-4 weeks to first result",
+        "1-3 months to implementation",
+        "3-12 months scaling horizon",
+        "Need a joint plan"
       ],
       "validation": {
         "nameRequired": "Name is required",
@@ -1646,8 +1780,8 @@
         "budgetRequired": "Please select a budget range",
         "timelineRequired": "Please select a timeline"
       },
-      "title": "Send us a message",
-      "description": "Tell us about your goals and we will get back to you.",
+      "title": "Share your task",
+      "description": "Describe your current process and target outcome. We will suggest pilot scope, timeline, and KPI options.",
       "error": "Unable to submit form",
       "submitErrors": {
         "validation": "Please correct the errors below.",
@@ -1659,20 +1793,20 @@
     },
     "success": {
       "title": "Message Sent Successfully",
-      "message": "Thanks for reaching out. Our team will respond shortly.",
+      "message": "After you submit the form, we contact you and agree a convenient time for an online meeting.",
       "referenceId": "Reference ID",
       "status": "Status",
       "sendAnother": "Send Another Message"
     },
     "consultation": {
-      "title": "Schedule a Free Consultation",
-      "description": "Book a call with our team and get a tailored automation roadmap.",
-      "cta": "Start with a Free Audit",
+      "title": "Book a discovery call",
+      "description": "30-minute task discussion. No commitment required.",
+      "cta": "Start with discovery",
       "features": {
-        "freeConsultation": "Free consultation call",
-        "customRoadmap": "Custom implementation roadmap",
-        "roiProjections": "ROI projections for your case",
-        "noSalesPressure": "No sales pressure"
+        "freeConsultation": "30-minute discovery call",
+        "customRoadmap": "Pilot scope and architecture options",
+        "roiProjections": "KPI and ROI assumptions for your case",
+        "noSalesPressure": "Clear next steps, no pressure"
       }
     },
     "faq": {
@@ -1684,7 +1818,7 @@
         },
         "smallBusiness": {
           "question": "Do you work with small businesses?",
-          "answer": "Yes. We support startups and SMBs with right-sized implementation plans."
+          "answer": "Yes. We work with SMBs and enterprise teams using right-sized pilot scopes."
         },
         "consultationIncluded": {
           "question": "Is consultation free?",
@@ -1692,14 +1826,14 @@
         },
         "ongoingSupport": {
           "question": "Do you provide post-launch support?",
-          "answer": "Yes, we provide ongoing optimization and support after launch."
+          "answer": "Yes. We provide post-launch optimization, monitoring, and team enablement support."
         }
       }
     },
     "directContact": {
-      "title": "Direct Contact",
-      "description": "Prefer direct communication? Reach out any time.",
-      "liveChat": "Live chat available during business hours"
+      "title": "Direct contact",
+      "description": "Prefer direct communication? Reach us via email or Telegram.",
+      "liveChat": "Response during business hours"
     }
   },
   "admin": {
@@ -1942,84 +2076,86 @@
   },
   "careers": {
     "hero": {
-      "title": "Join Our Team",
-      "subtitle": "Help us transform how businesses operate with AI. We're building the future of business automation and we want you to be part of it.",
-      "cta": "Get in Touch"
+      "title": "Collaborate with XTeam.Pro",
+      "subtitle": "We form project teams for pilots and product delivery. If your expertise matches our stack, send your profile.",
+      "cta": "Send Profile"
     },
     "values": {
-      "title": "Why Work With Us",
+      "title": "How Collaboration Works",
       "growth": {
-        "title": "Career Growth",
-        "description": "Continuous learning opportunities, mentorship programs, and clear career progression paths."
+        "title": "Complex Tasks",
+        "description": "Work on real AI automation projects with measurable business outcomes."
       },
       "remote": {
-        "title": "Remote-First",
-        "description": "Work from anywhere in the world with flexible hours and a focus on results, not hours logged."
+        "title": "Distributed Team",
+        "description": "Mostly remote collaboration across Baku and Moscow time zones."
       },
       "innovation": {
-        "title": "Innovation Culture",
-        "description": "Work on cutting-edge AI technology and have a direct impact on product direction."
+        "title": "Applied R&D",
+        "description": "Research + production delivery in multi-agent AI, knowledge systems, and process automation."
       }
     },
     "openPositions": {
-      "title": "Open Positions"
+      "title": "Expert Profiles We Seek"
     },
     "positions": {
       "aiEngineer": {
-        "title": "AI/ML Engineer",
-        "department": "Engineering",
-        "location": "Remote",
-        "type": "Full-time",
-        "description": "Design and implement AI models for business process automation. Work with cutting-edge ML frameworks and large language models."
+        "title": "AI/ML Engineer (Project Pool)",
+        "department": "AI Engineering",
+        "location": "Remote / Hybrid",
+        "type": "Project-based",
+        "description": "LLM orchestration, RAG, agent pipelines, and production integration for pilot and scale stages."
       },
       "fullstackDev": {
-        "title": "Full-Stack Developer",
-        "department": "Engineering",
+        "title": "Full-Stack Engineer (Integration Focus)",
+        "department": "Product Engineering",
         "location": "Remote / Hybrid",
-        "type": "Full-time",
-        "description": "Build scalable web applications using React, TypeScript, and Python FastAPI. Contribute to our core platform development."
+        "type": "Project-based",
+        "description": "React + TypeScript + FastAPI delivery for client-facing dashboards and internal automation tools."
       },
       "consultant": {
-        "title": "Business Automation Consultant",
-        "department": "Consulting",
+        "title": "Automation Consultant (Discovery)",
+        "department": "Business / Delivery",
         "location": "Remote",
-        "type": "Full-time",
-        "description": "Help clients identify automation opportunities and implement AI solutions. Strong background in process optimization required."
+        "type": "Project-based",
+        "description": "Map business processes, define pilot KPIs, and translate operational context into implementation plans."
       }
     },
-    "apply": "Apply Now",
+    "apply": "Send Profile",
     "openApplication": {
-      "title": "Don't See Your Role?",
-      "description": "We're always looking for talented people. Send us your CV and we'll reach out when there's a match.",
-      "cta": "Send Open Application"
+      "title": "General Application",
+      "description": "No exact match? Send your profile and project experience.",
+      "cta": "Submit Application"
     }
   },
   "caseStudies": {
     "title": "Case Studies",
-    "subtitle": "Real Results from Real Businesses",
-    "description": "Discover how our AI solutions have transformed businesses across industries, delivering measurable results and exceptional ROI.",
+    "subtitle": "Real Results from Real Projects",
+    "description": "How XTeam automation solutions delivered measurable results in aviation process automation and HR effectiveness.",
     "filterByIndustry": "Filter by Industry",
+    "allIndustries": "All Industries",
     "searchPlaceholder": "Search case studies...",
-    "viewDetails": "View Details",
+    "viewDetails": "Discuss similar project",
+    "paybackLabel": "Payback",
     "details": "Details",
     "featured": "Featured",
     "challenge": "Challenge",
     "stats": {
       "projects": {
-        "value": "50+",
-        "label": "Successful Projects"
+        "value": "4",
+        "label": "Real Cases"
       },
       "savings": {
-        "value": "$50M+",
-        "label": "Cost Savings Generated"
+        "value": "3-5x",
+        "label": "Processing speedup"
       },
       "efficiency": {
-        "value": "85%",
-        "label": "Average Efficiency Gain"
+        "value": "10%+",
+        "label": "Loss reduction"
       },
       "timeline": {
-        "value": "6 Months",
-        "label": "Average ROI Timeline"
+        "value": "4-6 wks",
+        "label": "Pilot start"
       }
     },
     "tags": {
@@ -2048,240 +2184,289 @@
       "personalization": "Personalization",
       "revenueGrowth": "Revenue Growth",
       "logistics": "Logistics",
-      "supplyChain": "Supply Chain"
+      "supplyChain": "Supply Chain",
+      "aviation": "Aviation",
+      "bpmAutomation": "BPM Automation",
+      "hrTech": "HR Tech",
+      "knowledgeManagement": "Knowledge Management",
+      "education": "Education",
+      "aiTutor": "AI Tutor",
+      "personalizedLearning": "Personalized Learning"
     },
     "cta": {
-      "title": "Ready to Write Your Success Story?",
-      "description": "Join the growing list of companies transforming their operations with AI. Let's discuss how we can help you achieve similar results.",
-      "button": "Start Your AI Journey",
-      "downloadButton": "Download Case Study PDF"
+      "title": "Have a similar challenge?",
+      "description": "Discuss your use case with us. We start with a 30-minute discovery call, then propose a pilot scope with clear KPIs.",
+      "button": "Book a discovery call",
+      "downloadButton": "Request a pilot"
     },
     "studies": {
       "ecommerceAutomation": {
-        "title": "AI-Powered Customer Service Automation",
-        "company": "ShopSmart Inc",
-        "industry": "E-commerce",
-        "challenge": "High customer service costs and slow response times were affecting customer satisfaction and retention rates.",
-        "solution": "Implemented AI chatbots and automated customer service workflows with natural language processing.",
-        "implementation": "Gradual rollout over 6 weeks with extensive testing and staff training.",
-        "timeline": "6 weeks",
-        "investment": "$150K",
-        "roi": "500% in 8 months",
+        "title": "Aviation Parts Process Automation (FastAI / DealMaster)",
+        "company": "Aviation Parts Distributor",
+        "industry": "Aviation",
+        "challenge": "Hundreds of RFQ emails arriving daily with no structure. Manual processing led to lost deals, missed priorities, slow response times and staff overload on routine nomenclature tasks.",
+        "challengeShort": "Hundreds of RFQ requests daily, errors eating 10%+ of revenue, overloaded managers",
+        "solution": "AI email ingestion pipeline creating a unified database. BPM with agent-automated stages, smart nomenclature classifier (P/N / ALT P/N), priority deal inbox UI with filters and smart search.",
+        "implementation": "Pilot launched in 4-8 weeks. n8n for workflow automation, FastAPI backend, PostgreSQL + Qdrant/Elasticsearch for search, Grafana monitoring.",
+        "timeline": "4-8 weeks",
+        "investment": "Custom (after discovery)",
+        "roi": "~1.5× operational efficiency",
         "testimonial": {
-          "quote": "The AI customer service system has transformed our support operations. Response times dropped dramatically while customer satisfaction soared.",
-          "author": "Sarah Johnson",
-          "position": "Customer Experience Director"
+          "quote": "The system automated the routine parts of our workflow that used to consume most of our specialists' time. Now they focus on deals that actually need human judgement.",
+          "author": "Client representative",
+          "position": "Operations Director, Aviation"
         },
         "results": {
           "responseTime": {
-            "metric": "Response Time",
-            "value": "2 minutes",
-            "improvement": "95% faster"
+            "metric": "Operational Efficiency",
+            "value": "~1.5×",
+            "improvement": "Gain"
           },
           "satisfaction": {
-            "metric": "Customer Satisfaction",
-            "value": "94%",
-            "improvement": "+40%"
+            "metric": "Revenue Growth",
+            "value": "10%+",
+            "improvement": "From fewer lost requests"
           },
           "tickets": {
-            "metric": "Support Tickets Resolved",
-            "value": "85%",
-            "improvement": "Automated"
+            "metric": "Routine Tasks",
+            "value": "Automated",
+            "improvement": "Nomenclature classification"
           },
           "savings": {
-            "metric": "Annual Cost Savings",
-            "value": "$750K",
-            "improvement": "60% reduction"
+            "metric": "Deal Prioritization",
+            "value": "Smart inbox",
+            "improvement": "AI-powered filtering"
           }
         }
       },
       "healthcareAnalytics": {
-        "title": "Predictive Healthcare Analytics",
-        "company": "MedCenter Plus",
-        "industry": "Healthcare",
-        "challenge": "Manual diagnostic processes and inefficient patient flow management were causing delays and increased costs.",
-        "solution": "Deployed AI-powered diagnostic assistance and predictive analytics for patient flow optimization.",
-        "implementation": "Careful integration over 8 weeks with medical staff training and compliance validation.",
-        "timeline": "8 weeks",
-        "investment": "$300K",
-        "roi": "700% in 12 months",
+        "title": "HR Effectiveness + Corporate Knowledge Base",
+        "company": "Commercial Personnel Company",
+        "industry": "HR & L&D",
+        "challenge": "High training costs, scattered corporate knowledge across departments, slow onboarding for new staff, inconsistent performance and no standardized competency framework.",
+        "challengeShort": "Partners take months to become productive, knowledge walks out the door with people",
+        "solution": "X-LogOS knowledge platform for unified documentation and best practices. HRXteam effectiveness program with competency models, succession planning, structured roles and productivity analytics.",
+        "implementation": "6-month core program with additional 6 months of improvements. Team of 6 experienced consultants focused on cross-functional integration.",
+        "timeline": "6-12 months",
+        "investment": "Custom (after discovery)",
+        "roi": "30-50% productivity improvement",
         "testimonial": {
-          "quote": "The predictive analytics system has revolutionized our patient care. We can now anticipate needs and provide faster, more accurate diagnoses.",
-          "author": "Dr. Michael Chen",
-          "position": "Chief Medical Officer"
+          "quote": "The knowledge management system transformed how our people learn and share information. Onboarding time dropped significantly and performance became measurably more consistent.",
+          "author": "Client representative",
+          "position": "HR Director"
         },
         "results": {
           "accuracy": {
-            "metric": "Diagnostic Accuracy",
-            "value": "96%",
-            "improvement": "+15%"
+            "metric": "Productivity Improvement",
+            "value": "30-50%",
+            "improvement": "Staff productivity"
           },
           "waitTime": {
-            "metric": "Patient Wait Time",
-            "value": "12 minutes",
-            "improvement": "70% reduction"
+            "metric": "HR Efficiency",
+            "value": "~20%",
+            "improvement": "Management effectiveness"
           },
           "cost": {
-            "metric": "Cost per Patient",
-            "value": "$45",
-            "improvement": "55% reduction"
+            "metric": "Overall Effectiveness",
+            "value": "~1.5×",
+            "improvement": "Organizational gain"
           },
           "efficiency": {
-            "metric": "Staff Efficiency",
-            "value": "3x",
-            "improvement": "Tripled productivity"
+            "metric": "Optimization Timeline",
+            "value": "8-12 mo",
+            "improvement": "Staff reorganization"
           }
         }
       },
       "financialFraudDetection": {
-        "title": "Advanced Fraud Detection System",
-        "company": "SecureBank Corp",
-        "industry": "Financial Services",
-        "challenge": "Traditional fraud detection was catching only 60% of fraudulent transactions, resulting in $5M annual losses and numerous false positives affecting customer experience.",
-        "solution": "Implemented AI-driven fraud detection with real-time transaction analysis, behavioral pattern recognition, and automated risk scoring.",
-        "implementation": "Gradual rollout over 10 weeks with extensive testing and regulatory compliance validation.",
-        "timeline": "10 weeks",
-        "investment": "$500K",
-        "roi": "2400% in 6 months",
+        "title": "Energy Sector (MES) — Pilot Digitalization",
+        "company": "Energy Sector Company (MES)",
+        "industry": "Energy",
+        "challenge": "Siloed processes (CRM, reports, maintenance planning); Time losses; No digital visibility; Hard to scale field operations",
+        "challengeShort": "Paper reports, siloed systems, no real-time visibility into field team operations",
+        "solution": "Pilot digital projects: custom CRM for MES services, automated reporting, maintenance planning (PPR), engineer mobile app",
+        "implementation": "Pilot format with fixed timelines. Prototype in 7-10 days, full pilot in 4-6 weeks.",
+        "timeline": "4-6 weeks",
+        "investment": "50K – 300K RUB",
+        "roi": "6–9 months",
         "results": {
           "detectionRate": {
-            "metric": "Fraud Detection Rate",
-            "value": "98.5%",
-            "improvement": "+38.5%"
+            "metric": "Manual operations reduction",
+            "value": "20–40%",
+            "improvement": "Less paperwork"
           },
           "falsePositives": {
-            "metric": "False Positives",
-            "value": "2%",
-            "improvement": "80% reduction"
+            "metric": "Field team visibility",
+            "value": "100%",
+            "improvement": "Digital control"
           },
           "processingTime": {
-            "metric": "Processing Speed",
-            "value": "50ms",
-            "improvement": "95% faster"
+            "metric": "Scale horizon",
+            "value": "3-12 mo",
+            "improvement": "Full rollout"
           },
           "savings": {
-            "metric": "Annual Loss Prevention",
-            "value": "$12M",
-            "improvement": "85% reduction"
+            "metric": "Pilot budget",
+            "value": "50K–300K ₽",
+            "improvement": "Low entry threshold"
           }
         },
         "testimonial": {
-          "quote": "The AI fraud detection system has exceeded all our expectations. We're catching fraud we never could before while dramatically improving the customer experience by reducing false alarms.",
-          "author": "Jennifer Walsh",
-          "position": "Head of Risk Management"
+          "quote": "The pilot helped us quickly validate hypotheses and show the team how digitalization can speed up operations without disrupting existing processes.",
+          "author": "Client representative",
+          "position": "Project Manager"
+        }
+      },
+      "studyNinja": {
+        "title": "StudyNinja — Personalized Learning Platform",
+        "company": "StudyNinja (XTeam.Pro)",
+        "industry": "Education / EdTech",
+        "challenge": "Standard curricula ignore learner psychotype and pace; Low retention in traditional online courses; Private tutoring unaffordable for most families",
+        "challengeShort": "Standard courses don't retain learners — tutors are expensive, AI doesn't adapt to the individual",
+        "solution": "Knowledge graph + HBDI psychotype diagnostics + micro-lesson format + AI tutor adapted to each learner",
+        "implementation": "Developed 2024–2025. Supported by FSI (Skolkovo Innovation Fund)",
+        "timeline": "2024–2025",
+        "investment": "FSI / Skolkovo Grant",
+        "roi": "FSI / Skolkovo Grant",
+        "results": {
+          "retention": {
+            "metric": "D30 Retention",
+            "value": "35–40%",
+            "improvement": "User retention"
+          },
+          "learningTime": {
+            "metric": "Learning Time Reduction",
+            "value": "−35%",
+            "improvement": "Faster to results"
+          },
+          "accuracy": {
+            "metric": "Diagnostic Accuracy",
+            "value": "≥80%",
+            "improvement": "Psychotype confidence"
+          },
+          "savings": {
+            "metric": "Savings vs Tutor",
+            "value": "70–90%",
+            "improvement": "Vs private tutor cost"
+          }
+        },
+        "testimonial": {
+          "quote": "We built StudyNinja to give every student a truly personal learning path — powered by AI, validated by science.",
+          "author": "XTeam.Pro Team",
+          "position": "StudyNinja, Product Team"
         }
       },
       "manufacturingOptimization": {
-        "title": "Smart Manufacturing Optimization",
-        "company": "AutoParts Industries",
-        "industry": "Manufacturing",
-        "challenge": "Frequent equipment breakdowns and quality control issues were causing 20% production downtime and $3M annual losses in defective products.",
-        "solution": "Deployed predictive maintenance AI and automated quality control systems with IoT sensor integration and real-time monitoring.",
-        "implementation": "Phased deployment across 3 production lines over 12 weeks with minimal disruption to operations.",
-        "timeline": "12 weeks",
-        "investment": "$400K",
-        "roi": "650% in 10 months",
+        "title": "HR Effectiveness + Corporate Knowledge Base",
+        "company": "Commercial Personnel Company",
+        "industry": "HR & L&D",
+        "challenge": "Scattered knowledge, slow onboarding, inconsistent staff performance.",
+        "solution": "X-LogOS knowledge platform + HRXteam effectiveness program.",
+        "implementation": "6-12 month program with 6 experienced consultants.",
+        "timeline": "6-12 months",
+        "investment": "Custom",
+        "roi": "30-50% productivity improvement",
         "results": {
           "downtime": {
-            "metric": "Production Downtime",
-            "value": "4%",
-            "improvement": "80% reduction"
+            "metric": "Productivity",
+            "value": "30-50%",
+            "improvement": "Improvement"
           },
           "defectRate": {
-            "metric": "Defect Rate",
-            "value": "0.5%",
-            "improvement": "90% improvement"
+            "metric": "HR Efficiency",
+            "value": "~20%",
+            "improvement": "Gain"
           },
           "maintenance": {
-            "metric": "Maintenance Costs",
-            "value": "$800K",
-            "improvement": "60% reduction"
+            "metric": "Effectiveness Gain",
+            "value": "~1.5×",
+            "improvement": "Overall"
           },
           "efficiency": {
-            "metric": "Overall Efficiency",
-            "value": "94%",
-            "improvement": "+35%"
+            "metric": "Optimization Timeline",
+            "value": "8-12 mo",
+            "improvement": "Reorganization"
           }
         },
         "testimonial": {
-          "quote": "The predictive maintenance system has transformed our operations. We now fix issues before they become problems, and our quality has never been better. The ROI was evident within the first quarter.",
-          "author": "Robert Kim",
-          "position": "Operations Director"
+          "quote": "The knowledge management system transformed how our people learn and share information. Onboarding time dropped significantly and performance became more consistent.",
+          "author": "Client representative",
+          "position": "HR Director"
         }
       },
       "retailPersonalization": {
-        "title": "AI-Powered Retail Personalization",
-        "company": "FashionForward",
-        "industry": "Retail",
-        "challenge": "Low conversion rates (2.1%) and high cart abandonment (78%) due to generic shopping experiences and poor product recommendations.",
-        "solution": "Implemented an AI personalization engine with a real-time recommendation system, dynamic pricing, and personalized marketing automation.",
-        "implementation": "Integrated over 8 weeks with A/B testing and gradual feature rollout to optimize performance.",
-        "timeline": "8 weeks",
-        "investment": "$200K",
-        "roi": "2100% in 6 months",
+        "title": "Aviation Parts Process Automation (FastAI / DealMaster)",
+        "company": "Aviation Parts Distributor",
+        "industry": "Aviation",
+        "challenge": "Hundreds of daily RFQ emails with no structure. Manual processing caused lost deals and slow response times.",
+        "solution": "AI email ingestion pipeline, BPM automation, smart nomenclature classifier (P/N / ALT P/N), priority inbox.",
+        "implementation": "n8n, FastAPI, PostgreSQL, Qdrant/Elasticsearch, Grafana, CapRover.",
+        "timeline": "4-8 weeks",
+        "investment": "Custom",
+        "roi": "~1.5× operational efficiency",
         "testimonial": {
-          "quote": "The personalization AI has completely transformed our customer experience. Sales have tripled, and customers are genuinely excited about the recommendations they receive.",
-          "author": "Amanda Foster",
-          "position": "Chief Marketing Officer"
+          "quote": "Automation removed the bottleneck from our workflow — our specialists now focus on deals that need real judgment.",
+          "author": "Client representative",
+          "position": "Operations Director, Aviation"
         },
         "results": {
           "conversionRate": {
-            "metric": "Conversion Rate",
-            "value": "6.8%",
-            "improvement": "+224%"
+            "metric": "Efficiency",
+            "value": "~1.5×",
+            "improvement": "Gain"
           },
           "cartAbandonment": {
-            "metric": "Cart Abandonment",
-            "value": "45%",
-            "improvement": "42% reduction"
+            "metric": "Revenue",
+            "value": "10%+",
+            "improvement": "Growth"
           },
           "averageOrderValue": {
-            "metric": "Average Order Value",
-            "value": "$127",
-            "improvement": "+85%"
+            "metric": "Tasks",
+            "value": "Automated",
+            "improvement": "Nomenclature"
           },
           "revenueGrowth": {
-            "metric": "Revenue Growth",
-            "value": "$4.2M",
-            "improvement": "340% increase"
+            "metric": "Deal Inbox",
+            "value": "Smart",
+            "improvement": "AI-powered"
           }
         }
       },
       "logisticsOptimization": {
-        "title": "Supply Chain Intelligence System",
-        "company": "GlobalLogistics Pro",
-        "industry": "Logistics",
-        "challenge": "Inefficient route planning and inventory management were causing 25% higher delivery costs and frequent stockouts affecting customer satisfaction.",
-        "solution": "Deployed AI-powered supply chain optimization with predictive analytics, dynamic routing, and automated inventory management.",
-        "implementation": "Rolled out across 15 distribution centers over 14 weeks with comprehensive staff training.",
-        "timeline": "14 weeks",
-        "investment": "$350K",
-        "roi": "600% in 8 months",
+        "title": "HR Effectiveness + Corporate Knowledge Base",
+        "company": "Commercial Personnel Company",
+        "industry": "HR & L&D",
+        "challenge": "Scattered knowledge, slow onboarding and inconsistent staff performance across departments.",
+        "solution": "X-LogOS knowledge platform + HRXteam effectiveness program with competency models and succession planning.",
+        "implementation": "6-12 month program with cross-functional integration focus.",
+        "timeline": "6-12 months",
+        "investment": "Custom",
+        "roi": "30-50% productivity improvement",
         "testimonial": {
-          "quote": "The AI system has revolutionized our supply chain operations. We are delivering faster, cheaper, and more reliably than ever before.",
-          "author": "Carlos Martinez",
-          "position": "VP of Operations"
+          "quote": "Onboarding time dropped and performance became measurably more consistent across the organization.",
+          "author": "Client representative",
+          "position": "HR Director"
         },
         "results": {
           "deliveryCosts": {
-            "metric": "Delivery Costs",
-            "value": "$2.1M",
-            "improvement": "35% reduction"
+            "metric": "Productivity",
+            "value": "30-50%",
+            "improvement": "Improvement"
           },
           "onTimeDelivery": {
-            "metric": "On-time Delivery",
-            "value": "97%",
-            "improvement": "+22%"
+            "metric": "HR Efficiency",
+            "value": "~20%",
+            "improvement": "Gain"
           },
           "inventoryTurnover": {
-            "metric": "Inventory Turnover",
-            "value": "12x",
-            "improvement": "+50%"
+            "metric": "Effectiveness",
+            "value": "~1.5×",
+            "improvement": "Overall"
           },
           "customerSatisfaction": {
-            "metric": "Customer Satisfaction",
-            "value": "92%",
-            "improvement": "+28%"
+            "metric": "Timeline",
+            "value": "8-12 mo",
+            "improvement": "Optimization"
           }
         }
       }
@@ -2292,7 +2477,7 @@
     "testimonial": "Testimonial",
     "timeline": "Timeline",
     "investment": "Investment",
-    "roi": "ROI",
-    "allIndustries": "All Industries"
+    "roi": "ROI"
   }
 }
+

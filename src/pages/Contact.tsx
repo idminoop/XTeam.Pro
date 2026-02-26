@@ -80,12 +80,12 @@ export default function Contact() {
       }
     },
     {
-      icon: <Phone className="w-6 h-6" />,
+      icon: <MessageSquare className="w-6 h-6" />,
       title: t('contact.info.phone.title'),
       details: localizedInfo.phone.details,
       action: {
         text: t('contact.info.phone.action'),
-        href: 'tel:+15551234567'
+        href: 'https://t.me/xteampro'
       }
     },
     {
@@ -94,7 +94,7 @@ export default function Contact() {
       details: localizedInfo.address.details,
       action: {
         text: t('contact.info.address.action'),
-        href: 'https://maps.google.com/?q=123+Innovation+Drive+San+Francisco+CA'
+        href: 'mailto:info@xteam.pro'
       }
     },
     {
@@ -111,10 +111,6 @@ export default function Contact() {
     { value: 'support', label: t('contact.form.inquiryTypes.support') },
     { value: 'other', label: t('contact.form.inquiryTypes.other') }
   ];
-
-  const serviceOptions = t('contact.form.services', { returnObjects: true }) as string[];
-  const budgetRanges = t('contact.form.budgetRanges', { returnObjects: true }) as string[];
-  const timelineOptions = t('contact.form.timelineOptions', { returnObjects: true }) as string[];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -133,15 +129,6 @@ export default function Contact() {
         return newErrors;
       });
     }
-  };
-
-  const handleServiceChange = (service: string) => {
-    setFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
   };
 
   const validateContactData = (): ValidationErrors => {
@@ -519,43 +506,24 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('contact.form.position')}
-                      </label>
-                      <input
-                        type="text"
-                        id="position"
-                        name="position"
-                        value={formData.position}
-                        onChange={handleInputChange}
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                          validationErrors.position ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                        }`}
-                        placeholder={t('contact.form.positionPlaceholder')}
-                      />
-                      {validationErrors.position && <ErrorMessage error={validationErrors.position} />}
-                    </div>
-                    <div>
-                      <label htmlFor="inquiryType" className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('contact.form.inquiryType')} *
-                      </label>
-                      <select
-                        id="inquiryType"
-                        name="inquiryType"
-                        value={formData.inquiryType}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        {inquiryTypes.map((type) => (
-                          <option key={type.value} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label htmlFor="inquiryType" className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('contact.form.inquiryType')} *
+                    </label>
+                    <select
+                      id="inquiryType"
+                      name="inquiryType"
+                      value={formData.inquiryType}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      {inquiryTypes.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                 <div>
@@ -575,60 +543,6 @@ export default function Contact() {
                       placeholder={t('contact.form.subject')}
                     />
                   {validationErrors.subject && <ErrorMessage error={validationErrors.subject} />}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('contact.form.servicesInterestedIn')}
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {serviceOptions.map((service) => (
-                      <label key={service} className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={formData.services.includes(service)}
-                          onChange={() => handleServiceChange(service)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm text-gray-700">{service}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('contact.form.budgetRange')}
-                    </label>
-                    <select
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="">{t('contact.form.selectBudgetRange')}</option>
-                      {budgetRanges.map((range) => (
-                        <option key={range} value={range}>{range}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('contact.form.timeline')}
-                    </label>
-                    <select
-                      name="timeline"
-                      value={formData.timeline}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="">{t('contact.form.selectTimeline')}</option>
-                      {timelineOptions.map((timeline) => (
-                        <option key={timeline} value={timeline}>{timeline}</option>
-                      ))}
-                    </select>
-                  </div>
                 </div>
 
                 <div>

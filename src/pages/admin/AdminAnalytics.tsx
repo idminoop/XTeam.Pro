@@ -300,7 +300,7 @@ export default function AdminAnalytics() {
                     outerRadius={85}
                     dataKey="count"
                     labelLine={false}
-                    label={({ percent }) => percent > 0.05 ? `${Math.round(percent * 100)}%` : ''}
+                    label={(props: any) => (props.percent ?? 0) > 0.05 ? `${Math.round((props.percent ?? 0) * 100)}%` : ''}
                   >
                     {industryData.map((_, i) => (
                       <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
