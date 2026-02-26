@@ -40,29 +40,33 @@
   },
   "home": {
     "hero": {
-      "title": "We build AI automation for complex business processes",
-      "subtitle": "We work with medium and large companies (from RUB 300M annual turnover). Decision makers: CEO, HR Director, IT Director, Commercial Director, Production Director.",
+      "title": "We reduce manual operations and process losses with AI automation",
+      "subtitle": "Pilot with KPIs in 4–6 weeks. Typical payback by cases — 6–12 months. For mid-size and large businesses.",
       "ctaPrimary": "Request a pilot",
-      "ctaSecondary": "View solutions"
+      "ctaSecondary": "View case studies",
+      "ctaTertiary": "View solutions",
+      "trustMarker1": "Integrations with your systems",
+      "trustMarker2": "Measurable effect by metrics",
+      "trustMarker3": "Modular, without lock-in"
     },
     "features": {
-      "title": "Common business problems we solve",
-      "subtitle": "Cut losses, speed up operations, and make processes measurable.",
+      "title": "Does your company recognize these problems?",
+      "subtitle": "Four pain points that eat margin and slow growth. If even one sounds familiar — we have things to discuss.",
       "aiAudit": {
-        "title": "AI & Multi-agent Systems",
-        "description": "LLM orchestration, autonomous agents, RAG pipelines, knowledge graphs — for automation of complex business and educational processes"
+        "title": "Manual work erodes margins",
+        "description": "Managers enter data by hand, errors in requests are costly, clients leave due to delays. Manual data entry, Excel, information duplication — these are direct losses."
       },
       "processAutomation": {
-        "title": "X-LogOS Knowledge OS",
-        "description": "Corporate knowledge management platform: documentation, HR development, training, certification — in one unified system replacing Wiki + LMS"
+        "title": "Knowledge leaves with people",
+        "description": "Key expertise lives in veterans' heads. New employees ramp up for months. No structured knowledge base — reinventing the wheel every time."
       },
       "roiOptimization": {
-        "title": "HRXteam L&D",
-        "description": "Personnel automation: competency assessment, selection, onboarding pipelines, certification tracking and productivity analytics"
+        "title": "Decisions made on gut feeling",
+        "description": "No real-time cross-functional reports. Analytics assembled manually once a month. No forecasting — managing by rear-view mirror."
       },
       "scalableGrowth": {
-        "title": "Industry Pilots",
-        "description": "Turnkey pilots in 4–8 weeks. Aviation, logistics, security, manufacturing, HR/L&D — modular architecture, no vendor lock-in"
+        "title": "Automation stalls for years",
+        "description": "IT teams are overloaded, pilots drag on. Competitors deploy AI while you're still drafting specs. MVP should appear in weeks, not a year."
       }
     },
     "stats": {
@@ -71,32 +75,99 @@
       "processingTime": "Typical payback period",
       "clientSatisfaction": "Pilot budget range",
       "successfulProjects": "Successful Projects",
-      "happyClients": "Happy Clients"
+      "happyClients": "Happy Clients",
+      "stat1Number": "3-5x",
+      "stat1Label": "faster order processing",
+      "stat1Context": "operations: requests, documents, communications",
+      "stat2Number": "10%+",
+      "stat2Label": "reduction in operational losses",
+      "stat2Context": "typical for service processes with data available",
+      "stat3Number": "6-12",
+      "stat3Label": "months payback period",
+      "stat3Context": "by pilot cases, with integrations available",
+      "stat4Number": "4-6",
+      "stat4Label": "weeks to first result",
+      "stat4Context": "from task discussion to measurable KPI change"
     },
     "benefits": {
-      "title": "What we automate",
-      "subtitle": "Any complex business process can be made faster, cheaper and more accurate. The higher the qualifications required of your current staff — the greater the impact of our solutions.",
+      "title": "What the business gets",
+      "subtitle": "Not abstract AI, but concrete improvements in operations and company economics.",
       "list": {
-        "automation": "Customer interaction automation in all channels",
-        "roi": "Document flow and intelligent report generation",
-        "roadmaps": "Personnel selection, training and onboarding",
-        "support": "CRM analytics and business process optimization"
+        "automation": "3-5x faster processing of requests and operational tasks",
+        "roi": "Up to RUB 10M/year savings through process automation",
+        "roadmaps": "3x faster onboarding with corporate knowledge base",
+        "support": "End-to-end analytics and transparent real-time KPI control"
       },
       "cta": {
-        "title": "Discuss your process",
-        "subtitle": "We propose an online meeting to select tasks for a pilot express project at any convenient time.",
+        "title": "Discuss your task",
+        "subtitle": "Usually 1-2 online meetings are enough to define the task, KPIs, and pilot plan. First result in 4-6 weeks.",
         "button": "Request a pilot"
       }
     },
+    "routing": {
+      "title": "Which area of your business needs automation?",
+      "subtitle": "Choose your direction — get tailored solutions",
+      "tile1Title": "Customer Operations",
+      "tile1Desc": "Automate request processing, cut response time, improve service quality",
+      "tile2Title": "Sales & Marketing",
+      "tile2Desc": "Lead qualification, CRM enrichment, proposal and script generation",
+      "tile3Title": "Documents & Back-office",
+      "tile3Desc": "Contracts, invoices, reports — from manual processing to automated flow",
+      "tile4Title": "Data & Analytics",
+      "tile4Desc": "Real-time dashboards, predictive analytics, unified cross-system reporting",
+      "tile5Title": "HR / Onboarding / Training",
+      "tile5Desc": "Knowledge base, fast onboarding, competency assessment and certification",
+      "tile6Title": "IT ops / Development",
+      "tile6Desc": "Code review, incident management, DevOps pipeline automation",
+      "viewAll": "All solutions"
+    },
+    "pilot": {
+      "title": "How our pilots work",
+      "subtitle": "Transparent process, fixed KPIs, no surprise costs",
+      "step1Title": "Baseline KPI",
+      "step1Desc": "1-2 meetings to define current metrics and loss points. We document where and how much you lose.",
+      "step2Title": "Prototype in 7-10 days",
+      "step2Desc": "Technical prototype on your data with minimal access requirements. You see the result before full implementation.",
+      "step3Title": "4-6 week pilot",
+      "step3Desc": "Implementation in real workflow, KPI measurement in production. You control every step.",
+      "step4Title": "Fixed result",
+      "step4Desc": "Report with delta KPI, ROI calculation, and scaling plan. Payback is specified in the contract.",
+      "safetyNote": "Human-in-the-loop control · Access restrictions · Full audit log"
+    },
+    "cases": {
+      "title": "Client results",
+      "subtitle": "Anonymized cases: process → intervention → KPI effect",
+      "case1Title": "Aviation: crew management automation",
+      "case1Process": "Manual crew scheduling, Excel-based tracking, frequent errors",
+      "case1Effect": "60% reduction in scheduling time",
+      "case1Period": "8 weeks",
+      "case1Stack": "LLM + HR API",
+      "case2Title": "Services: corporate knowledge base",
+      "case2Process": "Knowledge in employees' heads, slow onboarding of new staff",
+      "case2Effect": "3x faster onboarding, 40% fewer repeat questions to senior staff",
+      "case2Period": "6 weeks",
+      "case2Stack": "RAG + Internal docs",
+      "case3Title": "B2B sales: proposal automation",
+      "case3Process": "Manual CRM entry, 2-day proposal preparation cycle",
+      "case3Effect": "5x faster proposal creation, +15% conversion",
+      "case3Period": "5 weeks",
+      "case3Stack": "LLM + CRM API",
+      "processLabel": "Process",
+      "effectLabel": "Result",
+      "periodLabel": "Timeline",
+      "stackLabel": "Stack",
+      "viewAll": "View all cases"
+    },
     "finalCta": {
-      "title": "Ready to discuss?",
-      "subtitle": "We test and use the most advanced AI solutions daily. Pilot results in days after task discussion.",
+      "title": "Show you results in your pilot",
+      "subtitle": "30-min call → 7-10 days prototype → 4-6 weeks measurable result. Payback specified in the contract.",
       "consultation": "Book a discovery call",
-      "caseStudies": "View solutions"
+      "caseStudies": "View case studies",
+      "solutions": "View solutions"
     },
     "cta": {
       "title": "Ready to Transform Your Business?",
-      "subtitle": "Join hundreds of companies already benefiting from our AI solutions",
+      "subtitle": "Join companies already benefiting from our AI automation",
       "button": "Get Started Today"
     }
   },
