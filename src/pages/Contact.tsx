@@ -40,36 +40,79 @@ interface ContactInfo {
   };
 }
 
+type InquiryTypeValue = 'consultation' | 'demo' | 'partnership' | 'support' | 'other';
+
 export default function Contact() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const sourceParam = searchParams.get('source');
   const caseParam = searchParams.get('case');
+  const modelParam = searchParams.get('model');
+  const tierParam = searchParams.get('tier');
+  const addonParam = searchParams.get('addon');
   const refParam = searchParams.get('ref');
-  const composedSource = [sourceParam, caseParam ? `case:${caseParam}` : null, refParam ? `ref:${refParam}` : null]
+  const composedSource = [
+    sourceParam,
+    caseParam ? `case:${caseParam}` : null,
+    modelParam ? `model:${modelParam}` : null,
+    tierParam ? `tier:${tierParam}` : null,
+    addonParam ? `addon:${addonParam}` : null,
+    refParam ? `ref:${refParam}` : null
+  ]
     .filter((value): value is string => Boolean(value))
     .join('|');
   const submissionSource = (composedSource || 'website_contact').slice(0, 100);
+  const hasPrefillContext = Boolean(sourceParam || caseParam || modelParam || tierParam || addonParam || refParam);
+  const missingPrefillValue = t('contact.form.prefill.missing');
+
+  const inferredInquiryType: InquiryTypeValue =
+    sourceParam?.startsWith('case_')
+      ? 'demo'
+      : sourceParam === 'blog_subscribe' || sourceParam === 'social_link'
+        ? 'partnership'
+        : sourceParam === 'audit_consultation'
+          ? 'consultation'
+          : 'consultation';
+
+  const prefilledSubject = hasPrefillContext
+    ? `${t('contact.form.prefill.subjectPrefix')}: ${sourceParam ?? missingPrefillValue}${caseParam ? ` (${caseParam})` : ''}`
+    : '';
+
+  const prefilledMessage = hasPrefillContext
+    ? [
+      `${t('contact.form.prefill.labels.source')}: ${sourceParam ?? missingPrefillValue}`,
+      `${t('contact.form.prefill.labels.case')}: ${caseParam ?? missingPrefillValue}`,
+      `${t('contact.form.prefill.labels.model')}: ${modelParam ?? missingPrefillValue}`,
+      `${t('contact.form.prefill.labels.tier')}: ${tierParam ?? missingPrefillValue}`,
+      `${t('contact.form.prefill.labels.addon')}: ${addonParam ?? missingPrefillValue}`,
+      `${t('contact.form.prefill.labels.ref')}: ${refParam ?? missingPrefillValue}`,
+      '',
+      t('contact.form.prefill.briefPrompt')
+    ].join('\n')
+    : '';
+
+  const createInitialFormData = (): ContactForm => ({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    position: '',
+    inquiryType: inferredInquiryType,
+    subject: prefilledSubject,
+    message: prefilledMessage,
+    budget: '',
+    timeline: '',
+    services: [],
+    marketingConsent: false
+  });
+
   const localizedInfo = t('contact.info', { returnObjects: true }) as {
     email: { title: string; details: string[]; action?: string };
     phone: { title: string; details: string[]; action?: string };
     address: { title: string; details: string[]; action?: string };
     hours: { title: string; details: string[]; action?: string };
   };
-  const [formData, setFormData] = useState<ContactForm>({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    position: '',
-    inquiryType: 'consultation',
-    subject: '',
-    message: '',
-    budget: '',
-    timeline: '',
-    services: [],
-    marketingConsent: false
-  });
+  const [formData, setFormData] = useState<ContactForm>(() => createInitialFormData());
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -84,7 +127,7 @@ export default function Contact() {
       details: localizedInfo.email.details,
       action: {
         text: t('contact.info.email.action'),
-        href: `mailto:${localizedInfo.email.details[0] ?? 'hello@xteam.pro'}`
+        href: `mailto:${localizedInfo.email.details[0] ?? 'info@xteam.pro'}`
       }
     },
     {
@@ -99,7 +142,7 @@ export default function Contact() {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: t('contact.info.address.title'),
-      details: localizedInfo.address.details,
+      details: localizedInfo.address.details.slice(0, 2),
       action: {
         text: t('contact.info.address.action'),
         href: 'mailto:info@xteam.pro'
@@ -108,7 +151,11 @@ export default function Contact() {
     {
       icon: <Clock className="w-6 h-6" />,
       title: t('contact.info.hours.title'),
-      details: localizedInfo.hours.details
+      details: localizedInfo.hours.details,
+      action: {
+        text: t('contact.info.hours.action'),
+        href: '#contact-form'
+      }
     }
   ];
 
@@ -241,20 +288,7 @@ export default function Contact() {
         setIsSubmitted(true);
         
         // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          phone: '',
-          position: '',
-          subject: '',
-          message: '',
-          budget: '',
-          timeline: '',
-          services: [],
-          inquiryType: 'consultation',
-          marketingConsent: false
-        });
+        setFormData(createInitialFormData());
       } else {
         const errorData = await response.json().catch(() => ({}));
         
@@ -329,20 +363,7 @@ export default function Contact() {
             onClick={() => {
               setIsSubmitted(false);
               setSubmitSuccess(null);
-              setFormData({
-                name: '',
-                email: '',
-                company: '',
-                phone: '',
-                position: '',
-                inquiryType: 'consultation',
-                subject: '',
-                message: '',
-                budget: '',
-                timeline: '',
-                services: [],
-                marketingConsent: false
-              });
+              setFormData(createInitialFormData());
             }}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
@@ -355,41 +376,37 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Hero Section */}
-      <section className="py-20">
+
+      {/* Hero + Contact Cards — single section, no gap */}
+      <section className="pt-16 pb-10">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               {t('contact.title')}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
               {t('contact.subtitle')}
             </p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Contact Options */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={info.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index }}
-                className="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow"
+                transition={{ delay: 0.08 * index }}
+                className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow flex flex-col"
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-4">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-4 mx-auto">
                   {info.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{info.title}</h3>
-                <div className="space-y-1 mb-4">
+                <h3 className="text-base font-semibold text-gray-900 mb-2">{info.title}</h3>
+                <div className="space-y-1 mb-4 flex-1">
                   {info.details.map((detail, idx) => (
                     <p key={idx} className="text-gray-600 text-sm">{detail}</p>
                   ))}
@@ -397,10 +414,10 @@ export default function Contact() {
                 {info.action && (
                   <a
                     href={info.action.href}
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm"
+                    className="inline-flex items-center justify-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm cursor-pointer"
                   >
                     {info.action.text}
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    <ArrowRight className="w-4 h-4" />
                   </a>
                 )}
               </motion.div>
@@ -410,14 +427,14 @@ export default function Contact() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16">
+      <section className="pb-16 pt-6" id="contact-form">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-2xl shadow-xl p-8"
+              className="bg-white rounded-2xl shadow-xl p-8 self-start"
             >
               <div className="mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('contact.form.title')}</h2>
@@ -425,6 +442,20 @@ export default function Contact() {
                   {t('contact.form.description')}
                 </p>
               </div>
+
+              {hasPrefillContext && (
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
+                    {t('contact.form.prefill.title')}:{' '}
+                    <span className="normal-case font-mono text-[11px] break-all">
+                      {sourceParam ?? missingPrefillValue}
+                    </span>
+                  </p>
+                  <p className="text-sm text-blue-900">
+                    {t('contact.form.prefill.hint')}
+                  </p>
+                </div>
+              )}
 
               {/* Display submission errors */}
               {submitError && (
@@ -687,15 +718,15 @@ export default function Contact() {
                 </p>
                 
                 <div className="space-y-4">
-                  <a href="tel:+15551234567" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                  <a href="https://t.me/xteampro" target="_blank" rel="noreferrer" className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer">
                     <Phone className="w-5 h-5" />
                     <span>{localizedInfo.phone.details[0]}</span>
                   </a>
-                  <a href={`mailto:${localizedInfo.email.details[0] ?? 'hello@xteam.pro'}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                  <a href={`mailto:${localizedInfo.email.details[0] ?? 'info@xteam.pro'}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer">
                     <Mail className="w-5 h-5" />
                     <span>{localizedInfo.email.details[0]}</span>
                   </a>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-3 opacity-80">
                     <MessageSquare className="w-5 h-5" />
                     <span>{t('contact.directContact.liveChat')}</span>
                   </div>

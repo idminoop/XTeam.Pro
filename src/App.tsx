@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import Layout from '@/components/layout/Layout';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ScrollToTop from '@/components/layout/ScrollToTop';
 
 // Public pages
 const Home        = lazy(() => import('@/pages/Home'));
@@ -44,6 +45,7 @@ const Spinner = () => (
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Suspense fallback={<Spinner />}>
         <Routes>
           {/* ── Public routes — with Header + Footer ── */}

@@ -2212,7 +2212,8 @@
         "details": [
           "30-min task discussion",
           "Book at any convenient time"
-        ]
+        ],
+        "action": "Book a call"
       }
     },
     "form": {
@@ -2231,6 +2232,21 @@
       "timeline": "Timeline",
       "selectTimeline": "Select timeline",
       "marketingConsent": "I agree to receive marketing communications from XTeam.Pro",
+      "prefill": {
+        "title": "Lead context",
+        "hint": "We pre-filled subject and message draft based on the page where you clicked. Edit anything before sending.",
+        "subjectPrefix": "Request from source",
+        "briefPrompt": "Please add your task details, target KPI, and desired launch timeline.",
+        "missing": "not specified",
+        "labels": {
+          "source": "Source",
+          "case": "Case",
+          "model": "Model",
+          "tier": "Tier",
+          "addon": "Add-on",
+          "ref": "Referrer"
+        }
+      },
       "sending": "Sending...",
       "sendMessage": "Send Message",
       "inquiryTypes": {
@@ -2313,7 +2329,7 @@
       "questions": {
         "projectStart": {
           "question": "How quickly can we start?",
-          "answer": "Most projects can be kicked off within 1-2 weeks after discovery."
+          "answer": "Discovery takes 1-2 weeks — by the end you have clear hypotheses and a pilot scope. The pilot itself runs 4-12 weeks to the first measurable production result, depending on integration complexity."
         },
         "smallBusiness": {
           "question": "Do you work with small businesses?",
