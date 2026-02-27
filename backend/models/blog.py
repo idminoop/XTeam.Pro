@@ -13,6 +13,14 @@ class BlogPost(Base):
     slug = Column(String(255), unique=True, nullable=False, index=True)
     excerpt = Column(Text, nullable=True)
     content = Column(Text, nullable=False)
+
+    # Bilingual content (required by admin flows, nullable for legacy rows)
+    title_ru = Column(String(255), nullable=True)
+    title_en = Column(String(255), nullable=True)
+    excerpt_ru = Column(Text, nullable=True)
+    excerpt_en = Column(Text, nullable=True)
+    content_ru = Column(Text, nullable=True)
+    content_en = Column(Text, nullable=True)
     
     # SEO
     meta_title = Column(String(255), nullable=True)

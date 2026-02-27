@@ -1,384 +1,675 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  AreaChart, Area, PieChart, Pie, Cell, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
 } from 'recharts';
 import {
-  TrendingUp, TrendingDown, Download, BarChart2, Target,
-  DollarSign, Users, CheckCircle, ExternalLink,
+  Download,
+  Plus,
+  Pencil,
+  Trash2,
+  Target,
+  TrendingDown,
+  TrendingUp,
+  Filter,
 } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { useAdminStore } from '@/store/adminStore';
 import { adminApiCall } from '@/utils/adminApi';
-import { toast } from 'sonner';
 
 type Period = '7d' | '30d' | '90d' | '365d';
 
-interface Analytics {
+interface AnalyticsResponse {
   period: string;
+  startDate: string;
+  endDate: string;
   totalSubmissions: number;
   completedAudits: number;
   averageMaturityScore: number;
   totalEstimatedROI: number;
   conversionRate: number;
-  monthlySubmissions: { month: string; submissions: number; conversions?: number }[];
-  companySizeBreakdown?: { size: string; count: number }[];
-  maturityScoreDistribution?: { range: string; count: number }[];
-  industryBreakdown?: { industry: string; count: number; percentage: number }[];
+  totalContacts: number;
+  convertedContacts: number;
+  contactConversionRate: number;
+  monthlySubmissions: Array<{ month: string; submissions: number; conversions: number }>;
 }
 
-interface BlogPost {
+interface ComparisonDelta {
+  value: number;
+  percent: number | null;
+}
+
+interface ComparisonResponse {
+  delta: Record<string, ComparisonDelta>;
+}
+
+interface FunnelResponse {
+  stages: Array<{ name: string; value: number }>;
+}
+
+interface CohortRow {
+  month: string;
+  contacts: number;
+  converted: number;
+  audits: number;
+  completed_audits: number;
+  conversion_rate: number;
+}
+
+interface CohortResponse {
+  rows: CohortRow[];
+}
+
+interface GoalMetricOption {
+  value: string;
+  label: string;
+}
+
+interface GoalProgressItem {
   id: number;
-  title: string;
-  slug: string;
-  view_count: number;
-  category: string | null;
+  metric: string;
+  metric_label: string;
+  target_value: number;
+  current_value: number | null;
+  period: Period;
+  is_active: boolean;
+  progress_percent: number;
+  is_reached: boolean;
 }
 
-const PERIODS: { label: string; value: Period }[] = [
-  { label: '7 дней',  value: '7d' },
-  { label: '30 дней', value: '30d' },
-  { label: '90 дней', value: '90d' },
-  { label: 'Год',     value: '365d' },
+interface GoalsListResponse {
+  items: GoalProgressItem[];
+  available_metrics: GoalMetricOption[];
+}
+
+interface GoalsProgressResponse {
+  items: GoalProgressItem[];
+}
+
+const PERIODS: Array<{ value: Period; label: string }> = [
+  { value: '7d', label: '7d' },
+  { value: '30d', label: '30d' },
+  { value: '90d', label: '90d' },
+  { value: '365d', label: '365d' },
 ];
 
-const PIE_COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
+const GOAL_PERIODS: Period[] = ['7d', '30d', '90d', '365d'];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-xs">
-      <p className="font-semibold text-gray-700 mb-1.5">{label}</p>
-      {payload.map((entry: any, i: number) => (
-        <div key={i} className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-          <span className="text-gray-500">{entry.name}:</span>
-          <span className="font-medium text-gray-800">{entry.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-interface KpiCardProps {
-  label: string;
-  value: string | number;
-  icon: React.ElementType;
-  iconBg: string;
-  trend?: number;
-  trendLabel?: string;
+function numberFormat(value: number, fractionDigits = 0) {
+  return Number(value ?? 0).toLocaleString(undefined, {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
 }
 
-const KpiCard = ({ label, value, icon: Icon, iconBg, trend, trendLabel }: KpiCardProps) => (
-  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-    <div className="flex items-center justify-between mb-4">
-      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</p>
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
-        <Icon style={{ width: 18, height: 18 }} />
-      </div>
-    </div>
-    <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-    {trendLabel && (
-      <div className="flex items-center gap-1.5">
-        {trend !== undefined && (
-          trend >= 0
-            ? <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
-            : <TrendingDown className="w-3.5 h-3.5 text-red-400" />
-        )}
-        <span className="text-xs text-gray-400">{trendLabel}</span>
-      </div>
-    )}
-  </div>
-);
+function DeltaBadge({ delta }: { delta?: ComparisonDelta }) {
+  if (!delta) return <span className="text-xs text-gray-400">no delta</span>;
+  const isUp = delta.value >= 0;
+  const pct = delta.percent;
+  const pctText = pct === null ? 'n/a' : `${Math.abs(pct).toFixed(1)}%`;
+  return (
+    <span className={`inline-flex items-center gap-1 text-xs ${isUp ? 'text-emerald-600' : 'text-red-500'}`}>
+      {isUp ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
+      {isUp ? '+' : '-'}
+      {pctText}
+    </span>
+  );
+}
 
-const MAX_BAR = 100; // for relative bar chart in posts table
+interface GoalFormState {
+  metric: string;
+  target_value: string;
+  period: Period;
+  is_active: boolean;
+}
+
+const EMPTY_GOAL_FORM: GoalFormState = {
+  metric: '',
+  target_value: '',
+  period: '30d',
+  is_active: true,
+};
 
 export default function AdminAnalytics() {
   const authToken = useAdminStore(state => state.authToken);
-  const [period, setPeriod] = useState<Period>('30d');
-  const [data, setData] = useState<Analytics | null>(null);
-  const [topPosts, setTopPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async () => {
+  const [period, setPeriod] = useState<Period>('30d');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [compareWithPrevious, setCompareWithPrevious] = useState(true);
+
+  const [analytics, setAnalytics] = useState<AnalyticsResponse | null>(null);
+  const [comparison, setComparison] = useState<ComparisonResponse | null>(null);
+  const [funnel, setFunnel] = useState<FunnelResponse | null>(null);
+  const [cohort, setCohort] = useState<CohortResponse | null>(null);
+  const [goals, setGoals] = useState<GoalProgressItem[]>([]);
+  const [metricOptions, setMetricOptions] = useState<GoalMetricOption[]>([]);
+
+  const [loading, setLoading] = useState(true);
+  const [savingGoal, setSavingGoal] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
+
+  const [goalModalOpen, setGoalModalOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState<GoalProgressItem | null>(null);
+  const [goalForm, setGoalForm] = useState<GoalFormState>(EMPTY_GOAL_FORM);
+
+  const queryString = useMemo(() => {
+    const params = new URLSearchParams({ period });
+    if (startDate && endDate) {
+      params.set('start_date', startDate);
+      params.set('end_date', endDate);
+    }
+    return `?${params.toString()}`;
+  }, [period, startDate, endDate]);
+
+  const loadData = useCallback(async () => {
     if (!authToken) return;
     setLoading(true);
     try {
-      const [analyticsRes, blogRes] = await Promise.all([
-        adminApiCall(`/api/admin/analytics?period=${period}`, authToken),
-        adminApiCall('/api/admin/analytics/blog', authToken),
+      const comparisonRequest = compareWithPrevious
+        ? adminApiCall(`/api/admin/analytics/comparison${queryString}`, authToken)
+        : Promise.resolve(null);
+
+      const [analyticsRes, funnelRes, cohortRes, goalsRes, goalProgressRes, comparisonRes] = await Promise.all([
+        adminApiCall(`/api/admin/analytics${queryString}`, authToken),
+        adminApiCall(`/api/admin/analytics/funnel${queryString}`, authToken),
+        adminApiCall(`/api/admin/analytics/cohort${queryString}`, authToken),
+        adminApiCall('/api/admin/analytics/goals', authToken),
+        adminApiCall('/api/admin/analytics/goals/progress', authToken),
+        comparisonRequest,
       ]);
-      setData(await analyticsRes.json());
-      const blogData = await blogRes.json();
-      setTopPosts(blogData.top_posts ?? []);
-    } catch (err) {
-      console.error(err);
-      toast.error('Не удалось загрузить аналитику');
+
+      const analyticsData = await analyticsRes.json() as AnalyticsResponse;
+      const funnelData = await funnelRes.json() as FunnelResponse;
+      const cohortData = await cohortRes.json() as CohortResponse;
+      const goalsData = await goalsRes.json() as GoalsListResponse;
+      const goalsProgressData = await goalProgressRes.json() as GoalsProgressResponse;
+
+      setAnalytics(analyticsData);
+      setFunnel(funnelData);
+      setCohort(cohortData);
+      setMetricOptions(goalsData.available_metrics ?? []);
+      setGoals(goalsProgressData.items ?? []);
+
+      if (comparisonRes) {
+        setComparison(await comparisonRes.json() as ComparisonResponse);
+      } else {
+        setComparison(null);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to load analytics');
     } finally {
       setLoading(false);
     }
-  }, [authToken, period]);
+  }, [authToken, compareWithPrevious, queryString]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
-  const handleExportCSV = () => {
-    if (!data) return;
-    const rows = [
-      ['Метрика', 'Значение'],
-      ['Всего аудитов', data.totalSubmissions],
-      ['Завершено', data.completedAudits],
-      ['Средний балл зрелости', data.averageMaturityScore?.toFixed(1) ?? '—'],
-      ['Конверсия %', data.conversionRate ?? 0],
-      ['Суммарный ROI $', data.totalEstimatedROI ?? 0],
-    ];
-    const csv = rows.map(r => r.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `analytics-${period}-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success('Отчёт экспортирован');
+  const openCreateGoal = () => {
+    const firstMetric = metricOptions[0]?.value ?? '';
+    setEditingGoal(null);
+    setGoalForm({ ...EMPTY_GOAL_FORM, metric: firstMetric });
+    setGoalModalOpen(true);
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-64">
-      <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+  const openEditGoal = (goal: GoalProgressItem) => {
+    setEditingGoal(goal);
+    setGoalForm({
+      metric: goal.metric,
+      target_value: String(goal.target_value),
+      period: goal.period,
+      is_active: goal.is_active,
+    });
+    setGoalModalOpen(true);
+  };
 
-  if (!data) return (
-    <div className="flex flex-col items-center justify-center h-64 text-gray-300">
-      <BarChart2 className="w-10 h-10 mb-3" />
-      <p className="text-sm text-gray-400">Нет данных</p>
-    </div>
-  );
+  const submitGoal = async () => {
+    if (!authToken) return;
+    const numericTarget = Number(goalForm.target_value);
+    if (!goalForm.metric) {
+      toast.error('Choose a metric');
+      return;
+    }
+    if (!Number.isFinite(numericTarget) || numericTarget <= 0) {
+      toast.error('Target value must be greater than 0');
+      return;
+    }
 
-  const maxViews = topPosts.length > 0 ? Math.max(...topPosts.map(p => p.view_count), 1) : 1;
-  const industryData = (data.industryBreakdown ?? []).map(i => ({ ...i, name: i.industry }));
+    setSavingGoal(true);
+    try {
+      const payload = {
+        metric: goalForm.metric,
+        target_value: numericTarget,
+        period: goalForm.period,
+        is_active: goalForm.is_active,
+      };
+      if (editingGoal) {
+        await adminApiCall(`/api/admin/analytics/goals/${editingGoal.id}`, authToken, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        });
+      } else {
+        await adminApiCall('/api/admin/analytics/goals', authToken, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+      }
+      setGoalModalOpen(false);
+      await loadData();
+      toast.success(editingGoal ? 'Goal updated' : 'Goal created');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to save goal');
+    } finally {
+      setSavingGoal(false);
+    }
+  };
+
+  const deleteGoal = async (goalId: number) => {
+    if (!authToken) return;
+    if (!confirm('Delete this goal?')) return;
+    try {
+      await adminApiCall(`/api/admin/analytics/goals/${goalId}`, authToken, { method: 'DELETE' });
+      await loadData();
+      toast.success('Goal deleted');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete goal');
+    }
+  };
+
+  const exportPdf = async () => {
+    if (!authToken) return;
+    setExportingPdf(true);
+    try {
+      const body: Record<string, unknown> = {
+        period,
+        include_comparison: compareWithPrevious,
+      };
+      if (startDate && endDate) {
+        body.start_date = startDate;
+        body.end_date = endDate;
+      }
+      const response = await adminApiCall('/api/admin/analytics/export-pdf', authToken, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `analytics-${new Date().toISOString().slice(0, 10)}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success('PDF exported');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to export PDF');
+    } finally {
+      setExportingPdf(false);
+    }
+  };
+
+  const deltaMap = comparison?.delta ?? {};
+
+  const kpis = useMemo(() => {
+    if (!analytics) return [];
+    return [
+      {
+        title: 'Submissions',
+        value: numberFormat(analytics.totalSubmissions),
+        delta: deltaMap.total_submissions,
+      },
+      {
+        title: 'Completed Audits',
+        value: numberFormat(analytics.completedAudits),
+        delta: deltaMap.completed_audits,
+      },
+      {
+        title: 'Maturity Score',
+        value: numberFormat(analytics.averageMaturityScore, 1),
+        delta: deltaMap.average_maturity_score,
+      },
+      {
+        title: 'Estimated ROI',
+        value: `$${numberFormat(analytics.totalEstimatedROI)}`,
+        delta: deltaMap.total_estimated_roi,
+      },
+      {
+        title: 'Audit Conversion',
+        value: `${numberFormat(analytics.conversionRate, 1)}%`,
+        delta: deltaMap.conversion_rate,
+      },
+      {
+        title: 'Contact Conversion',
+        value: `${numberFormat(analytics.contactConversionRate, 1)}%`,
+        delta: deltaMap.contact_conversion_rate,
+      },
+    ];
+  }, [analytics, deltaMap]);
+
+  if (loading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!analytics) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white p-8 text-sm text-gray-500">
+        No analytics data available.
+      </div>
+    );
+  }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-
-      {/* ── Header bar ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Period selector */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Период:</span>
-          <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-1">
-            {PERIODS.map(p => (
-              <button
-                key={p.value}
-                onClick={() => setPeriod(p.value)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  period === p.value
-                    ? 'bg-white text-blue-700 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Export */}
-        <button
-          onClick={handleExportCSV}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors cursor-pointer shadow-sm"
-        >
-          <Download className="w-3.5 h-3.5" />
-          Экспорт CSV
-        </button>
-      </div>
-
-      {/* ── KPI row ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <KpiCard
-          label="Всего аудитов" value={data.totalSubmissions}
-          icon={BarChart2} iconBg="bg-blue-100 text-blue-600"
-          trendLabel="за выбранный период"
-        />
-        <KpiCard
-          label="Завершено" value={data.completedAudits}
-          icon={CheckCircle} iconBg="bg-emerald-100 text-emerald-600"
-          trendLabel={`${data.totalSubmissions > 0 ? Math.round((data.completedAudits / data.totalSubmissions) * 100) : 0}% от всех`}
-        />
-        <KpiCard
-          label="Ср. балл зрелости" value={data.averageMaturityScore?.toFixed(1) ?? '—'}
-          icon={Target} iconBg="bg-purple-100 text-purple-600"
-          trendLabel="из 100 баллов"
-        />
-        <KpiCard
-          label="Конверсия" value={`${data.conversionRate ?? 0}%`}
-          icon={Users} iconBg="bg-amber-100 text-amber-600"
-          trendLabel="audit → contact"
-        />
-        <KpiCard
-          label="Суммарный ROI" value={data.totalEstimatedROI ? `$${(data.totalEstimatedROI / 1000).toFixed(0)}k` : '—'}
-          icon={DollarSign} iconBg="bg-pink-100 text-pink-600"
-          trendLabel="расчётная экономия"
-        />
-      </div>
-
-      {/* ── Trend chart ── */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 className="text-sm font-semibold text-gray-800 mb-5">Динамика аудитов по периодам</h3>
-        <ResponsiveContainer width="100%" height={260}>
-          <AreaChart data={data.monthlySubmissions} margin={{ left: -10, right: 4 }}>
-            <defs>
-              <linearGradient id="gsub" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="gconv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} />
-            <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend
-              iconType="circle" iconSize={8}
-              formatter={(v) => <span className="text-xs text-gray-600">{v}</span>}
-            />
-            <Area type="monotone" dataKey="submissions" name="Аудиты" stroke="#3B82F6" strokeWidth={2} fill="url(#gsub)" />
-            {data.monthlySubmissions.some(d => d.conversions !== undefined) && (
-              <Area type="monotone" dataKey="conversions" name="Конверсии" stroke="#10B981" strokeWidth={2} fill="url(#gconv)" />
-            )}
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* ── Size + Maturity charts ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-sm font-semibold text-gray-800 mb-5">По размеру компаний</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={data.companySizeBreakdown ?? []} margin={{ left: -10, right: 4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="size" tick={{ fontSize: 11, fill: '#9ca3af' }} />
-              <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="count" name="Количество" fill="#3B82F6" radius={[6, 6, 0, 0]}>
-                {(data.companySizeBreakdown ?? []).map((_, i) => (
-                  <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-sm font-semibold text-gray-800 mb-5">Распределение баллов зрелости</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={data.maturityScoreDistribution ?? []} margin={{ left: -10, right: 4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="range" tick={{ fontSize: 11, fill: '#9ca3af' }} />
-              <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="count" name="Количество" fill="#10B981" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* ── Industry Pie (if available) ── */}
-      {industryData.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-sm font-semibold text-gray-800 mb-5">Распределение по отраслям</h3>
-          <div className="flex flex-col lg:flex-row gap-6 items-center">
-            <div className="w-full lg:w-64 shrink-0">
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={industryData}
-                    cx="50%" cy="50%"
-                    outerRadius={85}
-                    dataKey="count"
-                    labelLine={false}
-                    label={(props: any) => (props.percent ?? 0) > 0.05 ? `${Math.round((props.percent ?? 0) * 100)}%` : ''}
-                  >
-                    {industryData.map((_, i) => (
-                      <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(v, _, props) => [v, props.payload.industry || props.payload.name]} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
-              {industryData.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                  <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
-                  <span className="text-sm text-gray-700 flex-1 truncate">{item.industry}</span>
-                  <span className="text-sm font-bold text-gray-800">{item.percentage}%</span>
-                  <span className="text-xs text-gray-400">({item.count})</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Top blog posts ── */}
-      {topPosts.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-sm font-semibold text-gray-800">Топ статей блога по просмотрам</h3>
-            <a
-              href="/admin/blog"
-              className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white p-4">
+        <div className="flex flex-wrap items-center gap-2">
+          {PERIODS.map(item => (
+            <button
+              key={item.value}
+              onClick={() => {
+                setPeriod(item.value);
+                setStartDate('');
+                setEndDate('');
+              }}
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                period === item.value && !startDate && !endDate
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
             >
-              Все статьи <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-          <div className="space-y-3">
-            {topPosts.map((post, idx) => (
-              <div key={post.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
-                {/* Rank */}
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${
-                  idx === 0 ? 'bg-amber-400 text-white' :
-                  idx === 1 ? 'bg-gray-300 text-gray-700' :
-                  idx === 2 ? 'bg-orange-300 text-white' :
-                  'bg-gray-100 text-gray-500'
-                }`}>
-                  {idx + 1}
-                </div>
+              {item.label}
+            </button>
+          ))}
+          <span className="ml-2 inline-flex items-center gap-1 text-xs text-gray-500">
+            <Filter className="h-3.5 w-3.5" />
+            Custom range
+          </span>
+          <input
+            type="date"
+            value={startDate}
+            onChange={event => setStartDate(event.target.value)}
+            className="rounded-md border border-gray-300 px-2 py-1 text-xs"
+          />
+          <input
+            type="date"
+            value={endDate}
+            onChange={event => setEndDate(event.target.value)}
+            className="rounded-md border border-gray-300 px-2 py-1 text-xs"
+          />
+          {(startDate || endDate) && (
+            <button
+              onClick={() => {
+                setStartDate('');
+                setEndDate('');
+              }}
+              className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+            >
+              Clear
+            </button>
+          )}
+        </div>
 
-                {/* Title + bar */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate mb-1.5">{post.title}</p>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-blue-500 rounded-full transition-all duration-700"
-                        style={{ width: `${(post.view_count / maxViews) * 100}%` }}
-                      />
+        <div className="flex items-center gap-3">
+          <label className="inline-flex items-center gap-2 text-xs text-gray-600">
+            <input
+              type="checkbox"
+              checked={compareWithPrevious}
+              onChange={event => setCompareWithPrevious(event.target.checked)}
+              className="rounded"
+            />
+            Compare with previous period
+          </label>
+          <button
+            onClick={exportPdf}
+            disabled={exportingPdf}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            <Download className="h-3.5 w-3.5" />
+            {exportingPdf ? 'Exporting...' : 'Export PDF'}
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {kpis.map(kpi => (
+          <div key={kpi.title} className="rounded-2xl border border-gray-200 bg-white p-4">
+            <p className="text-xs uppercase tracking-wide text-gray-500">{kpi.title}</p>
+            <p className="mt-2 text-2xl font-bold text-gray-900">{kpi.value}</p>
+            {compareWithPrevious && <div className="mt-2"><DeltaBadge delta={kpi.delta} /></div>}
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 xl:col-span-2">
+          <h3 className="mb-4 text-sm font-semibold text-gray-800">Submissions Trend</h3>
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={analytics.monthlySubmissions}>
+              <defs>
+                <linearGradient id="submissionsFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#2563EB" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="#F1F5F9" strokeDasharray="3 3" />
+              <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
+              <Tooltip />
+              <Area type="monotone" dataKey="submissions" stroke="#2563EB" fill="url(#submissionsFill)" />
+              <Area type="monotone" dataKey="conversions" stroke="#10B981" fillOpacity={0} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="rounded-2xl border border-gray-200 bg-white p-5">
+          <h3 className="mb-4 text-sm font-semibold text-gray-800">Funnel</h3>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={funnel?.stages ?? []}>
+              <CartesianGrid stroke="#F1F5F9" strokeDasharray="3 3" />
+              <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
+              <Tooltip />
+              <Bar dataKey="value" fill="#0EA5E9" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-gray-200 bg-white p-5">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800">Goals</h3>
+          <button
+            onClick={openCreateGoal}
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Add Goal
+          </button>
+        </div>
+        {goals.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
+            No goals yet.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {goals.map(goal => {
+              const progress = Math.max(0, Math.min(100, goal.progress_percent ?? 0));
+              return (
+                <div key={goal.id} className="rounded-xl border border-gray-200 p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{goal.metric_label}</p>
+                      <p className="text-xs text-gray-500">
+                        {goal.current_value ?? 0} / {goal.target_value} ({goal.period})
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => openEditGoal(goal)}
+                        className="rounded p-1.5 text-gray-500 hover:bg-blue-50 hover:text-blue-700"
+                        title="Edit"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => deleteGoal(goal.id)}
+                        className="rounded p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-700"
+                        title="Delete"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
+                  <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                    <div
+                      className={`h-full rounded-full ${goal.is_reached ? 'bg-emerald-500' : 'bg-blue-500'}`}
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+                    <span>{numberFormat(goal.progress_percent, 1)}%</span>
+                    <span>{goal.is_active ? 'active' : 'inactive'}</span>
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
-                {/* Category */}
-                {post.category && (
-                  <span className="text-xs px-2.5 py-1 bg-gray-100 text-gray-500 rounded-lg shrink-0 hidden sm:block">
-                    {post.category}
-                  </span>
-                )}
+      <div className="rounded-2xl border border-gray-200 bg-white p-5">
+        <h3 className="mb-4 text-sm font-semibold text-gray-800">Monthly Cohort Conversion</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200 text-left text-xs uppercase tracking-wide text-gray-500">
+                <th className="py-2 pr-3">Month</th>
+                <th className="py-2 pr-3">Contacts</th>
+                <th className="py-2 pr-3">Converted</th>
+                <th className="py-2 pr-3">Rate</th>
+                <th className="py-2 pr-3">Audits</th>
+                <th className="py-2 pr-3">Completed Audits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(cohort?.rows ?? []).map(row => (
+                <tr key={row.month} className="border-b border-gray-100">
+                  <td className="py-2 pr-3 text-gray-700">{row.month}</td>
+                  <td className="py-2 pr-3">{numberFormat(row.contacts)}</td>
+                  <td className="py-2 pr-3">{numberFormat(row.converted)}</td>
+                  <td className="py-2 pr-3">{numberFormat(row.conversion_rate, 1)}%</td>
+                  <td className="py-2 pr-3">{numberFormat(row.audits)}</td>
+                  <td className="py-2 pr-3">{numberFormat(row.completed_audits)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-                {/* Views */}
-                <span className="text-sm font-bold text-blue-600 shrink-0 tabular-nums">
-                  {post.view_count.toLocaleString()}
-                </span>
+      {goalModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">
+            <div className="mb-4 flex items-center gap-2">
+              <Target className="h-4 w-4 text-blue-600" />
+              <h3 className="text-sm font-semibold text-gray-900">
+                {editingGoal ? 'Edit Goal' : 'Create Goal'}
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Metric</label>
+                <select
+                  value={goalForm.metric}
+                  onChange={event => setGoalForm(prev => ({ ...prev, metric: event.target.value }))}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                >
+                  <option value="">Choose metric</option>
+                  {metricOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            ))}
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Target Value</label>
+                <input
+                  type="number"
+                  min={0}
+                  step="0.1"
+                  value={goalForm.target_value}
+                  onChange={event => setGoalForm(prev => ({ ...prev, target_value: event.target.value }))}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Period</label>
+                <select
+                  value={goalForm.period}
+                  onChange={event => setGoalForm(prev => ({ ...prev, period: event.target.value as Period }))}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                >
+                  {GOAL_PERIODS.map(item => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <label className="inline-flex items-center gap-2 text-xs text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={goalForm.is_active}
+                  onChange={event => setGoalForm(prev => ({ ...prev, is_active: event.target.checked }))}
+                  className="rounded"
+                />
+                Goal is active
+              </label>
+            </div>
+
+            <div className="mt-5 flex gap-2">
+              <button
+                onClick={() => setGoalModalOpen(false)}
+                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitGoal}
+                disabled={savingGoal}
+                className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {savingGoal ? 'Saving...' : editingGoal ? 'Save' : 'Create'}
+              </button>
+            </div>
           </div>
         </div>
       )}
-
     </motion.div>
   );
 }
+

@@ -59,7 +59,7 @@ async def get_async_db():
 async def init_db():
     async with async_engine.begin() as conn:
         # Import all models to ensure they are registered
-        from models import audit, contact, admin, blog, media
+        from models import audit, contact, admin, blog, media, case_study
         
         # Create all tables
         await conn.run_sync(Base.metadata.create_all)

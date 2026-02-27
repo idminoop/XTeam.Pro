@@ -8,6 +8,14 @@ from models.blog import BlogPost
 router = APIRouter(tags=["blog"])
 
 
+def _localized(post: BlogPost, base: str, lang: str) -> str:
+    localized = getattr(post, f"{base}_{lang}", None)
+    alt_lang = "en" if lang == "ru" else "ru"
+    localized_alt = getattr(post, f"{base}_{alt_lang}", None)
+    legacy = getattr(post, base, None)
+    return (localized or localized_alt or legacy or "").strip()
+
+
 @router.get("")
 async def list_published_posts(
     skip: int = Query(0, ge=0),
@@ -15,6 +23,7 @@ async def list_published_posts(
     category: str = Query(None),
     search: str = Query(None),
     featured: bool = Query(None),
+    lang: str = Query("en", pattern="^(ru|en)$"),
     db: AsyncSession = Depends(get_async_db),
 ):
     """List published blog posts (public endpoint)."""
@@ -31,6 +40,10 @@ async def list_published_posts(
             or_(
                 BlogPost.title.ilike(term),
                 BlogPost.excerpt.ilike(term),
+                BlogPost.title_ru.ilike(term),
+                BlogPost.title_en.ilike(term),
+                BlogPost.excerpt_ru.ilike(term),
+                BlogPost.excerpt_en.ilike(term),
                 BlogPost.tags.ilike(term),
             )
         )
@@ -52,9 +65,9 @@ async def list_published_posts(
         "items": [
             {
                 "id": p.id,
-                "title": p.title,
+                "title": _localized(p, "title", lang),
                 "slug": p.slug,
-                "excerpt": p.excerpt,
+                "excerpt": _localized(p, "excerpt", lang),
                 "featured_image": p.featured_image,
                 "featured_image_alt": p.featured_image_alt,
                 "category": p.category,
@@ -91,6 +104,7 @@ async def list_categories(db: AsyncSession = Depends(get_async_db)):
 @router.get("/{slug}")
 async def get_published_post(
     slug: str,
+    lang: str = Query("en", pattern="^(ru|en)$"),
     db: AsyncSession = Depends(get_async_db),
 ):
     """Get a single published post by slug. Increments view count."""
@@ -123,10 +137,10 @@ async def get_published_post(
 
     return {
         "id": post.id,
-        "title": post.title,
+        "title": _localized(post, "title", lang),
         "slug": post.slug,
-        "excerpt": post.excerpt,
-        "content": post.content,
+        "excerpt": _localized(post, "excerpt", lang),
+        "content": _localized(post, "content", lang),
         "featured_image": post.featured_image,
         "featured_image_alt": post.featured_image_alt,
         "category": post.category,
@@ -144,9 +158,9 @@ async def get_published_post(
         "related": [
             {
                 "id": r.id,
-                "title": r.title,
+                "title": _localized(r, "title", lang),
                 "slug": r.slug,
-                "excerpt": r.excerpt,
+                "excerpt": _localized(r, "excerpt", lang),
                 "featured_image": r.featured_image,
                 "reading_time": r.reading_time,
                 "published_at": r.published_at.isoformat() if r.published_at else None,

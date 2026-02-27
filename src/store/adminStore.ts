@@ -5,19 +5,53 @@ export interface AdminUser {
   username: string;
   email: string;
   full_name: string;
-  role: 'super_admin' | 'admin' | 'analyst';
+  role: 'super_admin' | 'admin' | 'analyst' | 'editor' | 'author' | 'moderator';
   can_manage_audits: boolean;
   can_manage_users: boolean;
   can_view_analytics: boolean;
   can_export_data: boolean;
   can_manage_content: boolean;
+  can_read_audits: boolean;
+  can_write_audits: boolean;
+  can_delete_audits: boolean;
+  can_read_contacts: boolean;
+  can_write_contacts: boolean;
+  can_delete_contacts: boolean;
+  can_publish_content: boolean;
+  can_manage_cases: boolean;
+  skip_email_verification: boolean;
   last_login: string | null;
 }
 
 type Permission = keyof Pick<
   AdminUser,
-  'can_manage_audits' | 'can_manage_users' | 'can_view_analytics' | 'can_export_data' | 'can_manage_content'
+  | 'can_manage_audits'
+  | 'can_manage_users'
+  | 'can_view_analytics'
+  | 'can_export_data'
+  | 'can_manage_content'
+  | 'can_read_audits'
+  | 'can_write_audits'
+  | 'can_delete_audits'
+  | 'can_read_contacts'
+  | 'can_write_contacts'
+  | 'can_delete_contacts'
+  | 'can_publish_content'
+  | 'can_manage_cases'
 >;
+
+const PERMISSION_FALLBACKS: Partial<Record<Permission, Permission[]>> = {
+  can_read_audits: ['can_manage_audits'],
+  can_write_audits: ['can_manage_audits'],
+  can_delete_audits: ['can_manage_audits'],
+  can_read_contacts: ['can_manage_audits'],
+  can_write_contacts: ['can_manage_audits'],
+  can_delete_contacts: ['can_manage_audits'],
+  can_publish_content: ['can_manage_content'],
+  can_manage_cases: ['can_manage_content'],
+  can_manage_audits: ['can_read_audits', 'can_write_audits', 'can_delete_audits'],
+  can_manage_content: ['can_publish_content', 'can_manage_cases'],
+};
 
 interface AdminStore {
   authToken: string | null;
@@ -85,6 +119,8 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     const { adminUser } = get();
     if (!adminUser) return false;
     if (adminUser.role === 'super_admin') return true;
-    return Boolean(adminUser[permission]);
+    if (Boolean(adminUser[permission])) return true;
+    const aliases = PERMISSION_FALLBACKS[permission] ?? [];
+    return aliases.some(alias => Boolean(adminUser[alias]));
   },
 }));

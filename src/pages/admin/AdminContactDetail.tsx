@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Mail, Phone, Building, User, AlertCircle, Trash2 } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Mail, Phone, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAdminStore } from '@/store/adminStore';
 import { adminApiCall, adminApiJson } from '@/utils/adminApi';
@@ -15,8 +15,11 @@ interface ContactDetail {
   inquiry_type: string;
   subject: string;
   message: string;
-  priority: string;
-  status: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'new' | 'contacted' | 'qualified' | 'converted' | 'closed';
+  pipeline_stage: 'new' | 'contacted' | 'qualified' | 'converted' | 'closed';
+  score: number;
+  tags: string[];
   assigned_to: string | null;
   source: string | null;
   preferred_contact_method: string | null;
@@ -33,28 +36,77 @@ interface ContactDetail {
   contacted_at: string | null;
 }
 
+interface ContactNote {
+  id: number;
+  note: string;
+  created_by: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+interface ContactTask {
+  id: number;
+  title: string;
+  description: string | null;
+  due_date: string | null;
+  status: 'todo' | 'in_progress' | 'done';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  assigned_to: string | null;
+  completed_at: string | null;
+  created_by: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+interface ContactActivity {
+  id: number;
+  activity_type: string;
+  message: string;
+  metadata: Record<string, unknown>;
+  created_by: string | null;
+  created_at: string | null;
+}
+
+interface EmailTemplateItem {
+  id: number;
+  name: string;
+  subject: string;
+  body: string;
+  category: string;
+  is_active: boolean;
+}
+
 const STATUS_COLORS: Record<string, string> = {
-  new:       'bg-blue-100 text-blue-700',
+  new: 'bg-blue-100 text-blue-700',
   contacted: 'bg-yellow-100 text-yellow-700',
   qualified: 'bg-purple-100 text-purple-700',
   converted: 'bg-green-100 text-green-700',
-  closed:    'bg-gray-100 text-gray-600',
+  closed: 'bg-gray-100 text-gray-600',
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
   urgent: 'bg-red-100 text-red-700',
-  high:   'bg-orange-100 text-orange-700',
+  high: 'bg-orange-100 text-orange-700',
   medium: 'bg-blue-100 text-blue-700',
-  low:    'bg-gray-100 text-gray-600',
+  low: 'bg-gray-100 text-gray-600',
 };
 
-function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
-  if (!value) return null;
+function TabButton({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
-    <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
-      <span className="text-sm font-medium text-gray-500 w-40 shrink-0">{label}</span>
-      <span className="text-sm text-gray-800">{value}</span>
-    </div>
+    <button
+      onClick={onClick}
+      className={`rounded-lg px-3 py-2 text-sm font-medium ${active ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+    >
+      {label}
+    </button>
   );
 }
 
@@ -67,245 +119,485 @@ export default function AdminContactDetail() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [status, setStatus] = useState('');
-  const [priority, setPriority] = useState('');
+
+  const [status, setStatus] = useState<ContactDetail['status']>('new');
+  const [pipelineStage, setPipelineStage] = useState<ContactDetail['pipeline_stage']>('new');
+  const [priority, setPriority] = useState<ContactDetail['priority']>('medium');
   const [assignedTo, setAssignedTo] = useState('');
+  const [score, setScore] = useState(0);
+  const [tagsInput, setTagsInput] = useState('');
+
+  const [tab, setTab] = useState<'activity' | 'notes' | 'tasks'>('activity');
+  const [notes, setNotes] = useState<ContactNote[]>([]);
+  const [tasks, setTasks] = useState<ContactTask[]>([]);
+  const [activities, setActivities] = useState<ContactActivity[]>([]);
+  const [newNote, setNewNote] = useState('');
+  const [newTask, setNewTask] = useState({ title: '', description: '', due_date: '', priority: 'medium' as ContactTask['priority'] });
+  const [creatingNote, setCreatingNote] = useState(false);
+  const [creatingTask, setCreatingTask] = useState(false);
+
+  const [templates, setTemplates] = useState<EmailTemplateItem[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<number | ''>('');
+  const [sendingTemplate, setSendingTemplate] = useState(false);
+
+  const loadContact = useCallback(async () => {
+    if (!id) return;
+    const data = await adminApiJson<ContactDetail>(`/api/admin/contacts/${id}`, authToken);
+    setContact(data);
+    setStatus(data.status);
+    setPipelineStage(data.pipeline_stage);
+    setPriority(data.priority);
+    setAssignedTo(data.assigned_to ?? '');
+    setScore(data.score ?? 0);
+    setTagsInput((data.tags ?? []).join(', '));
+  }, [id, authToken]);
+
+  const loadNotes = useCallback(async () => {
+    if (!id) return;
+    const data = await adminApiJson<ContactNote[]>(`/api/admin/contacts/${id}/notes`, authToken);
+    setNotes(data);
+  }, [id, authToken]);
+
+  const loadTasks = useCallback(async () => {
+    if (!id) return;
+    const data = await adminApiJson<ContactTask[]>(`/api/admin/contacts/${id}/tasks`, authToken);
+    setTasks(data);
+  }, [id, authToken]);
+
+  const loadActivities = useCallback(async () => {
+    if (!id) return;
+    const data = await adminApiJson<ContactActivity[]>(`/api/admin/contacts/${id}/activities`, authToken);
+    setActivities(data);
+  }, [id, authToken]);
+
+  const loadTemplates = useCallback(async () => {
+    const data = await adminApiJson<EmailTemplateItem[]>('/api/admin/email-templates', authToken);
+    setTemplates(data.filter(item => item.is_active));
+  }, [authToken]);
 
   useEffect(() => {
     if (!id) return;
     (async () => {
       setLoading(true);
       try {
-        const data = await adminApiJson<ContactDetail>(`/api/admin/contacts/${id}`, authToken);
-        setContact(data);
-        setStatus(data.status);
-        setPriority(data.priority);
-        setAssignedTo(data.assigned_to ?? '');
+        await Promise.all([loadContact(), loadNotes(), loadTasks(), loadActivities(), loadTemplates()]);
       } catch {
         navigate('/admin/contacts');
       } finally {
         setLoading(false);
       }
     })();
-  }, [id, authToken, navigate]);
+  }, [id, loadContact, loadNotes, loadTasks, loadActivities, loadTemplates, navigate]);
 
-  const handleSave = async () => {
+  const parsedTags = useMemo(() => tagsInput.split(',').map(item => item.trim()).filter(Boolean), [tagsInput]);
+
+  const saveContact = async () => {
+    if (!id) return;
     setSaving(true);
     try {
       await adminApiCall(`/api/admin/contacts/${id}`, authToken, {
         method: 'PATCH',
         body: JSON.stringify({
           status,
+          pipeline_stage: pipelineStage,
           priority,
           assigned_to: assignedTo || null,
+          score,
+          tags: parsedTags,
         }),
       });
-      setContact(prev => prev ? { ...prev, status, priority, assigned_to: assignedTo || null } : prev);
+      await Promise.all([loadContact(), loadActivities()]);
+      toast.success('Contact updated');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!contact || !confirm(`Удалить обращение от ${contact.name}? Это действие необратимо.`)) return;
+  const createNote = async () => {
+    if (!id || !newNote.trim()) return;
+    setCreatingNote(true);
+    try {
+      await adminApiCall(`/api/admin/contacts/${id}/notes`, authToken, {
+        method: 'POST',
+        body: JSON.stringify({ note: newNote.trim() }),
+      });
+      setNewNote('');
+      await Promise.all([loadNotes(), loadActivities()]);
+    } finally {
+      setCreatingNote(false);
+    }
+  };
+
+  const deleteNote = async (noteId: number) => {
+    if (!id) return;
+    await adminApiCall(`/api/admin/contacts/${id}/notes/${noteId}`, authToken, { method: 'DELETE' });
+    await Promise.all([loadNotes(), loadActivities()]);
+  };
+
+  const createTask = async () => {
+    if (!id || !newTask.title.trim()) return;
+    setCreatingTask(true);
+    try {
+      await adminApiCall(`/api/admin/contacts/${id}/tasks`, authToken, {
+        method: 'POST',
+        body: JSON.stringify({
+          title: newTask.title.trim(),
+          description: newTask.description.trim() || null,
+          due_date: newTask.due_date ? new Date(newTask.due_date).toISOString() : null,
+          priority: newTask.priority,
+        }),
+      });
+      setNewTask({ title: '', description: '', due_date: '', priority: 'medium' });
+      await Promise.all([loadTasks(), loadActivities()]);
+    } finally {
+      setCreatingTask(false);
+    }
+  };
+
+  const updateTaskStatus = async (task: ContactTask, newStatus: ContactTask['status']) => {
+    if (!id) return;
+    await adminApiCall(`/api/admin/contacts/${id}/tasks/${task.id}`, authToken, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: newStatus }),
+    });
+    await Promise.all([loadTasks(), loadActivities()]);
+  };
+
+  const deleteTask = async (taskId: number) => {
+    if (!id) return;
+    await adminApiCall(`/api/admin/contacts/${id}/tasks/${taskId}`, authToken, { method: 'DELETE' });
+    await Promise.all([loadTasks(), loadActivities()]);
+  };
+
+  const sendTemplate = async () => {
+    if (!id || !selectedTemplateId) return;
+    setSendingTemplate(true);
+    try {
+      await adminApiCall(`/api/admin/contacts/${id}/send-template`, authToken, {
+        method: 'POST',
+        body: JSON.stringify({ template_id: selectedTemplateId }),
+      });
+      toast.success('Email sent');
+      await loadActivities();
+    } finally {
+      setSendingTemplate(false);
+    }
+  };
+
+  const deleteContact = async () => {
+    if (!id || !contact) return;
+    if (!confirm(`Delete inquiry from ${contact.name}?`)) return;
     setDeleting(true);
     try {
-      await adminApiCall(`/api/admin/contacts/${id}`, authToken, {
-        method: 'DELETE',
-      });
-      toast.success('Обращение удалено');
+      await adminApiCall(`/api/admin/contacts/${id}`, authToken, { method: 'DELETE' });
+      toast.success('Contact deleted');
       navigate('/admin/contacts');
-    } catch {
-      toast.error('Не удалось удалить обращение');
     } finally {
       setDeleting(false);
     }
   };
 
-  const handleMarkSpam = async () => {
-    if (!contact || !confirm('Mark as spam?')) return;
-    await adminApiCall(`/api/admin/contacts/${id}`, authToken, {
-      method: 'PATCH',
-      body: JSON.stringify({ is_spam: true }),
-    });
-    setContact(prev => prev ? { ...prev, is_spam: true } : prev);
-  };
-
-  if (loading) return (
-    <div className="flex items-center justify-center h-64 text-gray-400 text-sm">Loading…</div>
-  );
+  if (loading) {
+    return <div className="flex h-64 items-center justify-center text-sm text-gray-400">Loading...</div>;
+  }
   if (!contact) return null;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <Link
-          to="/admin/contacts"
-          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
+    <div className="space-y-5">
+      <div className="flex items-center gap-3">
+        <Link to="/admin/contacts" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800">
+          <ArrowLeft className="h-4 w-4" />
           Back to Contacts
         </Link>
         <span className="text-gray-300">/</span>
-        <h1 className="text-xl font-bold text-gray-900">#{contact.id} — {contact.name}</h1>
-        {contact.is_spam && (
-          <span className="bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded-full">SPAM</span>
-        )}
+        <h1 className="text-xl font-bold text-gray-900">
+          #{contact.id} - {contact.name}
+        </h1>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Main info */}
-        <div className="xl:col-span-2 space-y-4">
-          {/* Contact info */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-800 mb-4">Contact Information</h2>
-            <InfoRow label="Name" value={<span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5 text-gray-400" />{contact.name}</span>} />
-            <InfoRow label="Email" value={<a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" />{contact.email}</a>} />
-            <InfoRow label="Phone" value={contact.phone && <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" />{contact.phone}</a>} />
-            <InfoRow label="Company" value={contact.company && <span className="flex items-center gap-1.5"><Building className="w-3.5 h-3.5 text-gray-400" />{contact.company}</span>} />
-            <InfoRow label="Position" value={contact.position} />
-            <InfoRow label="Preferred contact" value={contact.preferred_contact_method} />
-          </div>
-
-          {/* Inquiry details */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-800 mb-4">Inquiry Details</h2>
-            <InfoRow label="Type" value={<span className="capitalize">{contact.inquiry_type}</span>} />
-            <InfoRow label="Subject" value={contact.subject} />
-            <InfoRow label="Budget range" value={contact.budget_range} />
-            <InfoRow label="Timeline" value={contact.timeline} />
-            <div className="mt-4">
-              <p className="text-sm font-medium text-gray-500 mb-2">Message</p>
-              <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-800 whitespace-pre-wrap">
-                {contact.message}
-              </div>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div className="space-y-4 xl:col-span-2">
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 className="mb-3 text-base font-semibold text-gray-800">Contact Information</h2>
+            <div className="space-y-2 text-sm text-gray-700">
+              <p>
+                <span className="font-medium">Name:</span> {contact.name}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span>{' '}
+                <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">
+                  {contact.email}
+                </a>
+              </p>
+              {contact.phone && (
+                <p>
+                  <span className="font-medium">Phone:</span>{' '}
+                  <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline">
+                    {contact.phone}
+                  </a>
+                </p>
+              )}
+              <p>
+                <span className="font-medium">Company:</span> {contact.company || '—'}
+              </p>
+              <p>
+                <span className="font-medium">Subject:</span> {contact.subject}
+              </p>
+              <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-800">{contact.message}</div>
             </div>
           </div>
 
-          {/* Meta */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-800 mb-4">Metadata</h2>
-            <InfoRow label="Source" value={contact.source} />
-            <InfoRow label="UTM Source" value={contact.utm_source} />
-            <InfoRow label="UTM Medium" value={contact.utm_medium} />
-            <InfoRow label="UTM Campaign" value={contact.utm_campaign} />
-            <InfoRow label="Newsletter" value={contact.is_newsletter_subscribed ? 'Subscribed' : 'No'} />
-            <InfoRow label="GDPR" value={contact.is_gdpr_compliant ? 'Compliant' : 'Not compliant'} />
-            <InfoRow label="Created" value={contact.created_at ? new Date(contact.created_at).toLocaleString() : null} />
-            <InfoRow label="Last updated" value={contact.updated_at ? new Date(contact.updated_at).toLocaleString() : null} />
-            <InfoRow label="Contacted at" value={contact.contacted_at ? new Date(contact.contacted_at).toLocaleString() : null} />
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <div className="mb-3 flex gap-2">
+              <TabButton label="Activity Timeline" active={tab === 'activity'} onClick={() => setTab('activity')} />
+              <TabButton label="Notes" active={tab === 'notes'} onClick={() => setTab('notes')} />
+              <TabButton label="Tasks" active={tab === 'tasks'} onClick={() => setTab('tasks')} />
+            </div>
+
+            {tab === 'activity' && (
+              <div className="space-y-3">
+                {activities.length === 0 ? (
+                  <p className="text-sm text-gray-400">No activities yet.</p>
+                ) : (
+                  activities.map(item => (
+                    <div key={item.id} className="rounded-lg border border-gray-200 p-3 text-sm">
+                      <p className="font-medium text-gray-800">{item.message}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.activity_type} by {item.created_by || 'system'} ·{' '}
+                        {item.created_at ? new Date(item.created_at).toLocaleString() : '—'}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {tab === 'notes' && (
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    value={newNote}
+                    onChange={event => setNewNote(event.target.value)}
+                    placeholder="Add note..."
+                    className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={createNote}
+                    disabled={creatingNote || !newNote.trim()}
+                    className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    Add
+                  </button>
+                </div>
+                {notes.map(note => (
+                  <div key={note.id} className="rounded-lg border border-gray-200 p-3">
+                    <p className="text-sm text-gray-800">{note.note}</p>
+                    <div className="mt-1 flex items-center justify-between">
+                      <p className="text-xs text-gray-500">
+                        {note.created_by || 'unknown'} · {note.created_at ? new Date(note.created_at).toLocaleString() : '—'}
+                      </p>
+                      <button onClick={() => deleteNote(note.id)} className="text-xs text-red-600 hover:underline">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {tab === 'tasks' && (
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <input
+                    value={newTask.title}
+                    onChange={event => setNewTask(prev => ({ ...prev, title: event.target.value }))}
+                    placeholder="Task title"
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    type="date"
+                    value={newTask.due_date}
+                    onChange={event => setNewTask(prev => ({ ...prev, due_date: event.target.value }))}
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <textarea
+                    value={newTask.description}
+                    onChange={event => setNewTask(prev => ({ ...prev, description: event.target.value }))}
+                    rows={2}
+                    placeholder="Description"
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={newTask.priority}
+                    onChange={event => setNewTask(prev => ({ ...prev, priority: event.target.value as ContactTask['priority'] }))}
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                  <button
+                    onClick={createTask}
+                    disabled={creatingTask || !newTask.title.trim()}
+                    className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    Add Task
+                  </button>
+                </div>
+                {tasks.map(task => (
+                  <div key={task.id} className="rounded-lg border border-gray-200 p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-medium text-gray-800">{task.title}</p>
+                      <select
+                        value={task.status}
+                        onChange={event => updateTaskStatus(task, event.target.value as ContactTask['status'])}
+                        className="rounded border border-gray-300 px-2 py-1 text-xs"
+                      >
+                        <option value="todo">Todo</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="done">Done</option>
+                      </select>
+                    </div>
+                    {task.description && <p className="mt-1 text-xs text-gray-600">{task.description}</p>}
+                    <p className="mt-1 text-xs text-gray-500">
+                      Due: {task.due_date ? new Date(task.due_date).toLocaleDateString() : '—'} · Priority: {task.priority}
+                    </p>
+                    <button onClick={() => deleteTask(task.id)} className="mt-1 text-xs text-red-600 hover:underline">
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Sidebar: status management */}
         <div className="space-y-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-gray-800">Status & Assignment</h3>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
-              <select
-                value={status}
-                onChange={e => setStatus(e.target.value)}
-                className={`w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium ${STATUS_COLORS[status] ?? ''}`}
-              >
-                <option value="new">New</option>
-                <option value="contacted">Contacted</option>
-                <option value="qualified">Qualified</option>
-                <option value="converted">Converted</option>
-                <option value="closed">Closed</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Priority</label>
-              <select
-                value={priority}
-                onChange={e => setPriority(e.target.value)}
-                className={`w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium ${PRIORITY_COLORS[priority] ?? ''}`}
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Assigned to</label>
-              <input
-                value={assignedTo}
-                onChange={e => setAssignedTo(e.target.value)}
-                placeholder="Staff member name"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-            >
-              {saving ? 'Saving…' : 'Save Changes'}
-            </button>
-          </div>
-
-          {/* Quick tags */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-gray-800">Flags</h3>
-            <div className="flex flex-wrap gap-2 text-xs">
-              <span className={`px-2 py-1 rounded-full font-medium ${STATUS_COLORS[contact.status] ?? 'bg-gray-100 text-gray-600'}`}>
-                {contact.status}
-              </span>
-              <span className={`px-2 py-1 rounded-full font-medium ${PRIORITY_COLORS[contact.priority] ?? 'bg-gray-100 text-gray-600'}`}>
-                {contact.priority}
-              </span>
-              {contact.is_newsletter_subscribed && (
-                <span className="px-2 py-1 rounded-full bg-teal-100 text-teal-700 font-medium">newsletter</span>
-              )}
-              {contact.is_spam && (
-                <span className="px-2 py-1 rounded-full bg-red-100 text-red-700 font-medium">spam</span>
-              )}
-            </div>
-
-            {!contact.is_spam && (
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <h3 className="mb-3 text-sm font-semibold text-gray-800">Status & Pipeline</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Status</label>
+                <select value={status} onChange={event => setStatus(event.target.value as ContactDetail['status'])} className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm ${STATUS_COLORS[status]}`}>
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="qualified">Qualified</option>
+                  <option value="converted">Converted</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Pipeline Stage</label>
+                <select
+                  value={pipelineStage}
+                  onChange={event => setPipelineStage(event.target.value as ContactDetail['pipeline_stage'])}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                >
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="qualified">Qualified</option>
+                  <option value="converted">Converted</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Priority</label>
+                <select value={priority} onChange={event => setPriority(event.target.value as ContactDetail['priority'])} className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm ${PRIORITY_COLORS[priority]}`}>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Assigned To</label>
+                <input
+                  value={assignedTo}
+                  onChange={event => setAssignedTo(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Score</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={score}
+                  onChange={event => setScore(Number(event.target.value))}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Tags (comma separated)</label>
+                <input
+                  value={tagsInput}
+                  onChange={event => setTagsInput(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </div>
               <button
-                onClick={handleMarkSpam}
-                className="w-full flex items-center justify-center gap-1.5 text-sm text-red-600 border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50 transition-colors mt-2"
+                onClick={saveContact}
+                disabled={saving}
+                className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                <AlertCircle className="w-4 h-4" />
-                Mark as Spam
+                {saving ? 'Saving...' : 'Save Changes'}
               </button>
-            )}
+            </div>
           </div>
 
-          {/* Quick actions */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-2">
-            <h3 className="text-sm font-semibold text-gray-800 mb-3">Quick Actions</h3>
-            <a
-              href={`mailto:${contact.email}?subject=Re: ${encodeURIComponent(contact.subject)}`}
-              className="w-full flex items-center gap-2 text-sm text-blue-600 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-50 transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              Send Email
-            </a>
-            {contact.phone && (
-              <a
-                href={`tel:${contact.phone}`}
-                className="w-full flex items-center gap-2 text-sm text-green-600 border border-green-200 rounded-lg px-3 py-2 hover:bg-green-50 transition-colors"
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <h3 className="mb-3 text-sm font-semibold text-gray-800">Quick Email</h3>
+            <div className="space-y-2">
+              <select
+                value={selectedTemplateId}
+                onChange={event => setSelectedTemplateId(event.target.value ? Number(event.target.value) : '')}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                <Phone className="w-4 h-4" />
-                Call
+                <option value="">Select template</option>
+                {templates.map(template => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={sendTemplate}
+                disabled={!selectedTemplateId || sendingTemplate}
+                className="w-full rounded-lg border border-blue-300 px-3 py-2 text-sm text-blue-700 hover:bg-blue-50 disabled:opacity-50"
+              >
+                {sendingTemplate ? 'Sending...' : 'Send Template'}
+              </button>
+              <a
+                href={`mailto:${contact.email}`}
+                className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                <Mail className="h-4 w-4" />
+                Compose Email
               </a>
-            )}
+              {contact.phone && (
+                <a
+                  href={`tel:${contact.phone}`}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <Phone className="h-4 w-4" />
+                  Call
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-red-200 bg-white p-5">
             <button
-              onClick={handleDelete}
+              onClick={deleteContact}
               disabled={deleting}
-              className="w-full flex items-center gap-2 text-sm text-red-600 border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50 mt-2"
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50"
             >
-              <Trash2 className="w-4 h-4" />
-              {deleting ? 'Удаление…' : 'Удалить обращение'}
+              <Trash2 className="h-4 w-4" />
+              {deleting ? 'Deleting...' : 'Delete Contact'}
             </button>
           </div>
         </div>
@@ -313,3 +605,4 @@ export default function AdminContactDetail() {
     </div>
   );
 }
+

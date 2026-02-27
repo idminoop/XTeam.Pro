@@ -16,7 +16,7 @@ class AdminUser(Base):
     # Profile information
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
-    role = Column(String(50), default="admin")  # admin, super_admin, analyst
+    role = Column(String(50), default="admin")  # super_admin, admin, analyst, editor, author, moderator
     
     # Permissions
     can_manage_audits = Column(Boolean, default=True)
@@ -24,6 +24,15 @@ class AdminUser(Base):
     can_view_analytics = Column(Boolean, default=True)
     can_export_data = Column(Boolean, default=True)
     can_manage_content = Column(Boolean, default=False)
+    can_read_audits = Column(Boolean, default=True)
+    can_write_audits = Column(Boolean, default=True)
+    can_delete_audits = Column(Boolean, default=False)
+    can_read_contacts = Column(Boolean, default=True)
+    can_write_contacts = Column(Boolean, default=True)
+    can_delete_contacts = Column(Boolean, default=False)
+    can_publish_content = Column(Boolean, default=False)
+    can_manage_cases = Column(Boolean, default=False)
+    skip_email_verification = Column(Boolean, default=False)
     
     # Status
     is_active = Column(Boolean, default=True)
@@ -78,6 +87,38 @@ class AuditConfiguration(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     created_by = Column(Integer, nullable=False)  # Admin user ID
+
+
+class RoleTemplate(Base):
+    __tablename__ = "role_templates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    role = Column(String(50), default="admin")
+    is_system = Column(Boolean, default=False)
+
+    # Legacy permissions
+    can_manage_audits = Column(Boolean, default=True)
+    can_manage_users = Column(Boolean, default=False)
+    can_view_analytics = Column(Boolean, default=True)
+    can_export_data = Column(Boolean, default=True)
+    can_manage_content = Column(Boolean, default=False)
+
+    # Extended permissions
+    can_read_audits = Column(Boolean, default=True)
+    can_write_audits = Column(Boolean, default=True)
+    can_delete_audits = Column(Boolean, default=False)
+    can_read_contacts = Column(Boolean, default=True)
+    can_write_contacts = Column(Boolean, default=True)
+    can_delete_contacts = Column(Boolean, default=False)
+    can_publish_content = Column(Boolean, default=False)
+    can_manage_cases = Column(Boolean, default=False)
+    skip_email_verification = Column(Boolean, default=False)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_by = Column(Integer, nullable=True)
 
 
 class SystemSettings(Base):

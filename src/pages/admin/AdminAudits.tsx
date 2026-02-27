@@ -1,10 +1,25 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { Search, Eye, Trash2, Download, CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Download,
+  Eye,
+  Search,
+  Square,
+  CheckSquare,
+  Trash2,
+  XCircle,
+} from 'lucide-react';
+
 import { useAdminStore } from '@/store/adminStore';
 import { adminApiCall } from '@/utils/adminApi';
+import TableSkeleton from '@/components/admin/TableSkeleton';
+import EmptyState from '@/components/admin/EmptyState';
+import BulkActionBar from '@/components/admin/BulkActionBar';
 
 interface AuditRow {
   audit_id: string;
@@ -21,19 +36,23 @@ interface AuditRow {
 }
 
 const STATUS_CONFIG = {
-  completed:  { label: 'Завершён',  color: 'bg-green-100 text-green-800',  icon: CheckCircle },
-  processing: { label: 'Обработка', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
-  pending:    { label: 'Ожидание',  color: 'bg-gray-100 text-gray-700',    icon: AlertCircle },
-  failed:     { label: 'Ошибка',    color: 'bg-red-100 text-red-800',      icon: XCircle },
-};
+  completed: { label: 'Completed', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  processing: { label: 'Processing', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+  pending: { label: 'Pending', color: 'bg-gray-100 text-gray-700', icon: AlertCircle },
+  failed: { label: 'Failed', color: 'bg-red-100 text-red-800', icon: XCircle },
+} as const;
 
 export default function AdminAudits() {
   const authToken = useAdminStore(state => state.authToken);
   const navigate = useNavigate();
+
   const [audits, setAudits] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const load = useCallback(async () => {
     if (!authToken) return;
@@ -44,26 +63,29 @@ export default function AdminAudits() {
       if (search) params.set('search', search);
       const res = await adminApiCall(`/api/admin/audits?${params}`, authToken);
       const data = await res.json();
-      setAudits(Array.isArray(data) ? data : data.items ?? []);
+      const nextAudits = Array.isArray(data) ? data : data.items ?? [];
+      setAudits(nextAudits);
+      setSelectedIds(prev => prev.filter(id => nextAudits.some((audit: AuditRow) => audit.audit_id === id)));
     } catch {
-      toast.error('Не удалось загрузить аудиты');
+      toast.error('Failed to load audits');
     } finally {
       setLoading(false);
     }
-  }, [authToken, statusFilter, search]);
+  }, [authToken, search, statusFilter]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Удалить аудит? Это действие необратимо.')) return;
+    if (!confirm('Delete this audit? This action cannot be undone.')) return;
     try {
-      await adminApiCall(`/api/admin/submissions/${id}`, authToken, {
-        method: 'DELETE',
-      });
-      toast.success('Аудит удалён');
-      setAudits(prev => prev.filter(a => a.audit_id !== id));
+      await adminApiCall(`/api/admin/submissions/${id}`, authToken, { method: 'DELETE' });
+      toast.success('Audit deleted');
+      setAudits(prev => prev.filter(item => item.audit_id !== id));
+      setSelectedIds(prev => prev.filter(item => item !== id));
     } catch {
-      toast.error('Не удалось удалить аудит');
+      toast.error('Failed to delete audit');
     }
   };
 
@@ -73,127 +95,187 @@ export default function AdminAudits() {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = 'audits.csv';
-      document.body.appendChild(a); a.click();
-      URL.revokeObjectURL(url); document.body.removeChild(a);
+      a.href = url;
+      a.download = 'audits.csv';
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch {
-      toast.error('Экспорт не удался');
+      toast.error('Export failed');
     }
   };
 
-  const fmt = (d: string) =>
-    new Date(d).toLocaleString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const allSelected = useMemo(
+    () => audits.length > 0 && audits.every(audit => selectedIds.includes(audit.audit_id)),
+    [audits, selectedIds],
+  );
 
-  const fmtCurrency = (n: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+  const toggleOne = (id: string) => {
+    setSelectedIds(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]));
+  };
+
+  const toggleAll = () => {
+    if (allSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(audits.map(audit => audit.audit_id));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!selectedIds.length) return;
+    if (!confirm(`Delete ${selectedIds.length} selected audits?`)) return;
+    setBulkDeleting(true);
+    try {
+      await Promise.all(
+        selectedIds.map(id =>
+          adminApiCall(`/api/admin/submissions/${id}`, authToken, {
+            method: 'DELETE',
+          }),
+        ),
+      );
+      toast.success('Selected audits deleted');
+      setSelectedIds([]);
+      await load();
+    } catch {
+      toast.error('Failed to delete selected audits');
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
+  const fmtDate = (value: string) =>
+    new Date(value).toLocaleString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  const fmtCurrency = (value: number) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }).format(value);
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-      {/* Toolbar */}
-      <div className="bg-white rounded-2xl shadow p-4 flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Компания, email, отрасль…"
+            placeholder="Search by company, email, or industry"
             value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={event => setSearch(event.target.value)}
+            className="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <select
           value={statusFilter}
-          onChange={e => setStatusFilter(e.target.value)}
-          className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={event => setStatusFilter(event.target.value)}
+          className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">Все статусы</option>
-          <option value="pending">Ожидание</option>
-          <option value="processing">Обработка</option>
-          <option value="completed">Завершён</option>
-          <option value="failed">Ошибка</option>
+          <option value="all">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
         </select>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
         >
-          <Download className="w-4 h-4" /> Экспорт CSV
+          <Download className="h-4 w-4" />
+          Export CSV
         </button>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-2xl shadow overflow-hidden">
+      <div className="overflow-hidden rounded-2xl bg-white shadow">
         {loading ? (
-          <div className="flex items-center justify-center h-48">
-            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-          </div>
+          <TableSkeleton columns={9} rows={8} className="border-0 rounded-none" />
         ) : audits.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-48 text-gray-400 text-sm">
-            <Search className="w-10 h-10 mb-3 opacity-30" />
-            Аудиты не найдены
+          <div className="p-6">
+            <EmptyState title="No audits found" description="No records match your current filters." icon={Search} />
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="border-b border-gray-200 bg-gray-50">
                 <tr>
-                  {['Компания', 'Контакт', 'Отрасль', 'Статус', 'Балл', 'ROI', 'Дата', ''].map(h => (
-                    <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                      {h}
+                  <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <button onClick={toggleAll} className="text-gray-500 hover:text-gray-700">
+                      {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+                    </button>
+                  </th>
+                  {['Company', 'Contact', 'Industry', 'Status', 'Score', 'ROI', 'Date', ''].map(header => (
+                    <th key={header} className="whitespace-nowrap px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {header}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {audits.map(a => {
-                  const cfg = STATUS_CONFIG[a.status] ?? STATUS_CONFIG.pending;
-                  const Ico = cfg.icon;
+                {audits.map(audit => {
+                  const config = STATUS_CONFIG[audit.status] ?? STATUS_CONFIG.pending;
+                  const StatusIcon = config.icon;
                   return (
-                    <tr key={a.audit_id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={audit.audit_id} className="transition-colors hover:bg-gray-50">
                       <td className="px-5 py-3.5">
-                        <div className="font-medium text-gray-900">{a.company_name}</div>
-                        <div className="text-gray-400 text-xs">{a.company_size}</div>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(audit.audit_id)}
+                          onChange={() => toggleOne(audit.audit_id)}
+                          className="rounded border-gray-300"
+                        />
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-gray-700">{a.contact_name}</div>
-                        <div className="text-gray-400 text-xs">{a.email}</div>
+                        <div className="font-medium text-gray-900">{audit.company_name}</div>
+                        <div className="text-xs text-gray-400">{audit.company_size}</div>
                       </td>
-                      <td className="px-5 py-3.5 text-gray-600 whitespace-nowrap">{a.industry}</td>
                       <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${cfg.color}`}>
-                          <Ico className="w-3 h-3" /> {cfg.label}
+                        <div className="text-gray-700">{audit.contact_name}</div>
+                        <div className="text-xs text-gray-400">{audit.email}</div>
+                      </td>
+                      <td className="whitespace-nowrap px-5 py-3.5 text-gray-600">{audit.industry}</td>
+                      <td className="px-5 py-3.5">
+                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${config.color}`}>
+                          <StatusIcon className="h-3 w-3" />
+                          {config.label}
                         </span>
                       </td>
                       <td className="px-5 py-3.5 text-gray-700">
-                        {a.maturity_score != null ? `${a.maturity_score}/100` : <span className="text-gray-300">—</span>}
+                        {audit.maturity_score != null ? `${audit.maturity_score}/100` : <span className="text-gray-300">—</span>}
                       </td>
-                      <td className="px-5 py-3.5 text-gray-700 whitespace-nowrap">
-                        {a.estimated_roi != null ? fmtCurrency(a.estimated_roi) : <span className="text-gray-300">—</span>}
+                      <td className="whitespace-nowrap px-5 py-3.5 text-gray-700">
+                        {audit.estimated_roi != null ? fmtCurrency(audit.estimated_roi) : <span className="text-gray-300">—</span>}
                       </td>
-                      <td className="px-5 py-3.5 text-gray-400 whitespace-nowrap text-xs">{fmt(a.submitted_at)}</td>
+                      <td className="whitespace-nowrap px-5 py-3.5 text-xs text-gray-400">{fmtDate(audit.submitted_at)}</td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => navigate(`/admin/audits/${a.audit_id}`)}
-                            className="text-blue-500 hover:text-blue-700 transition-colors"
-                            title="Детали"
+                            onClick={() => navigate(`/admin/audits/${audit.audit_id}`)}
+                            className="text-blue-500 transition-colors hover:text-blue-700"
+                            title="Details"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => window.open(`/audit/results/${a.audit_id}`, '_blank')}
-                            className="text-gray-400 hover:text-gray-700 transition-colors"
-                            title="Открыть результаты"
+                            onClick={() => window.open(`/audit/results/${audit.audit_id}`, '_blank')}
+                            className="text-gray-400 transition-colors hover:text-gray-700"
+                            title="Open result page"
                           >
-                            <Link to={`/audit/results/${a.audit_id}`} target="_blank" className="contents">
-                              <Eye className="w-4 h-4" />
-                            </Link>
+                            <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => handleDelete(a.audit_id)}
-                            className="text-red-400 hover:text-red-600 transition-colors"
-                            title="Удалить"
+                            onClick={() => handleDelete(audit.audit_id)}
+                            className="text-red-400 transition-colors hover:text-red-600"
+                            title="Delete"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
                       </td>
@@ -205,6 +287,18 @@ export default function AdminAudits() {
           </div>
         )}
       </div>
+
+      <BulkActionBar selectedCount={selectedIds.length} onClear={() => setSelectedIds([])}>
+        <button
+          onClick={handleBulkDelete}
+          disabled={bulkDeleting}
+          className="inline-flex items-center gap-2 rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+        >
+          <Trash2 className="h-4 w-4" />
+          {bulkDeleting ? 'Deleting...' : 'Bulk Delete'}
+        </button>
+      </BulkActionBar>
     </motion.div>
   );
 }
+

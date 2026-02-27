@@ -1,20 +1,35 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+﻿import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, FileText, MessageSquare, BookOpen,
-  Image, BarChart2, Users, Settings, ChevronLeft, ChevronRight, LogOut,
+  LayoutDashboard,
+  FileText,
+  MessageSquare,
+  KanbanSquare,
+  Mail,
+  BookOpen,
+  Briefcase,
+  Image,
+  BarChart2,
+  Users,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
 } from 'lucide-react';
 import { useAdminStore } from '@/store/adminStore';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
-  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard',      permission: null },
-  { to: '/admin/audits',    icon: FileText,         label: 'Аудиты',         permission: 'can_manage_audits' as const },
-  { to: '/admin/contacts',  icon: MessageSquare,    label: 'Обращения',      permission: null },
-  { to: '/admin/blog',      icon: BookOpen,         label: 'Блог',           permission: 'can_manage_content' as const },
-  { to: '/admin/media',     icon: Image,            label: 'Медиа',          permission: 'can_manage_content' as const },
-  { to: '/admin/analytics', icon: BarChart2,        label: 'Аналитика',      permission: 'can_view_analytics' as const },
-  { to: '/admin/users',     icon: Users,            label: 'Пользователи',   permission: 'can_manage_users' as const },
-  { to: '/admin/settings',  icon: Settings,         label: 'Настройки',      permission: null },
+  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard', permission: null },
+  { to: '/admin/audits', icon: FileText, label: 'Audits', permission: 'can_read_audits' as const },
+  { to: '/admin/contacts', icon: MessageSquare, label: 'Contacts', permission: 'can_read_contacts' as const },
+  { to: '/admin/contacts/kanban', icon: KanbanSquare, label: 'CRM Kanban', permission: 'can_read_contacts' as const },
+  { to: '/admin/email-templates', icon: Mail, label: 'Email Templates', permission: 'can_write_contacts' as const },
+  { to: '/admin/blog', icon: BookOpen, label: 'Blog', permission: 'can_manage_content' as const },
+  { to: '/admin/cases', icon: Briefcase, label: 'Cases', permission: 'can_manage_cases' as const },
+  { to: '/admin/media', icon: Image, label: 'Media', permission: 'can_manage_content' as const },
+  { to: '/admin/analytics', icon: BarChart2, label: 'Analytics', permission: 'can_view_analytics' as const },
+  { to: '/admin/users', icon: Users, label: 'Users', permission: 'can_manage_users' as const },
+  { to: '/admin/settings', icon: Settings, label: 'Settings', permission: null },
 ];
 
 export default function AdminSidebar() {
@@ -30,9 +45,7 @@ export default function AdminSidebar() {
     navigate('/admin/login', { replace: true });
   };
 
-  const visibleItems = NAV_ITEMS.filter(({ permission }) =>
-    !permission || hasPermission(permission),
-  );
+  const visibleItems = NAV_ITEMS.filter(({ permission }) => !permission || hasPermission(permission));
 
   return (
     <aside
@@ -41,7 +54,6 @@ export default function AdminSidebar() {
         sidebarCollapsed ? 'w-16' : 'w-60',
       )}
     >
-      {/* Logo row */}
       <div
         className={cn(
           'flex items-center py-5 border-b border-gray-700',
@@ -56,13 +68,12 @@ export default function AdminSidebar() {
         <button
           onClick={toggleSidebar}
           className="text-gray-400 hover:text-white p-1 rounded transition-colors"
-          aria-label={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
+          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 py-4 space-y-0.5 px-2 overflow-y-auto">
         {visibleItems.map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -71,9 +82,7 @@ export default function AdminSidebar() {
             className={({ isActive }) =>
               cn(
                 'flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white',
+                isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white',
                 sidebarCollapsed && 'justify-center',
               )
             }
@@ -85,7 +94,6 @@ export default function AdminSidebar() {
         ))}
       </nav>
 
-      {/* User info + logout */}
       <div className={cn('border-t border-gray-700 py-3 px-2', sidebarCollapsed && 'flex flex-col items-center')}>
         {!sidebarCollapsed && adminUser && (
           <div className="px-3 pb-2">
@@ -99,10 +107,10 @@ export default function AdminSidebar() {
             'flex items-center rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white transition-colors w-full',
             sidebarCollapsed && 'justify-center',
           )}
-          title={sidebarCollapsed ? 'Выйти' : undefined}
+          title={sidebarCollapsed ? 'Logout' : undefined}
         >
           <LogOut className={cn('w-5 h-5 shrink-0', !sidebarCollapsed && 'mr-3')} />
-          {!sidebarCollapsed && 'Выйти'}
+          {!sidebarCollapsed && 'Logout'}
         </button>
       </div>
     </aside>

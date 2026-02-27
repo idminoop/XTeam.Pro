@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+﻿import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Save, Eye, Globe, FileText } from 'lucide-react';
 import { useAdminStore } from '@/store/adminStore';
 import BlogEditor from '@/components/admin/BlogEditor';
@@ -8,10 +8,13 @@ import { adminApiJson } from '@/utils/adminApi';
 
 interface BlogPostFull {
   id?: number;
-  title: string;
+  title_ru: string;
+  title_en: string;
   slug: string;
-  excerpt: string;
-  content: string;
+  excerpt_ru: string;
+  excerpt_en: string;
+  content_ru: string;
+  content_en: string;
   meta_title: string;
   meta_description: string;
   keywords: string;
@@ -31,10 +34,13 @@ interface BlogPostFull {
 type BlogPostApiResponse = Partial<BlogPostFull> & { id?: number };
 
 const EMPTY_POST: BlogPostFull = {
-  title: '',
+  title_ru: '',
+  title_en: '',
   slug: '',
-  excerpt: '',
-  content: '',
+  excerpt_ru: '',
+  excerpt_en: '',
+  content_ru: '',
+  content_en: '',
   meta_title: '',
   meta_description: '',
   keywords: '',
@@ -109,6 +115,7 @@ export default function AdminBlogEditor() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'content' | 'seo' | 'settings'>('content');
+  const [activeLanguage, setActiveLanguage] = useState<'ru' | 'en'>('ru');
   const [slugLocked, setSlugLocked] = useState(!isNew);
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
   const mediaPickerCallbackRef = useRef<((url: string, alt: string) => void) | null>(null);
@@ -123,7 +130,6 @@ export default function AdminBlogEditor() {
     mediaPickerCallbackRef.current = null;
   }, []);
 
-  // Load existing post
   useEffect(() => {
     if (isNew) return;
     (async () => {
@@ -132,10 +138,13 @@ export default function AdminBlogEditor() {
         const data = await adminApiJson<BlogPostApiResponse>(`/api/admin/blog/${id}`, authToken);
         setPost({
           id: data.id,
-          title: data.title ?? '',
+          title_ru: data.title_ru ?? '',
+          title_en: data.title_en ?? '',
           slug: data.slug ?? '',
-          excerpt: data.excerpt ?? '',
-          content: data.content ?? '',
+          excerpt_ru: data.excerpt_ru ?? '',
+          excerpt_en: data.excerpt_en ?? '',
+          content_ru: data.content_ru ?? '',
+          content_en: data.content_en ?? '',
           meta_title: data.meta_title ?? '',
           meta_description: data.meta_description ?? '',
           keywords: data.keywords ?? '',
@@ -157,24 +166,34 @@ export default function AdminBlogEditor() {
         setLoading(false);
       }
     })();
-  }, [id, isNew, authToken]);
+  }, [authToken, id, isNew]);
 
   const set = (key: keyof BlogPostFull, value: any) => {
     setPost(prev => {
       const next = { ...prev, [key]: value };
-      // Auto-generate slug from title on new posts
-      if (key === 'title' && !slugLocked) {
+      if (key === 'title_en' && !slugLocked) {
         next.slug = slugify(value);
       }
       return next;
     });
   };
 
+  const validate = () => {
+    if (!post.title_ru.trim() || !post.title_en.trim()) return 'Both title_ru and title_en are required';
+    if (!post.excerpt_ru.trim() || !post.excerpt_en.trim()) return 'Both excerpt_ru and excerpt_en are required';
+    if (!post.content_ru.trim() || post.content_ru.trim() === '<p></p>') return 'content_ru is required';
+    if (!post.content_en.trim() || post.content_en.trim() === '<p></p>') return 'content_en is required';
+    if (!post.category) return 'Category is required';
+    if (!post.author_name.trim()) return 'Author name is required';
+    return null;
+  };
+
   const handleSave = async (overrideStatus?: 'draft' | 'published') => {
-    if (!post.title.trim()) { setError('Title is required'); return; }
-    if (!post.content.trim() || post.content === '<p></p>') { setError('Content is required'); return; }
-    if (!post.category) { setError('Category is required'); return; }
-    if (!post.author_name.trim()) { setError('Author name is required'); return; }
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
     setSaving(true);
     setError(null);
@@ -202,27 +221,19 @@ export default function AdminBlogEditor() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64 text-gray-400 text-sm">Loading…</div>
-    );
+    return <div className="flex items-center justify-center h-64 text-gray-400 text-sm">Loading...</div>;
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <Link
-            to="/admin/blog"
-            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
-          >
+          <Link to="/admin/blog" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
           </Link>
           <span className="text-gray-300">/</span>
-          <h1 className="text-xl font-bold text-gray-900">
-            {isNew ? 'New Post' : 'Edit Post'}
-          </h1>
+          <h1 className="text-xl font-bold text-gray-900">{isNew ? 'New Post' : 'Edit Post'}</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -251,32 +262,26 @@ export default function AdminBlogEditor() {
             className="flex items-center gap-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded-lg transition-colors disabled:opacity-50"
           >
             <Globe className="w-4 h-4" />
-            {saving ? 'Saving…' : 'Publish'}
+            {saving ? 'Saving...' : 'Publish'}
           </button>
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
-          {error}
-        </div>
-      )}
+      {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">{error}</div>}
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Main content area */}
         <div className="xl:col-span-2 space-y-6">
-          {/* Title */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-            <Field label="Title">
-              <Input
-                value={post.title}
-                onChange={e => set('title', e.target.value)}
-                placeholder="Post title"
-                className="text-lg font-semibold"
-              />
-            </Field>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="Title (RU)">
+                <Input value={post.title_ru} onChange={e => set('title_ru', e.target.value)} placeholder="Заголовок на русском" className="text-base font-semibold" />
+              </Field>
+              <Field label="Title (EN)">
+                <Input value={post.title_en} onChange={e => set('title_en', e.target.value)} placeholder="Title in English" className="text-base font-semibold" />
+              </Field>
+            </div>
 
-            <Field label="Slug" hint="URL-friendly identifier. Auto-generated from title.">
+            <Field label="Slug" hint="URL-friendly identifier. Auto-generated from English title.">
               <div className="flex gap-2">
                 <Input
                   value={post.slug}
@@ -285,27 +290,22 @@ export default function AdminBlogEditor() {
                   readOnly={slugLocked}
                   className={slugLocked ? 'bg-gray-50 cursor-not-allowed' : ''}
                 />
-                <button
-                  type="button"
-                  onClick={() => setSlugLocked(l => !l)}
-                  className="px-3 py-2 text-xs border border-gray-300 rounded-lg hover:bg-gray-50 shrink-0"
-                >
+                <button type="button" onClick={() => setSlugLocked(value => !value)} className="px-3 py-2 text-xs border border-gray-300 rounded-lg hover:bg-gray-50 shrink-0">
                   {slugLocked ? 'Unlock' : 'Lock'}
                 </button>
               </div>
             </Field>
 
-            <Field label="Excerpt" hint="Short description shown in post listings.">
-              <Textarea
-                value={post.excerpt}
-                onChange={e => set('excerpt', e.target.value)}
-                placeholder="Brief summary of the post…"
-                rows={3}
-              />
-            </Field>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="Excerpt (RU)">
+                <Textarea value={post.excerpt_ru} onChange={e => set('excerpt_ru', e.target.value)} rows={3} />
+              </Field>
+              <Field label="Excerpt (EN)">
+                <Textarea value={post.excerpt_en} onChange={e => set('excerpt_en', e.target.value)} rows={3} />
+              </Field>
+            </div>
           </div>
 
-          {/* Tabs */}
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="flex border-b border-gray-200">
               {(['content', 'seo', 'settings'] as const).map(tab => (
@@ -313,9 +313,7 @@ export default function AdminBlogEditor() {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`px-5 py-3 text-sm font-medium capitalize transition-colors ${
-                    activeTab === tab
-                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/40'
-                      : 'text-gray-500 hover:text-gray-700'
+                    activeTab === tab ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/40' : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   {tab}
@@ -325,49 +323,55 @@ export default function AdminBlogEditor() {
 
             <div className="p-6">
               {activeTab === 'content' && (
-                <BlogEditor
-                  content={post.content}
-                  onChange={html => set('content', html)}
-                  placeholder="Start writing your post…"
-                  onOpenMediaPicker={handleOpenMediaPicker}
-                />
+                <div className="space-y-4">
+                  <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden">
+                    <button
+                      onClick={() => setActiveLanguage('ru')}
+                      className={`px-3 py-1.5 text-sm ${activeLanguage === 'ru' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'}`}
+                    >
+                      RU
+                    </button>
+                    <button
+                      onClick={() => setActiveLanguage('en')}
+                      className={`px-3 py-1.5 text-sm ${activeLanguage === 'en' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'}`}
+                    >
+                      EN
+                    </button>
+                  </div>
+
+                  {activeLanguage === 'ru' ? (
+                    <BlogEditor
+                      content={post.content_ru}
+                      onChange={html => set('content_ru', html)}
+                      placeholder="Пишите текст статьи на русском..."
+                      onOpenMediaPicker={handleOpenMediaPicker}
+                    />
+                  ) : (
+                    <BlogEditor
+                      content={post.content_en}
+                      onChange={html => set('content_en', html)}
+                      placeholder="Write article content in English..."
+                      onOpenMediaPicker={handleOpenMediaPicker}
+                    />
+                  )}
+                </div>
               )}
 
               {activeTab === 'seo' && (
                 <div className="space-y-4">
-                  <Field label="Meta Title" hint="Defaults to post title if left empty.">
-                    <Input
-                      value={post.meta_title}
-                      onChange={e => set('meta_title', e.target.value)}
-                      placeholder="SEO title"
-                      maxLength={70}
-                    />
+                  <Field label="Meta Title" hint="Defaults to English title if left empty.">
+                    <Input value={post.meta_title} onChange={e => set('meta_title', e.target.value)} placeholder="SEO title" maxLength={70} />
                     <p className="text-xs text-gray-400 mt-1">{post.meta_title.length}/70</p>
                   </Field>
                   <Field label="Meta Description">
-                    <Textarea
-                      value={post.meta_description}
-                      onChange={e => set('meta_description', e.target.value)}
-                      placeholder="SEO description…"
-                      rows={3}
-                      maxLength={160}
-                    />
+                    <Textarea value={post.meta_description} onChange={e => set('meta_description', e.target.value)} rows={3} maxLength={160} />
                     <p className="text-xs text-gray-400 mt-1">{post.meta_description.length}/160</p>
                   </Field>
                   <Field label="Keywords" hint="Comma-separated keywords.">
-                    <Input
-                      value={post.keywords}
-                      onChange={e => set('keywords', e.target.value)}
-                      placeholder="automation, ai, business"
-                    />
+                    <Input value={post.keywords} onChange={e => set('keywords', e.target.value)} placeholder="automation, ai, business" />
                   </Field>
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={post.is_seo_optimized}
-                      onChange={e => set('is_seo_optimized', e.target.checked)}
-                      className="rounded"
-                    />
+                    <input type="checkbox" checked={post.is_seo_optimized} onChange={e => set('is_seo_optimized', e.target.checked)} className="rounded" />
                     Mark as SEO-optimized
                   </label>
                 </div>
@@ -376,21 +380,11 @@ export default function AdminBlogEditor() {
               {activeTab === 'settings' && (
                 <div className="space-y-4">
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={post.is_featured}
-                      onChange={e => set('is_featured', e.target.checked)}
-                      className="rounded"
-                    />
-                    Featured post (shown prominently on blog page)
+                    <input type="checkbox" checked={post.is_featured} onChange={e => set('is_featured', e.target.checked)} className="rounded" />
+                    Featured post
                   </label>
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={post.allow_comments}
-                      onChange={e => set('allow_comments', e.target.checked)}
-                      className="rounded"
-                    />
+                    <input type="checkbox" checked={post.allow_comments} onChange={e => set('allow_comments', e.target.checked)} className="rounded" />
                     Allow comments
                   </label>
                   <Field label="Status">
@@ -410,31 +404,24 @@ export default function AdminBlogEditor() {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-4">
-          {/* Publish box */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
             <h3 className="text-sm font-semibold text-gray-800">Publish</h3>
-            <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
-                post.status === 'published' ? 'bg-green-100 text-green-700'
-                : post.status === 'archived' ? 'bg-gray-100 text-gray-600'
-                : 'bg-yellow-100 text-yellow-700'
-              }`}>
-                {post.status}
-              </span>
-            </div>
+            <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
+              post.status === 'published' ? 'bg-green-100 text-green-700' : post.status === 'archived' ? 'bg-gray-100 text-gray-600' : 'bg-yellow-100 text-yellow-700'
+            }`}>
+              {post.status}
+            </span>
             <button
               onClick={() => handleSave()}
               disabled={saving}
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
-              {saving ? 'Saving…' : 'Save'}
+              {saving ? 'Saving...' : 'Save'}
             </button>
           </div>
 
-          {/* Categorization */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
             <h3 className="text-sm font-semibold text-gray-800">Categorization</h3>
             <Field label="Category">
@@ -447,23 +434,14 @@ export default function AdminBlogEditor() {
               </select>
             </Field>
             <Field label="Tags" hint="Comma-separated tags.">
-              <Input
-                value={post.tags}
-                onChange={e => set('tags', e.target.value)}
-                placeholder="automation, ai, strategy"
-              />
+              <Input value={post.tags} onChange={e => set('tags', e.target.value)} placeholder="automation, ai, strategy" />
             </Field>
           </div>
 
-          {/* Featured image */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
             <h3 className="text-sm font-semibold text-gray-800">Featured Image</h3>
             <Field label="Image URL">
-              <Input
-                value={post.featured_image}
-                onChange={e => set('featured_image', e.target.value)}
-                placeholder="https://..."
-              />
+              <Input value={post.featured_image} onChange={e => set('featured_image', e.target.value)} placeholder="https://..." />
             </Field>
             {post.featured_image && (
               <img
@@ -474,39 +452,20 @@ export default function AdminBlogEditor() {
               />
             )}
             <Field label="Alt Text">
-              <Input
-                value={post.featured_image_alt}
-                onChange={e => set('featured_image_alt', e.target.value)}
-                placeholder="Descriptive alt text"
-              />
+              <Input value={post.featured_image_alt} onChange={e => set('featured_image_alt', e.target.value)} placeholder="Descriptive alt text" />
             </Field>
           </div>
 
-          {/* Author */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
             <h3 className="text-sm font-semibold text-gray-800">Author</h3>
             <Field label="Name">
-              <Input
-                value={post.author_name}
-                onChange={e => set('author_name', e.target.value)}
-                placeholder="Author name"
-              />
+              <Input value={post.author_name} onChange={e => set('author_name', e.target.value)} placeholder="Author name" />
             </Field>
             <Field label="Email">
-              <Input
-                type="email"
-                value={post.author_email}
-                onChange={e => set('author_email', e.target.value)}
-                placeholder="author@example.com"
-              />
+              <Input type="email" value={post.author_email} onChange={e => set('author_email', e.target.value)} placeholder="author@example.com" />
             </Field>
             <Field label="Bio">
-              <Textarea
-                value={post.author_bio}
-                onChange={e => set('author_bio', e.target.value)}
-                placeholder="Short author bio"
-                rows={3}
-              />
+              <Textarea value={post.author_bio} onChange={e => set('author_bio', e.target.value)} rows={3} />
             </Field>
           </div>
         </div>

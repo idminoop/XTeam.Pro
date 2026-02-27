@@ -311,7 +311,12 @@ export default function AdminDashboard() {
                   <p className="text-xs text-amber-600">{stats.contacts_this_month} за месяц</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-amber-400 group-hover:text-amber-600 transition-colors" />
+              <div className="flex items-center gap-2">
+                <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                  {stats.contacts_this_month}
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-amber-400 group-hover:text-amber-600 transition-colors" />
+              </div>
             </Link>
 
             <Link
@@ -327,7 +332,12 @@ export default function AdminDashboard() {
                   <p className="text-xs text-blue-600">{stats.total_audits} всего</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-blue-400 group-hover:text-blue-600 transition-colors" />
+              <div className="flex items-center gap-2">
+                <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-blue-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                  {stats.total_audits}
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-blue-400 group-hover:text-blue-600 transition-colors" />
+              </div>
             </Link>
 
             <Link
@@ -343,7 +353,12 @@ export default function AdminDashboard() {
                   <p className="text-xs text-purple-600">{stats.published_posts} опубликовано</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-purple-400 group-hover:text-purple-600 transition-colors" />
+              <div className="flex items-center gap-2">
+                <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-purple-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                  {stats.published_posts}
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-purple-400 group-hover:text-purple-600 transition-colors" />
+              </div>
             </Link>
 
             <Link
@@ -359,7 +374,12 @@ export default function AdminDashboard() {
                   <p className="text-xs text-emerald-600">Конверсия {stats.conversion_rate}%</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-emerald-400 group-hover:text-emerald-600 transition-colors" />
+              <div className="flex items-center gap-2">
+                <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                  {Math.round(stats.conversion_rate)}%
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-emerald-400 group-hover:text-emerald-600 transition-colors" />
+              </div>
             </Link>
           </div>
         </div>

@@ -34,6 +34,7 @@ interface Category {
 
 export default function Blog() {
   const { t, i18n } = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || 'en').startsWith('ru') ? 'ru' : 'en';
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [sortBy, setSortBy] = useState('latest');
@@ -48,7 +49,7 @@ export default function Blog() {
   const fetchPosts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ skip: String(page * limit), limit: String(limit) });
+      const params = new URLSearchParams({ skip: String(page * limit), limit: String(limit), lang });
       if (searchTerm) params.set('search', searchTerm);
       if (selectedCategory) params.set('category', selectedCategory);
 
@@ -69,7 +70,7 @@ export default function Blog() {
     } finally {
       setLoading(false);
     }
-  }, [page, searchTerm, selectedCategory, sortBy]);
+  }, [page, searchTerm, selectedCategory, sortBy, lang]);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -85,7 +86,7 @@ export default function Blog() {
 
   useEffect(() => { fetchCategories(); }, [fetchCategories]);
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
-  useEffect(() => { setPage(0); }, [searchTerm, selectedCategory, sortBy]);
+  useEffect(() => { setPage(0); }, [searchTerm, selectedCategory, sortBy, lang]);
 
   const featuredPosts = posts.filter(p => p.is_featured);
 

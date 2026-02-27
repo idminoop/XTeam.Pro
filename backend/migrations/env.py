@@ -30,7 +30,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from database.config import Base  # noqa: E402
-from models import audit, contact, admin, blog, media  # noqa: F401, E402
+from models import audit, contact, admin, blog, media, case_study  # noqa: F401, E402
 
 target_metadata = Base.metadata
 

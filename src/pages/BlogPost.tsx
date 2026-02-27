@@ -37,6 +37,7 @@ interface RelatedPost {
 export default function BlogPost() {
   const { t, i18n } = useTranslation();
   const { id: slug } = useParams<{ id: string }>();
+  const lang = (i18n.resolvedLanguage || i18n.language || 'en').startsWith('ru') ? 'ru' : 'en';
   const [post, setPost] = useState<ApiPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -49,7 +50,7 @@ export default function BlogPost() {
       setLoading(true);
       setNotFound(false);
       try {
-        const res = await fetch(`/api/blog/${slug}`);
+        const res = await fetch(`/api/blog/${slug}?lang=${lang}`);
         if (res.status === 404) { setNotFound(true); return; }
         if (!res.ok) throw new Error('Failed');
         const data = await res.json();
@@ -60,7 +61,7 @@ export default function BlogPost() {
         setLoading(false);
       }
     })();
-  }, [slug]);
+  }, [slug, lang]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';

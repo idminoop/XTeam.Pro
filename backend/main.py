@@ -17,6 +17,9 @@ from routes.contact import router as contact_router
 from routes.calculator import router as calculator_router
 from routes.admin import router as admin_router
 from routes.blog import router as blog_router
+from routes.cases import router as cases_router
+from routes.admin_cases import router as admin_cases_router
+from routes.admin_backups import router as admin_backups_router
 
 # Import services
 from services.auth_service import AuthService
@@ -196,7 +199,9 @@ async def api_info():
             "audit": "/api/audit",
             "contact": "/api/contact",
             "calculator": "/api/calculator",
-            "admin": "/api/admin"
+            "admin": "/api/admin",
+            "blog": "/api/blog",
+            "cases": "/api/cases",
         }
     }
 
@@ -229,6 +234,24 @@ app.include_router(
     blog_router,
     prefix="/api/blog",
     tags=["Blog"]
+)
+
+app.include_router(
+    cases_router,
+    prefix="/api/cases",
+    tags=["Cases"]
+)
+
+app.include_router(
+    admin_cases_router,
+    prefix="/api/admin",
+    tags=["Admin Cases"]
+)
+
+app.include_router(
+    admin_backups_router,
+    prefix="/api/admin",
+    tags=["Admin Backups"]
 )
 
 # Mount static files (for serving PDF reports and uploads)

@@ -1,6 +1,7 @@
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import AdminSidebar from './AdminSidebar';
+import NotificationBell from './NotificationBell';
 
 const BREADCRUMB_MAP: Record<string, string> = {
   '/admin/dashboard':  'Dashboard',
@@ -62,7 +63,10 @@ export default function AdminLayout() {
         {/* Top bar */}
         <header className="bg-white border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shrink-0 shadow-sm">
           <Breadcrumbs />
-          <span className="text-xs text-gray-400 hidden sm:block">XTeam.Pro Admin Panel</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-400 hidden sm:block">XTeam.Pro Admin Panel</span>
+            <NotificationBell />
+          </div>
         </header>
         {/* Content */}
         <main className="flex-1 overflow-y-auto p-6">
