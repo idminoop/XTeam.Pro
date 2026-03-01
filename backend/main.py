@@ -5,11 +5,12 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import os
+import asyncio
 import logging
 from datetime import datetime
 
 # Import database
-from database.config import async_engine, get_async_db, init_db
+from database.config import async_engine, get_async_db, init_db, run_migrations_to_head
 
 # Import routes
 from routes.audit import router as audit_router
@@ -47,6 +48,10 @@ async def lifespan(app: FastAPI):
     logger.info("Starting XTeam.Pro FastAPI application...")
     
     try:
+        # Apply all pending migrations before touching ORM models.
+        await asyncio.to_thread(run_migrations_to_head)
+        logger.info("Database migrations applied successfully")
+
         # Initialize database
         await init_db()
         logger.info("Database initialized successfully")

@@ -42,11 +42,26 @@ const PRIORITY_COLORS: Record<string, string> = {
 };
 
 const STAGE_LABELS: Record<string, string> = {
-  new: 'New',
-  contacted: 'Contacted',
-  qualified: 'Qualified',
-  converted: 'Converted',
-  closed: 'Closed',
+  new: 'Новый',
+  contacted: 'На связи',
+  qualified: 'Квалифицирован',
+  converted: 'Конвертирован',
+  closed: 'Закрыт',
+};
+
+const PRIORITY_LABELS: Record<string, string> = {
+  urgent: 'Срочный',
+  high: 'Высокий',
+  medium: 'Средний',
+  low: 'Низкий',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  new: 'Новый',
+  contacted: 'На связи',
+  qualified: 'Квалифицирован',
+  converted: 'Конвертирован',
+  closed: 'Закрыт',
 };
 
 export default function AdminContacts() {
@@ -83,7 +98,7 @@ export default function AdminContacts() {
       setContacts(Array.isArray(data) ? data : data.items ?? []);
       setSelectedIds([]);
     } catch {
-      toast.error('Failed to load contacts');
+      toast.error('Ошибка загрузки контактов');
     } finally {
       setLoading(false);
     }
@@ -125,12 +140,12 @@ export default function AdminContacts() {
 
   const runBulkDelete = async () => {
     if (!selectedIds.length) return;
-    if (!confirm(`Delete ${selectedIds.length} contacts?`)) return;
+    if (!confirm(`Удалить контакты (${selectedIds.length})?`)) return;
     await adminApiCall('/api/admin/contacts/bulk-delete', authToken, {
       method: 'POST',
       body: JSON.stringify({ ids: selectedIds }),
     });
-    toast.success('Contacts deleted');
+    toast.success('Контакты удалены');
     await load();
   };
 
@@ -140,7 +155,7 @@ export default function AdminContacts() {
       method: 'POST',
       body: JSON.stringify({ ids: selectedIds, status: bulkStatus }),
     });
-    toast.success('Status updated');
+    toast.success('Статус обновлён');
     await load();
   };
 
@@ -150,7 +165,7 @@ export default function AdminContacts() {
       method: 'POST',
       body: JSON.stringify({ ids: selectedIds, assigned_to: bulkAssign || null }),
     });
-    toast.success('Assignee updated');
+    toast.success('Исполнитель назначен');
     await load();
   };
 
@@ -167,14 +182,14 @@ export default function AdminContacts() {
       URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch {
-      toast.error('Export failed');
+      toast.error('Ошибка экспорта');
     }
   };
 
   const handleDeleteOne = async (id: string) => {
-    if (!confirm('Delete this contact?')) return;
+    if (!confirm('Удалить этот контакт?')) return;
     await adminApiCall(`/api/admin/contacts/${id}`, authToken, { method: 'DELETE' });
-    toast.success('Contact deleted');
+    toast.success('Контакт удалён');
     setContacts(prev => prev.filter(item => item.inquiry_id !== id));
     setSelectedIds(prev => prev.filter(item => String(item) !== id));
   };
@@ -182,26 +197,26 @@ export default function AdminContacts() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-2xl font-bold text-gray-900">Contacts</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Контакты</h1>
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => navigate('/admin/contacts/kanban')}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
           >
-            Open Kanban
+            CRM Канбан
           </button>
           <button
             onClick={() => navigate('/admin/email-templates')}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
           >
-            Email Templates
+            Шаблоны писем
           </button>
           <button
             onClick={handleExportContacts}
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             <Download className="h-4 w-4" />
-            Export CSV
+            Экспорт CSV
           </button>
         </div>
       </div>
@@ -213,7 +228,7 @@ export default function AdminContacts() {
             <input
               value={search}
               onChange={event => setSearch(event.target.value)}
-              placeholder="Search by name/email/company/tag"
+              placeholder="Поиск по имени, email, компании, тегу"
               className="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -222,46 +237,46 @@ export default function AdminContacts() {
             onChange={event => setStatusFilter(event.target.value)}
             className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Statuses</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-            <option value="converted">Converted</option>
-            <option value="closed">Closed</option>
+            <option value="all">Все статусы</option>
+            <option value="new">Новый</option>
+            <option value="contacted">На связи</option>
+            <option value="qualified">Квалифицирован</option>
+            <option value="converted">Конвертирован</option>
+            <option value="closed">Закрыт</option>
           </select>
           <select
             value={pipelineFilter}
             onChange={event => setPipelineFilter(event.target.value as typeof pipelineFilter)}
             className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Stages</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-            <option value="converted">Converted</option>
-            <option value="closed">Closed</option>
+            <option value="all">Все стадии</option>
+            <option value="new">Новый</option>
+            <option value="contacted">На связи</option>
+            <option value="qualified">Квалифицирован</option>
+            <option value="converted">Конвертирован</option>
+            <option value="closed">Закрыт</option>
           </select>
           <select
             value={priorityFilter}
             onChange={event => setPriorityFilter(event.target.value)}
             className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Priorities</option>
-            <option value="urgent">Urgent</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
+            <option value="all">Все приоритеты</option>
+            <option value="urgent">Срочный</option>
+            <option value="high">Высокий</option>
+            <option value="medium">Средний</option>
+            <option value="low">Низкий</option>
           </select>
           <select
             value={inquiryTypeFilter}
             onChange={event => setInquiryTypeFilter(event.target.value)}
             className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Types</option>
-            <option value="general">General</option>
-            <option value="consultation">Consultation</option>
-            <option value="support">Support</option>
-            <option value="partnership">Partnership</option>
+            <option value="all">Все типы</option>
+            <option value="general">Общее</option>
+            <option value="consultation">Консультация</option>
+            <option value="support">Поддержка</option>
+            <option value="partnership">Партнёрство</option>
           </select>
         </div>
         <div className="mt-3 flex items-center gap-2">
@@ -271,7 +286,7 @@ export default function AdminContacts() {
             onChange={event => setDateFrom(event.target.value)}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <span className="text-sm text-gray-400">to</span>
+          <span className="text-sm text-gray-400">по</span>
           <input
             type="date"
             value={dateTo}
@@ -286,7 +301,7 @@ export default function AdminContacts() {
           <TableSkeleton columns={10} rows={8} className="border-0 rounded-none" />
         ) : filtered.length === 0 ? (
           <div className="p-6">
-            <EmptyState title="No contacts found" description="Try changing filters or search query." icon={Search} />
+            <EmptyState title="Контакты не найдены" description="Измените фильтры или поисковый запрос." icon={Search} />
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -296,15 +311,15 @@ export default function AdminContacts() {
                   <th className="px-4 py-3 text-left">
                     <input type="checkbox" checked={allVisibleSelected} onChange={toggleAllVisible} />
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Contact</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Company</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Priority</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Stage</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Score</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Tags</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Контакт</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Компания</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Приоритет</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Статус</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Стадия</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Оценка</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Теги</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Дата</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Действия</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -320,12 +335,12 @@ export default function AdminContacts() {
                     <td className="px-4 py-3 text-gray-600">{item.company || '—'}</td>
                     <td className="px-4 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${PRIORITY_COLORS[item.priority]}`}>
-                        {item.priority}
+                        {PRIORITY_LABELS[item.priority] ?? item.priority}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[item.status]}`}>
-                        {item.status}
+                        {STATUS_LABELS[item.status] ?? item.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-600">{STAGE_LABELS[item.pipeline_stage] ?? item.pipeline_stage}</td>
@@ -347,14 +362,14 @@ export default function AdminContacts() {
                         <button
                           onClick={() => navigate(`/admin/contacts/${item.inquiry_id}`)}
                           className="text-blue-500 hover:text-blue-700"
-                          title="Details"
+                          title="Подробнее"
                         >
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteOne(item.inquiry_id)}
                           className="text-gray-400 hover:text-red-600"
-                          title="Delete"
+                          title="Удалить"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -374,26 +389,26 @@ export default function AdminContacts() {
           onChange={event => setBulkStatus(event.target.value as ContactRow['status'])}
           className="rounded border border-blue-300 bg-white px-2 py-1 text-sm"
         >
-          <option value="new">New</option>
-          <option value="contacted">Contacted</option>
-          <option value="qualified">Qualified</option>
-          <option value="converted">Converted</option>
-          <option value="closed">Closed</option>
+          <option value="new">Новый</option>
+          <option value="contacted">На связи</option>
+          <option value="qualified">Квалифицирован</option>
+          <option value="converted">Конвертирован</option>
+          <option value="closed">Закрыт</option>
         </select>
         <button onClick={runBulkStatus} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">
-          Set Status
+          Изменить статус
         </button>
         <input
           value={bulkAssign}
           onChange={event => setBulkAssign(event.target.value)}
-          placeholder="Assignee"
+          placeholder="Исполнитель"
           className="rounded border border-blue-300 bg-white px-2 py-1 text-sm"
         />
         <button onClick={runBulkAssign} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">
-          Assign
+          Назначить
         </button>
         <button onClick={runBulkDelete} className="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700">
-          Delete
+          Удалить
         </button>
       </BulkActionBar>
     </div>

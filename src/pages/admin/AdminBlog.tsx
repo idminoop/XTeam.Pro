@@ -38,12 +38,12 @@ interface BlogListResponse {
 }
 
 const STATUS_CONFIG = {
-  published: { label: 'Published', icon: CheckCircle, cls: 'bg-green-100 text-green-700' },
-  draft:     { label: 'Draft',     icon: Clock,        cls: 'bg-yellow-100 text-yellow-700' },
-  archived:  { label: 'Archived',  icon: Archive,      cls: 'bg-gray-100 text-gray-600' },
+  published: { label: 'Опубликовано', icon: CheckCircle, cls: 'bg-green-100 text-green-700' },
+  draft:     { label: 'Черновик',     icon: Clock,        cls: 'bg-yellow-100 text-yellow-700' },
+  archived:  { label: 'В архиве',     icon: Archive,      cls: 'bg-gray-100 text-gray-600' },
 } as const;
 
-const CATEGORIES = ['All', 'AI', 'Automation', 'Case Studies', 'Industry Insights'];
+const CATEGORIES = ['Все', 'AI', 'Automation', 'Case Studies', 'Industry Insights'];
 
 export default function AdminBlog() {
   const authToken = useAdminStore(state => state.authToken);
@@ -102,7 +102,7 @@ export default function AdminBlog() {
   };
 
   const handleDelete = async (id: number, title: string) => {
-    if (!confirm(`Delete "${title}"?`)) return;
+    if (!confirm(`Удалить «${title}»?`)) return;
     setDeleting(id);
     try {
       await adminApiCall(`/api/admin/blog/${id}`, authToken, {
@@ -138,7 +138,7 @@ export default function AdminBlog() {
 
   const handleBulkDelete = async () => {
     if (!selectedIds.length) return;
-    if (!confirm(`Delete ${selectedIds.length} selected post(s)?`)) return;
+    if (!confirm(`Удалить выбранные статьи (${selectedIds.length})?`)) return;
 
     setBulkDeleting(true);
     try {
@@ -150,10 +150,10 @@ export default function AdminBlog() {
         ),
       );
       setSelectedIds([]);
-      toast.success('Selected posts deleted');
+      toast.success('Статьи удалены');
       await fetchPosts();
     } catch {
-      toast.error('Failed to delete selected posts');
+      toast.error('Ошибка при удалении статей');
     } finally {
       setBulkDeleting(false);
     }
@@ -166,15 +166,15 @@ export default function AdminBlog() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Blog</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{total} posts total</p>
+          <h1 className="text-2xl font-bold text-gray-900">Блог</h1>
+          <p className="text-sm text-gray-500 mt-0.5">{total} статей</p>
         </div>
         <Link
           to="/admin/blog/new"
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
         >
           <PlusCircle className="w-4 h-4" />
-          New Post
+          Новая статья
         </Link>
       </div>
 
@@ -185,7 +185,7 @@ export default function AdminBlog() {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search posts..."
+            placeholder="Поиск статей..."
             className="bg-transparent text-sm outline-none w-full"
           />
         </div>
@@ -195,10 +195,10 @@ export default function AdminBlog() {
           onChange={e => setStatusFilter(e.target.value)}
           className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="">All statuses</option>
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="archived">Archived</option>
+          <option value="">Все статусы</option>
+          <option value="draft">Черновик</option>
+          <option value="published">Опубликовано</option>
+          <option value="archived">В архиве</option>
         </select>
 
         <select
@@ -207,13 +207,13 @@ export default function AdminBlog() {
           className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {CATEGORIES.map(c => (
-            <option key={c} value={c === 'All' ? '' : c}>{c}</option>
+            <option key={c} value={c === 'Все' ? '' : c}>{c}</option>
           ))}
         </select>
 
         <button
           onClick={fetchPosts}
-          title="Refresh"
+          title="Обновить"
           className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
         >
           <RefreshCw className="w-4 h-4 text-gray-500" />
@@ -227,10 +227,10 @@ export default function AdminBlog() {
         ) : posts.length === 0 ? (
           <div className="p-6">
             <EmptyState
-              title="No posts found"
-              description="Use filters less strictly or create a new post."
+              title="Статьи не найдены"
+              description="Измените фильтры или создайте новую статью."
               icon={Search}
-              ctaLabel="Create Post"
+              ctaLabel="Создать статью"
               ctaTo="/admin/blog/new"
             />
           </div>
@@ -244,13 +244,13 @@ export default function AdminBlog() {
                       {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
                     </button>
                   </th>
-                  <th className="px-4 py-3">Title</th>
-                  <th className="px-4 py-3">Category</th>
-                  <th className="px-4 py-3">Author</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 text-right">Views</th>
-                  <th className="px-4 py-3">Published</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
+                  <th className="px-4 py-3">Название</th>
+                  <th className="px-4 py-3">Категория</th>
+                  <th className="px-4 py-3">Автор</th>
+                  <th className="px-4 py-3">Статус</th>
+                  <th className="px-4 py-3 text-right">Просмотры</th>
+                  <th className="px-4 py-3">Опубликована</th>
+                  <th className="px-4 py-3 text-right">Действия</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -271,10 +271,10 @@ export default function AdminBlog() {
                         <div className="text-xs text-gray-400 mt-0.5">
                           /{post.slug}
                           {post.is_featured && (
-                            <span className="ml-2 bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-[10px] font-medium">Featured</span>
+                            <span className="ml-2 bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-[10px] font-medium">Топ</span>
                           )}
                           {post.reading_time && (
-                            <span className="ml-2 text-gray-400">{post.reading_time} min read</span>
+                            <span className="ml-2 text-gray-400">{post.reading_time} мин. чт.</span>
                           )}
                         </div>
                       </td>
@@ -286,9 +286,9 @@ export default function AdminBlog() {
                           onChange={e => handleStatusChange(post.id, e.target.value)}
                           className={`text-xs font-medium px-2 py-1 rounded-full border-0 cursor-pointer ${sc.cls} focus:outline-none focus:ring-2 focus:ring-blue-400`}
                         >
-                          <option value="draft">Draft</option>
-                          <option value="published">Published</option>
-                          <option value="archived">Archived</option>
+                          <option value="draft">Черновик</option>
+                          <option value="published">Опубликовано</option>
+                          <option value="archived">В архиве</option>
                         </select>
                       </td>
                       <td className="px-4 py-3 text-right text-gray-600">{post.view_count.toLocaleString()}</td>
@@ -303,14 +303,14 @@ export default function AdminBlog() {
                             href={`/blog/${post.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            title="View on site"
+                            title="На сайте"
                             className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
                           >
                             <Eye className="w-4 h-4" />
                           </a>
                           <Link
                             to={`/admin/blog/${post.id}/edit`}
-                            title="Edit"
+                            title="Редактировать"
                             className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -318,7 +318,7 @@ export default function AdminBlog() {
                           <button
                             onClick={() => handleDuplicate(post.id)}
                             disabled={duplicating === post.id}
-                            title="Duplicate"
+                            title="Дублировать"
                             className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors"
                           >
                             <Copy className="w-4 h-4" />
@@ -326,7 +326,7 @@ export default function AdminBlog() {
                           <button
                             onClick={() => handleDelete(post.id, post.title)}
                             disabled={deleting === post.id}
-                            title="Delete"
+                            title="Удалить"
                             className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -349,7 +349,7 @@ export default function AdminBlog() {
           className="inline-flex items-center gap-2 rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
         >
           <Trash2 className="h-4 w-4" />
-          {bulkDeleting ? 'Deleting...' : 'Bulk Delete'}
+          {bulkDeleting ? 'Удаление...' : 'Удалить выбранные'}
         </button>
       </BulkActionBar>
 
@@ -357,7 +357,7 @@ export default function AdminBlog() {
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-sm text-gray-500">
           <span>
-            Showing {page * limit + 1}–{Math.min((page + 1) * limit, total)} of {total}
+            {page * limit + 1}–{Math.min((page + 1) * limit, total)} из {total}
           </span>
           <div className="flex gap-2">
             <button
@@ -365,14 +365,14 @@ export default function AdminBlog() {
               disabled={page === 0}
               className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Previous
+              Назад
             </button>
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
               className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Next
+              Вперёд
             </button>
           </div>
         </div>

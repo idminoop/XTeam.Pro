@@ -129,9 +129,9 @@ function formatFileSize(bytes: number) {
 }
 
 function modeLabel(mode: BackupItem['mode']) {
-  if (mode === 'db') return 'DB only';
-  if (mode === 'media') return 'Media only';
-  return 'DB + Media';
+  if (mode === 'db') return 'Только БД';
+  if (mode === 'media') return 'Только медиа';
+  return 'БД + Медиа';
 }
 
 export default function AdminSettings() {
@@ -201,9 +201,9 @@ export default function AdminSettings() {
         method: 'PUT',
         body: JSON.stringify(auditCfg),
       });
-      toast.success('AI configuration saved');
+      toast.success('Настройки ИИ сохранены');
     } catch {
-      toast.error('Failed to save AI configuration');
+      toast.error('Ошибка сохранения настроек ИИ');
     } finally {
       setSaving(false);
     }
@@ -217,9 +217,9 @@ export default function AdminSettings() {
         method: 'PUT',
         body: JSON.stringify({ smtp, general }),
       });
-      toast.success('System settings saved');
+      toast.success('Системные настройки сохранены');
     } catch {
-      toast.error('Failed to save system settings');
+      toast.error('Ошибка сохранения настроек');
     } finally {
       setSaving(false);
     }
@@ -235,10 +235,10 @@ export default function AdminSettings() {
       });
       const data = await res.json();
       setSmtpTestResult(data);
-      if (data.ok) toast.success('SMTP connection successful');
-      else toast.error(`SMTP error: ${data.message}`);
+      if (data.ok) toast.success('SMTP-соединение установлено');
+      else toast.error(`Ошибка SMTP: ${data.message}`);
     } catch {
-      toast.error('SMTP test failed');
+      toast.error('Тест SMTP не прошёл');
     } finally {
       setTestingSmtp(false);
     }
@@ -254,12 +254,12 @@ export default function AdminSettings() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data?.detail || 'Failed to create backup');
+        throw new Error(data?.detail || 'Ошибка создания резервной копии');
       }
-      toast.success(`Backup created: ${data.name}`);
+      toast.success(`Резервная копия создана: ${data.name}`);
       await loadBackups();
     } catch (e: any) {
-      toast.error(e.message || 'Failed to create backup');
+      toast.error(e.message || 'Ошибка создания резервной копии');
     } finally {
       setCreatingBackup(null);
     }
@@ -272,7 +272,7 @@ export default function AdminSettings() {
       const res = await adminApiCall(`/api/admin/backups/${name}/download`, authToken);
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data?.detail || 'Failed to download backup');
+        throw new Error(data?.detail || 'Ошибка загрузки резервной копии');
       }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -284,7 +284,7 @@ export default function AdminSettings() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (e: any) {
-      toast.error(e.message || 'Failed to download backup');
+      toast.error(e.message || 'Ошибка загрузки резервной копии');
     } finally {
       setDownloadingBackup(null);
     }
@@ -292,19 +292,19 @@ export default function AdminSettings() {
 
   const handleDeleteBackup = async (name: string) => {
     if (!authToken) return;
-    if (!confirm(`Delete backup ${name}?`)) return;
+    if (!confirm(`Удалить резервную копию ${name}?`)) return;
 
     setDeletingBackup(name);
     try {
       const res = await adminApiCall(`/api/admin/backups/${name}`, authToken, { method: 'DELETE' });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data?.detail || 'Failed to delete backup');
+        throw new Error(data?.detail || 'Ошибка удаления резервной копии');
       }
-      toast.success('Backup deleted');
+      toast.success('Резервная копия удалена');
       await loadBackups();
     } catch (e: any) {
-      toast.error(e.message || 'Failed to delete backup');
+      toast.error(e.message || 'Ошибка удаления резервной копии');
     } finally {
       setDeletingBackup(null);
     }
@@ -320,10 +320,10 @@ export default function AdminSettings() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl space-y-6">
-      <Card title="AI Configuration" icon={<Server className="w-4 h-4 text-blue-500" />}>
+      <Card title="Настройки ИИ" icon={<Server className="w-4 h-4 text-blue-500" />}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">OpenAI Model</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Модель OpenAI</label>
             <select
               value={auditCfg.ai_model}
               onChange={e => setAuditCfg(c => ({ ...c, ai_model: e.target.value }))}
@@ -335,32 +335,32 @@ export default function AdminSettings() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Analysis Depth</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Глубина анализа</label>
             <select
               value={auditCfg.analysis_depth}
               onChange={e => setAuditCfg(c => ({ ...c, analysis_depth: e.target.value }))}
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="basic">Basic</option>
-              <option value="standard">Standard</option>
-              <option value="comprehensive">Comprehensive</option>
+              <option value="basic">Базовый</option>
+              <option value="standard">Стандартный</option>
+              <option value="comprehensive">Расширенный</option>
             </select>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Toggle label="ROI analysis" checked={auditCfg.include_roi_analysis} onChange={v => setAuditCfg(c => ({ ...c, include_roi_analysis: v }))} />
-          <Toggle label="Risk assessment" checked={auditCfg.include_risk_assessment} onChange={v => setAuditCfg(c => ({ ...c, include_risk_assessment: v }))} />
-          <Toggle label="Implementation roadmap" checked={auditCfg.include_implementation_roadmap} onChange={v => setAuditCfg(c => ({ ...c, include_implementation_roadmap: v }))} />
-          <Toggle label="PDF generation" checked={auditCfg.pdf_generation_enabled} onChange={v => setAuditCfg(c => ({ ...c, pdf_generation_enabled: v }))} />
-          <Toggle label="Auto-send reports" checked={auditCfg.auto_send_reports} onChange={v => setAuditCfg(c => ({ ...c, auto_send_reports: v }))} />
+          <Toggle label="Анализ ROI" checked={auditCfg.include_roi_analysis} onChange={v => setAuditCfg(c => ({ ...c, include_roi_analysis: v }))} />
+          <Toggle label="Оценка рисков" checked={auditCfg.include_risk_assessment} onChange={v => setAuditCfg(c => ({ ...c, include_risk_assessment: v }))} />
+          <Toggle label="Дорожная карта" checked={auditCfg.include_implementation_roadmap} onChange={v => setAuditCfg(c => ({ ...c, include_implementation_roadmap: v }))} />
+          <Toggle label="Генерация PDF" checked={auditCfg.pdf_generation_enabled} onChange={v => setAuditCfg(c => ({ ...c, pdf_generation_enabled: v }))} />
+          <Toggle label="Автоотправка отчётов" checked={auditCfg.auto_send_reports} onChange={v => setAuditCfg(c => ({ ...c, auto_send_reports: v }))} />
         </div>
         <div className="pt-1 border-t border-gray-100">
-          <p className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">Email Notifications</p>
+          <p className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">Уведомления по email</p>
           <div className="space-y-3">
             {([
-              ['new_submissions', 'New submissions'],
-              ['weekly_reports', 'Weekly reports'],
-              ['completion_alerts', 'Completion alerts'],
+              ['new_submissions', 'Новые обращения'],
+              ['weekly_reports', 'Еженедельные отчёты'],
+              ['completion_alerts', 'Уведомления о завершении'],
             ] as [string, string][]).map(([key, label]) => (
               <Toggle
                 key={key}
@@ -376,37 +376,37 @@ export default function AdminSettings() {
         </div>
         <div className="flex gap-3 justify-end pt-2">
           <button onClick={loadAll} className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-colors">
-            <RotateCcw className="w-4 h-4" /> Reset
+            <RotateCcw className="w-4 h-4" /> Сбросить
           </button>
           <button onClick={handleSaveAudit} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
-            <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save'}
+            <Save className="w-4 h-4" /> {saving ? 'Сохранение...' : 'Сохранить'}
           </button>
         </div>
       </Card>
 
-      <Card title="General Settings" icon={<Globe className="w-4 h-4 text-purple-500" />}>
+      <Card title="Общие настройки" icon={<Globe className="w-4 h-4 text-purple-500" />}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Site name" value={general.site_name} onChange={v => setGeneral(g => ({ ...g, site_name: v }))} />
-          <Field label="Site URL" value={general.site_url} onChange={v => setGeneral(g => ({ ...g, site_url: v }))} type="url" />
-          <Field label="Support email" value={general.support_email} onChange={v => setGeneral(g => ({ ...g, support_email: v }))} type="email" />
-          <Field label="Admin email" value={general.admin_email} onChange={v => setGeneral(g => ({ ...g, admin_email: v }))} type="email" />
+          <Field label="Название сайта" value={general.site_name} onChange={v => setGeneral(g => ({ ...g, site_name: v }))} />
+          <Field label="URL сайта" value={general.site_url} onChange={v => setGeneral(g => ({ ...g, site_url: v }))} type="url" />
+          <Field label="Email поддержки" value={general.support_email} onChange={v => setGeneral(g => ({ ...g, support_email: v }))} type="email" />
+          <Field label="Email администратора" value={general.admin_email} onChange={v => setGeneral(g => ({ ...g, admin_email: v }))} type="email" />
         </div>
-        <Toggle label="Maintenance mode" checked={general.maintenance_mode} onChange={v => setGeneral(g => ({ ...g, maintenance_mode: v }))} />
+        <Toggle label="Режим обслуживания" checked={general.maintenance_mode} onChange={v => setGeneral(g => ({ ...g, maintenance_mode: v }))} />
       </Card>
 
       <Card title="SMTP / Email" icon={<Mail className="w-4 h-4 text-green-500" />}>
         {!isSuperAdmin && (
           <div className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
-            SMTP settings can be edited only by Super Admin.
+            Настройки SMTP доступны только Супер-администратору.
           </div>
         )}
         <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${!isSuperAdmin ? 'opacity-50 pointer-events-none select-none' : ''}`}>
-          <Field label="SMTP server" value={smtp.smtp_server} onChange={v => setSmtp(s => ({ ...s, smtp_server: v }))} placeholder="smtp.gmail.com" />
-          <Field label="SMTP port" value={smtp.smtp_port} onChange={v => setSmtp(s => ({ ...s, smtp_port: Number(v) }))} type="number" placeholder="587" />
-          <Field label="Username" value={smtp.smtp_username} onChange={v => setSmtp(s => ({ ...s, smtp_username: v }))} type="email" />
-          <Field label="Password / App Password" value={smtp.smtp_password} onChange={v => setSmtp(s => ({ ...s, smtp_password: v }))} type="password" placeholder="Leave empty to keep current" />
-          <Field label="From email" value={smtp.from_email} onChange={v => setSmtp(s => ({ ...s, from_email: v }))} type="email" />
-          <Field label="From name" value={smtp.from_name} onChange={v => setSmtp(s => ({ ...s, from_name: v }))} />
+          <Field label="SMTP-сервер" value={smtp.smtp_server} onChange={v => setSmtp(s => ({ ...s, smtp_server: v }))} placeholder="smtp.gmail.com" />
+          <Field label="SMTP-порт" value={smtp.smtp_port} onChange={v => setSmtp(s => ({ ...s, smtp_port: Number(v) }))} type="number" placeholder="587" />
+          <Field label="Логин" value={smtp.smtp_username} onChange={v => setSmtp(s => ({ ...s, smtp_username: v }))} type="email" />
+          <Field label="Пароль / App-пароль" value={smtp.smtp_password} onChange={v => setSmtp(s => ({ ...s, smtp_password: v }))} type="password" placeholder="Оставьте пустым, чтобы не менять" />
+          <Field label="Email отправителя" value={smtp.from_email} onChange={v => setSmtp(s => ({ ...s, from_email: v }))} type="email" />
+          <Field label="Имя отправителя" value={smtp.from_name} onChange={v => setSmtp(s => ({ ...s, from_name: v }))} />
         </div>
 
         {smtpTestResult && (
@@ -418,9 +418,9 @@ export default function AdminSettings() {
       </Card>
 
       {isSuperAdmin && (
-        <Card title="Backups" icon={<Archive className="w-4 h-4 text-indigo-500" />}>
+        <Card title="Резервные копии" icon={<Archive className="w-4 h-4 text-indigo-500" />}>
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-sm text-indigo-700">
-            Cron example for automatic backups every day at 02:00 UTC:
+            Пример cron для автоматического бекапа каждый день в 02:00 UTC:
             <div className="mt-1 font-mono text-xs break-all">
               {'curl -X POST https://your-domain/api/admin/backups -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d \'{"mode":"db_media"}\''}
             </div>
@@ -433,7 +433,7 @@ export default function AdminSettings() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm disabled:opacity-50"
             >
               <Database className="w-4 h-4" />
-              {creatingBackup === 'db_media' ? 'Creating...' : 'DB + Media'}
+              {creatingBackup === 'db_media' ? 'Создание...' : 'БД + Медиа'}
             </button>
             <button
               onClick={() => handleCreateBackup('db')}
@@ -441,7 +441,7 @@ export default function AdminSettings() {
               className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 disabled:opacity-50"
             >
               <Database className="w-4 h-4" />
-              {creatingBackup === 'db' ? 'Creating...' : 'DB only'}
+              {creatingBackup === 'db' ? 'Создание...' : 'Только БД'}
             </button>
             <button
               onClick={() => handleCreateBackup('media')}
@@ -449,7 +449,7 @@ export default function AdminSettings() {
               className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 disabled:opacity-50"
             >
               <Archive className="w-4 h-4" />
-              {creatingBackup === 'media' ? 'Creating...' : 'Media only'}
+              {creatingBackup === 'media' ? 'Создание...' : 'Только медиа'}
             </button>
           </div>
 
@@ -457,18 +457,18 @@ export default function AdminSettings() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
                 <tr>
-                  <th className="px-4 py-3">Name</th>
-                  <th className="px-4 py-3">Mode</th>
-                  <th className="px-4 py-3">Size</th>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Author</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
+                  <th className="px-4 py-3">Название</th>
+                  <th className="px-4 py-3">Тип</th>
+                  <th className="px-4 py-3">Размер</th>
+                  <th className="px-4 py-3">Дата</th>
+                  <th className="px-4 py-3">Автор</th>
+                  <th className="px-4 py-3 text-right">Действия</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {backups.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-4 py-8 text-center text-gray-500">No backups yet</td>
+                    <td colSpan={6} className="px-4 py-8 text-center text-gray-500">Резервных копий нет</td>
                   </tr>
                 ) : backups.map(item => (
                   <tr key={item.name}>
@@ -485,7 +485,7 @@ export default function AdminSettings() {
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 border border-gray-300 rounded text-xs hover:bg-gray-50 disabled:opacity-50"
                         >
                           <Download className="w-3.5 h-3.5" />
-                          {downloadingBackup === item.name ? '...' : 'Download'}
+                          {downloadingBackup === item.name ? '...' : 'Скачать'}
                         </button>
                         <button
                           onClick={() => handleDeleteBackup(item.name)}
@@ -493,7 +493,7 @@ export default function AdminSettings() {
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 border border-red-200 text-red-600 rounded text-xs hover:bg-red-50 disabled:opacity-50"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                          {deletingBackup === item.name ? '...' : 'Delete'}
+                          {deletingBackup === item.name ? '...' : 'Удалить'}
                         </button>
                       </div>
                     </td>
@@ -513,14 +513,14 @@ export default function AdminSettings() {
             className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             {testingSmtp ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
-            {testingSmtp ? 'Testing...' : 'Test SMTP'}
+            {testingSmtp ? 'Проверка...' : 'Тест SMTP'}
           </button>
           <button
             onClick={handleSaveSystem}
             disabled={saving}
             className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Settings'}
+            <Save className="w-4 h-4" /> {saving ? 'Сохранение...' : 'Сохранить настройки'}
           </button>
         </div>
       )}

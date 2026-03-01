@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Edit2, Plus, RefreshCw, Trash2, X } from 'lucide-react';
+import { Edit2, Mail, Plus, RefreshCw, Trash2, X } from 'lucide-react';
 import { useAdminStore } from '@/store/adminStore';
 import { adminApiCall, adminApiJson } from '@/utils/adminApi';
+import TableSkeleton from '@/components/admin/TableSkeleton';
+import EmptyState from '@/components/admin/EmptyState';
 
 interface EmailTemplateItem {
   id: number;
@@ -61,17 +63,17 @@ export default function AdminEmailTemplates() {
   }, [load]);
 
   const grouped = useMemo(() => {
-    const byCategory: Record<string, EmailTemplateItem[]> = {};
+    const byКатегория: Record<string, EmailTemplateItem[]> = {};
     for (const item of items) {
       const category = item.category || 'general';
-      byCategory[category] ||= [];
-      byCategory[category].push(item);
+      byКатегория[category] ||= [];
+      byКатегория[category].push(item);
     }
-    return byCategory;
+    return byКатегория;
   }, [items]);
 
   const onDelete = async (template: EmailTemplateItem) => {
-    if (!confirm(`Delete template "${template.name}"?`)) return;
+    if (!confirm(`Удалить шаблон "${template.name}"?`)) return;
     setDeletingId(template.id);
     try {
       await adminApiCall(`/api/admin/email-templates/${template.id}`, authToken, { method: 'DELETE' });
@@ -85,9 +87,9 @@ export default function AdminEmailTemplates() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Email Templates</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Шаблоны писем</h1>
           <p className="text-sm text-gray-500">
-            Use placeholders: <code>{'{{name}}'}</code>, <code>{'{{email}}'}</code>, <code>{'{{company}}'}</code>,{' '}
+            Используйте переменные: <code>{'{{name}}'}</code>, <code>{'{{email}}'}</code>, <code>{'{{company}}'}</code>,{' '}
             <code>{'{{subject}}'}</code>.
           </p>
         </div>
@@ -104,13 +106,23 @@ export default function AdminEmailTemplates() {
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             <Plus className="h-4 w-4" />
-            New Template
+            Новый шаблон
           </button>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex h-40 items-center justify-center text-sm text-gray-400">Loading...</div>
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <TableSkeleton columns={4} rows={6} className="border-0 rounded-none" />
+        </div>
+      ) : items.length === 0 ? (
+        <EmptyState
+          title="Шаблонов нет"
+          description="Создайте первый шаблон письма для быстрых ответов."
+          icon={Mail}
+          ctaLabel="Создать шаблон"
+          onCtaClick={() => setCreateOpen(true)}
+        />
       ) : (
         <div className="space-y-4">
           {Object.entries(grouped).map(([category, categoryItems]) => (
@@ -228,7 +240,7 @@ function EmailTemplateModal({
         {error && <p className="rounded bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-600">Name</label>
+            <label className="mb-1 block text-xs font-medium text-gray-600">Название</label>
             <input
               required
               value={form.name}
@@ -237,7 +249,7 @@ function EmailTemplateModal({
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-600">Category</label>
+            <label className="mb-1 block text-xs font-medium text-gray-600">Категория</label>
             <input
               value={form.category}
               onChange={event => setField('category', event.target.value)}
@@ -246,7 +258,7 @@ function EmailTemplateModal({
           </div>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-600">Subject</label>
+          <label className="mb-1 block text-xs font-medium text-gray-600">Тема</label>
           <input
             required
             value={form.subject}
@@ -255,7 +267,7 @@ function EmailTemplateModal({
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-600">Body (HTML supported)</label>
+          <label className="mb-1 block text-xs font-medium text-gray-600">Тело письма (HTML)</label>
           <textarea
             required
             rows={10}
@@ -271,7 +283,7 @@ function EmailTemplateModal({
             onChange={event => setField('is_active', event.target.checked)}
             className="rounded"
           />
-          Template is active
+          Шаблон активен
         </label>
         <div className="flex gap-3 pt-2">
           <button
@@ -279,14 +291,14 @@ function EmailTemplateModal({
             onClick={onClose}
             className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
-            Cancel
+            Отмена
           </button>
           <button
             type="submit"
             disabled={saving}
             className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Saving...' : 'Save Template'}
+            {saving ? 'Сохранение...' : 'Сохранить шаблон'}
           </button>
         </div>
       </form>

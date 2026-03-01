@@ -199,9 +199,7 @@ def require_permission(permission: str):
     """Return a FastAPI dependency that enforces a specific permission."""
 
     async def _check(
-        current_user: AdminUser = Depends(
-            lambda c=Depends(security), db=Depends(get_async_db): get_current_admin_user(c, db)
-        )
+        current_user: AdminUser = Depends(get_current_admin_user)
     ) -> AdminUser:
         _assert_permission(current_user, permission)
         return current_user

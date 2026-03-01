@@ -207,7 +207,7 @@ export default function AdminContactDetail() {
         }),
       });
       await Promise.all([loadContact(), loadActivities()]);
-      toast.success('Contact updated');
+      toast.success('Контакт обновлён');
     } finally {
       setSaving(false);
     }
@@ -277,7 +277,7 @@ export default function AdminContactDetail() {
         method: 'POST',
         body: JSON.stringify({ template_id: selectedTemplateId }),
       });
-      toast.success('Email sent');
+      toast.success('Письмо отправлено');
       await loadActivities();
     } finally {
       setSendingTemplate(false);
@@ -286,11 +286,11 @@ export default function AdminContactDetail() {
 
   const deleteContact = async () => {
     if (!id || !contact) return;
-    if (!confirm(`Delete inquiry from ${contact.name}?`)) return;
+    if (!confirm(`Удалить обращение от ${contact.name}?`)) return;
     setDeleting(true);
     try {
       await adminApiCall(`/api/admin/contacts/${id}`, authToken, { method: 'DELETE' });
-      toast.success('Contact deleted');
+      toast.success('Контакт удалён');
       navigate('/admin/contacts');
     } finally {
       setDeleting(false);
@@ -298,7 +298,7 @@ export default function AdminContactDetail() {
   };
 
   if (loading) {
-    return <div className="flex h-64 items-center justify-center text-sm text-gray-400">Loading...</div>;
+    return <div className="flex h-64 items-center justify-center text-sm text-gray-400">Загрузка...</div>;
   }
   if (!contact) return null;
 
@@ -307,7 +307,7 @@ export default function AdminContactDetail() {
       <div className="flex items-center gap-3">
         <Link to="/admin/contacts" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800">
           <ArrowLeft className="h-4 w-4" />
-          Back to Contacts
+          Назад к контактам
         </Link>
         <span className="text-gray-300">/</span>
         <h1 className="text-xl font-bold text-gray-900">
@@ -318,10 +318,10 @@ export default function AdminContactDetail() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="space-y-4 xl:col-span-2">
           <div className="rounded-xl border border-gray-200 bg-white p-5">
-            <h2 className="mb-3 text-base font-semibold text-gray-800">Contact Information</h2>
+            <h2 className="mb-3 text-base font-semibold text-gray-800">Информация о контакте</h2>
             <div className="space-y-2 text-sm text-gray-700">
               <p>
-                <span className="font-medium">Name:</span> {contact.name}
+                <span className="font-medium">Имя:</span> {contact.name}
               </p>
               <p>
                 <span className="font-medium">Email:</span>{' '}
@@ -331,17 +331,17 @@ export default function AdminContactDetail() {
               </p>
               {contact.phone && (
                 <p>
-                  <span className="font-medium">Phone:</span>{' '}
+                  <span className="font-medium">Телефон:</span>{' '}
                   <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline">
                     {contact.phone}
                   </a>
                 </p>
               )}
               <p>
-                <span className="font-medium">Company:</span> {contact.company || '—'}
+                <span className="font-medium">Компания:</span> {contact.company || '—'}
               </p>
               <p>
-                <span className="font-medium">Subject:</span> {contact.subject}
+                <span className="font-medium">Тема:</span> {contact.subject}
               </p>
               <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-800">{contact.message}</div>
             </div>
@@ -349,21 +349,21 @@ export default function AdminContactDetail() {
 
           <div className="rounded-xl border border-gray-200 bg-white p-5">
             <div className="mb-3 flex gap-2">
-              <TabButton label="Activity Timeline" active={tab === 'activity'} onClick={() => setTab('activity')} />
-              <TabButton label="Notes" active={tab === 'notes'} onClick={() => setTab('notes')} />
-              <TabButton label="Tasks" active={tab === 'tasks'} onClick={() => setTab('tasks')} />
+              <TabButton label="Хронология" active={tab === 'activity'} onClick={() => setTab('activity')} />
+              <TabButton label="Заметки" active={tab === 'notes'} onClick={() => setTab('notes')} />
+              <TabButton label="Задачи" active={tab === 'tasks'} onClick={() => setTab('tasks')} />
             </div>
 
             {tab === 'activity' && (
               <div className="space-y-3">
                 {activities.length === 0 ? (
-                  <p className="text-sm text-gray-400">No activities yet.</p>
+                  <p className="text-sm text-gray-400">Активность пока отсутствует.</p>
                 ) : (
                   activities.map(item => (
                     <div key={item.id} className="rounded-lg border border-gray-200 p-3 text-sm">
                       <p className="font-medium text-gray-800">{item.message}</p>
                       <p className="text-xs text-gray-500">
-                        {item.activity_type} by {item.created_by || 'system'} ·{' '}
+                        {item.activity_type} от {item.created_by || 'система'} ·{' '}
                         {item.created_at ? new Date(item.created_at).toLocaleString() : '—'}
                       </p>
                     </div>
@@ -378,7 +378,7 @@ export default function AdminContactDetail() {
                   <input
                     value={newNote}
                     onChange={event => setNewNote(event.target.value)}
-                    placeholder="Add note..."
+                    placeholder="Добавить заметку..."
                     className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
@@ -386,7 +386,7 @@ export default function AdminContactDetail() {
                     disabled={creatingNote || !newNote.trim()}
                     className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
                   >
-                    Add
+                    Добавить
                   </button>
                 </div>
                 {notes.map(note => (
@@ -394,10 +394,10 @@ export default function AdminContactDetail() {
                     <p className="text-sm text-gray-800">{note.note}</p>
                     <div className="mt-1 flex items-center justify-between">
                       <p className="text-xs text-gray-500">
-                        {note.created_by || 'unknown'} · {note.created_at ? new Date(note.created_at).toLocaleString() : '—'}
+                        {note.created_by || 'неизвестно'} · {note.created_at ? new Date(note.created_at).toLocaleString() : '—'}
                       </p>
                       <button onClick={() => deleteNote(note.id)} className="text-xs text-red-600 hover:underline">
-                        Delete
+                        Удалить
                       </button>
                     </div>
                   </div>
@@ -411,7 +411,7 @@ export default function AdminContactDetail() {
                   <input
                     value={newTask.title}
                     onChange={event => setNewTask(prev => ({ ...prev, title: event.target.value }))}
-                    placeholder="Task title"
+                    placeholder="Название задачи"
                     className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
@@ -424,7 +424,7 @@ export default function AdminContactDetail() {
                     value={newTask.description}
                     onChange={event => setNewTask(prev => ({ ...prev, description: event.target.value }))}
                     rows={2}
-                    placeholder="Description"
+                    placeholder="Описание"
                     className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
                   />
                 </div>
@@ -434,17 +434,17 @@ export default function AdminContactDetail() {
                     onChange={event => setNewTask(prev => ({ ...prev, priority: event.target.value as ContactTask['priority'] }))}
                     className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
                   >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
+                    <option value="low">Низкий</option>
+                    <option value="medium">Средний</option>
+                    <option value="high">Высокий</option>
+                    <option value="urgent">Срочный</option>
                   </select>
                   <button
                     onClick={createTask}
                     disabled={creatingTask || !newTask.title.trim()}
                     className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
                   >
-                    Add Task
+                    Добавить задачу
                   </button>
                 </div>
                 {tasks.map(task => (
@@ -456,17 +456,17 @@ export default function AdminContactDetail() {
                         onChange={event => updateTaskStatus(task, event.target.value as ContactTask['status'])}
                         className="rounded border border-gray-300 px-2 py-1 text-xs"
                       >
-                        <option value="todo">Todo</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="done">Done</option>
+                        <option value="todo">К выполнению</option>
+                        <option value="in_progress">В работе</option>
+                        <option value="done">Готово</option>
                       </select>
                     </div>
                     {task.description && <p className="mt-1 text-xs text-gray-600">{task.description}</p>}
                     <p className="mt-1 text-xs text-gray-500">
-                      Due: {task.due_date ? new Date(task.due_date).toLocaleDateString() : '—'} · Priority: {task.priority}
+                      Срок: {task.due_date ? new Date(task.due_date).toLocaleDateString() : '—'} · Приоритет: {{ low: 'Низкий', medium: 'Средний', high: 'Высокий', urgent: 'Срочный' }[task.priority] ?? task.priority}
                     </p>
                     <button onClick={() => deleteTask(task.id)} className="mt-1 text-xs text-red-600 hover:underline">
-                      Delete
+                      Удалить
                     </button>
                   </div>
                 ))}
@@ -477,43 +477,43 @@ export default function AdminContactDetail() {
 
         <div className="space-y-4">
           <div className="rounded-xl border border-gray-200 bg-white p-5">
-            <h3 className="mb-3 text-sm font-semibold text-gray-800">Status & Pipeline</h3>
+            <h3 className="mb-3 text-sm font-semibold text-gray-800">Статус и конвейер</h3>
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Status</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Статус</label>
                 <select value={status} onChange={event => setStatus(event.target.value as ContactDetail['status'])} className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm ${STATUS_COLORS[status]}`}>
-                  <option value="new">New</option>
-                  <option value="contacted">Contacted</option>
-                  <option value="qualified">Qualified</option>
-                  <option value="converted">Converted</option>
-                  <option value="closed">Closed</option>
+                  <option value="new">Новый</option>
+                  <option value="contacted">На связи</option>
+                  <option value="qualified">Квалифицирован</option>
+                  <option value="converted">Конвертирован</option>
+                  <option value="closed">Закрыт</option>
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Pipeline Stage</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Стадия конвейера</label>
                 <select
                   value={pipelineStage}
                   onChange={event => setPipelineStage(event.target.value as ContactDetail['pipeline_stage'])}
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                 >
-                  <option value="new">New</option>
-                  <option value="contacted">Contacted</option>
-                  <option value="qualified">Qualified</option>
-                  <option value="converted">Converted</option>
-                  <option value="closed">Closed</option>
+                  <option value="new">Новый</option>
+                  <option value="contacted">На связи</option>
+                  <option value="qualified">Квалифицирован</option>
+                  <option value="converted">Конвертирован</option>
+                  <option value="closed">Закрыт</option>
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Priority</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Приоритет</label>
                 <select value={priority} onChange={event => setPriority(event.target.value as ContactDetail['priority'])} className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm ${PRIORITY_COLORS[priority]}`}>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
+                  <option value="low">Низкий</option>
+                  <option value="medium">Средний</option>
+                  <option value="high">Высокий</option>
+                  <option value="urgent">Срочный</option>
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Assigned To</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Исполнитель</label>
                 <input
                   value={assignedTo}
                   onChange={event => setAssignedTo(event.target.value)}
@@ -521,7 +521,7 @@ export default function AdminContactDetail() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Score</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Оценка</label>
                 <input
                   type="number"
                   min={0}
@@ -532,7 +532,7 @@ export default function AdminContactDetail() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Tags (comma separated)</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Теги (через запятую)</label>
                 <input
                   value={tagsInput}
                   onChange={event => setTagsInput(event.target.value)}
@@ -544,20 +544,20 @@ export default function AdminContactDetail() {
                 disabled={saving}
                 className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? 'Сохранение...' : 'Сохранить'}
               </button>
             </div>
           </div>
 
           <div className="rounded-xl border border-gray-200 bg-white p-5">
-            <h3 className="mb-3 text-sm font-semibold text-gray-800">Quick Email</h3>
+            <h3 className="mb-3 text-sm font-semibold text-gray-800">Быстрый email</h3>
             <div className="space-y-2">
               <select
                 value={selectedTemplateId}
                 onChange={event => setSelectedTemplateId(event.target.value ? Number(event.target.value) : '')}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                <option value="">Select template</option>
+                <option value="">Выбрать шаблон</option>
                 {templates.map(template => (
                   <option key={template.id} value={template.id}>
                     {template.name}
@@ -569,14 +569,14 @@ export default function AdminContactDetail() {
                 disabled={!selectedTemplateId || sendingTemplate}
                 className="w-full rounded-lg border border-blue-300 px-3 py-2 text-sm text-blue-700 hover:bg-blue-50 disabled:opacity-50"
               >
-                {sendingTemplate ? 'Sending...' : 'Send Template'}
+                {sendingTemplate ? 'Отправка...' : 'Отправить шаблон'}
               </button>
               <a
                 href={`mailto:${contact.email}`}
                 className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <Mail className="h-4 w-4" />
-                Compose Email
+                Написать письмо
               </a>
               {contact.phone && (
                 <a
@@ -584,7 +584,7 @@ export default function AdminContactDetail() {
                   className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                 >
                   <Phone className="h-4 w-4" />
-                  Call
+                  Позвонить
                 </a>
               )}
             </div>
@@ -597,7 +597,7 @@ export default function AdminContactDetail() {
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50"
             >
               <Trash2 className="h-4 w-4" />
-              {deleting ? 'Deleting...' : 'Delete Contact'}
+              {deleting ? 'Удаление...' : 'Удалить контакт'}
             </button>
           </div>
         </div>

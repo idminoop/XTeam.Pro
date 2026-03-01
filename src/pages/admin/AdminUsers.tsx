@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Check,
+  CheckSquare,
   Edit2,
   Key,
   Lock,
   RefreshCw,
   ShieldPlus,
+  Square,
   Trash2,
   Unlock,
   UserPlus,
@@ -15,6 +17,7 @@ import { useAdminStore } from '@/store/adminStore';
 import { adminApiCall, adminApiJson } from '@/utils/adminApi';
 import TableSkeleton from '@/components/admin/TableSkeleton';
 import EmptyState from '@/components/admin/EmptyState';
+import BulkActionBar from '@/components/admin/BulkActionBar';
 
 type RoleValue = 'super_admin' | 'admin' | 'analyst' | 'editor' | 'author' | 'moderator';
 type PermissionKey =
@@ -62,38 +65,38 @@ interface RoleTemplateItem extends PermissionState {
 }
 
 const ROLE_CONFIG: Record<RoleValue, { label: string; cls: string }> = {
-  super_admin: { label: 'Super Admin', cls: 'bg-red-100 text-red-700' },
-  admin: { label: 'Admin', cls: 'bg-blue-100 text-blue-700' },
-  analyst: { label: 'Analyst', cls: 'bg-gray-100 text-gray-700' },
-  editor: { label: 'Editor', cls: 'bg-emerald-100 text-emerald-700' },
-  author: { label: 'Author', cls: 'bg-indigo-100 text-indigo-700' },
-  moderator: { label: 'Moderator', cls: 'bg-amber-100 text-amber-700' },
+  super_admin: { label: 'Супер-администратор', cls: 'bg-red-100 text-red-700' },
+  admin: { label: 'Администратор', cls: 'bg-blue-100 text-blue-700' },
+  analyst: { label: 'Аналитик', cls: 'bg-gray-100 text-gray-700' },
+  editor: { label: 'Редактор', cls: 'bg-emerald-100 text-emerald-700' },
+  author: { label: 'Автор', cls: 'bg-indigo-100 text-indigo-700' },
+  moderator: { label: 'Модератор', cls: 'bg-amber-100 text-amber-700' },
 };
 
 const ROLE_OPTIONS: Array<{ value: RoleValue; label: string }> = [
-  { value: 'analyst', label: 'Analyst' },
-  { value: 'author', label: 'Author' },
-  { value: 'editor', label: 'Editor' },
-  { value: 'moderator', label: 'Moderator' },
-  { value: 'admin', label: 'Admin' },
-  { value: 'super_admin', label: 'Super Admin' },
+  { value: 'analyst', label: 'Аналитик' },
+  { value: 'author', label: 'Автор' },
+  { value: 'editor', label: 'Редактор' },
+  { value: 'moderator', label: 'Модератор' },
+  { value: 'admin', label: 'Администратор' },
+  { value: 'super_admin', label: 'Супер-администратор' },
 ];
 
 const PERMISSIONS: Array<{ key: PermissionKey; label: string }> = [
-  { key: 'can_manage_users', label: 'Manage Users' },
-  { key: 'can_view_analytics', label: 'View Analytics' },
-  { key: 'can_export_data', label: 'Export Data' },
-  { key: 'can_manage_audits', label: 'Legacy: Manage Audits' },
-  { key: 'can_manage_content', label: 'Legacy: Manage Content' },
-  { key: 'can_read_audits', label: 'Read Audits' },
-  { key: 'can_write_audits', label: 'Write Audits' },
-  { key: 'can_delete_audits', label: 'Delete Audits' },
-  { key: 'can_read_contacts', label: 'Read Contacts' },
-  { key: 'can_write_contacts', label: 'Write Contacts' },
-  { key: 'can_delete_contacts', label: 'Delete Contacts' },
-  { key: 'can_publish_content', label: 'Publish Content' },
-  { key: 'can_manage_cases', label: 'Manage Cases' },
-  { key: 'skip_email_verification', label: 'Skip Email Verification' },
+  { key: 'can_manage_users', label: 'Управление пользователями' },
+  { key: 'can_view_analytics', label: 'Просмотр аналитики' },
+  { key: 'can_export_data', label: 'Экспорт данных' },
+  { key: 'can_manage_audits', label: 'Управление аудитами (устар.)' },
+  { key: 'can_manage_content', label: 'Управление контентом (устар.)' },
+  { key: 'can_read_audits', label: 'Чтение аудитов' },
+  { key: 'can_write_audits', label: 'Редактирование аудитов' },
+  { key: 'can_delete_audits', label: 'Удаление аудитов' },
+  { key: 'can_read_contacts', label: 'Чтение контактов' },
+  { key: 'can_write_contacts', label: 'Редактирование контактов' },
+  { key: 'can_delete_contacts', label: 'Удаление контактов' },
+  { key: 'can_publish_content', label: 'Публикация контента' },
+  { key: 'can_manage_cases', label: 'Управление кейсами' },
+  { key: 'skip_email_verification', label: 'Без подтверждения email' },
 ];
 
 const DEFAULT_PERMISSIONS: PermissionState = {
@@ -183,6 +186,8 @@ export default function AdminUsers() {
   const [tab, setTab] = useState<'users' | 'roles'>('users');
   const [users, setUsers] = useState<AdminUserItem[]>([]);
   const [roleTemplates, setRoleTemplates] = useState<RoleTemplateItem[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
+  const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingRoles, setLoadingRoles] = useState(true);
 
@@ -195,12 +200,15 @@ export default function AdminUsers() {
   const [createRoleModal, setCreateRoleModal] = useState(false);
   const [editRoleTemplate, setEditRoleTemplate] = useState<RoleTemplateItem | null>(null);
   const [deletingRoleId, setDeletingRoleId] = useState<number | null>(null);
+  const [bulkDeletingUsers, setBulkDeletingUsers] = useState(false);
+  const [bulkDeletingRoles, setBulkDeletingRoles] = useState(false);
 
   const fetchUsers = useCallback(async () => {
     setLoadingUsers(true);
     try {
       const data = await adminApiJson<AdminUserItem[]>('/api/admin/users', authToken);
       setUsers(data);
+      setSelectedUserIds(prev => prev.filter(id => data.some(user => user.id === id)));
     } finally {
       setLoadingUsers(false);
     }
@@ -211,6 +219,7 @@ export default function AdminUsers() {
     try {
       const data = await adminApiJson<RoleTemplateItem[]>('/api/admin/roles', authToken);
       setRoleTemplates(data);
+      setSelectedRoleIds(prev => prev.filter(id => data.some(role => role.id === id)));
     } finally {
       setLoadingRoles(false);
     }
@@ -222,7 +231,7 @@ export default function AdminUsers() {
   }, [fetchUsers, fetchRoleTemplates]);
 
   const handleDeleteUser = async (user: AdminUserItem) => {
-    if (!confirm(`Delete user "${user.username}"? This cannot be undone.`)) return;
+    if (!confirm(`Удалить пользователя «${user.username}»? Это действие необратимо.`)) return;
     setDeletingUserId(user.id);
     try {
       await adminApiCall(`/api/admin/users/${user.id}`, authToken, { method: 'DELETE' });
@@ -243,7 +252,7 @@ export default function AdminUsers() {
   };
 
   const handleDeleteRoleTemplate = async (template: RoleTemplateItem) => {
-    if (!confirm(`Delete role template "${template.name}"?`)) return;
+    if (!confirm(`Удалить шаблон роли «${template.name}»?`)) return;
     setDeletingRoleId(template.id);
     try {
       await adminApiCall(`/api/admin/roles/${template.id}`, authToken, { method: 'DELETE' });
@@ -253,7 +262,91 @@ export default function AdminUsers() {
     }
   };
 
-  const isLocked = (user: AdminUserItem) => Boolean(user.locked_until && new Date(user.locked_until) > new Date());
+  const deletableUserIds = useMemo(
+    () => (isSuperAdmin ? users.filter(user => String(user.id) !== me?.id).map(user => user.id) : []),
+    [isSuperAdmin, users, me?.id],
+  );
+  const deletableRoleIds = useMemo(
+    () => (isSuperAdmin ? roleTemplates.filter(template => !template.is_system).map(template => template.id) : []),
+    [isSuperAdmin, roleTemplates],
+  );
+  const selectedDeletableUserIds = useMemo(
+    () => selectedUserIds.filter(id => deletableUserIds.includes(id)),
+    [selectedUserIds, deletableUserIds],
+  );
+  const selectedDeletableRoleIds = useMemo(
+    () => selectedRoleIds.filter(id => deletableRoleIds.includes(id)),
+    [selectedRoleIds, deletableRoleIds],
+  );
+
+  const allUsersSelected =
+    deletableUserIds.length > 0 &&
+    deletableUserIds.every(userId => selectedUserIds.includes(userId));
+  const allRolesSelected =
+    deletableRoleIds.length > 0 &&
+    deletableRoleIds.every(roleId => selectedRoleIds.includes(roleId));
+
+  const toggleUserSelection = (userId: number) => {
+    if (!deletableUserIds.includes(userId)) return;
+    setSelectedUserIds(prev => (prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId]));
+  };
+
+  const toggleRoleSelection = (roleId: number) => {
+    if (!deletableRoleIds.includes(roleId)) return;
+    setSelectedRoleIds(prev => (prev.includes(roleId) ? prev.filter(id => id !== roleId) : [...prev, roleId]));
+  };
+
+  const toggleAllUsers = () => {
+    if (allUsersSelected) {
+      setSelectedUserIds([]);
+    } else {
+      setSelectedUserIds(deletableUserIds);
+    }
+  };
+
+  const toggleAllRoles = () => {
+    if (allRolesSelected) {
+      setSelectedRoleIds([]);
+    } else {
+      setSelectedRoleIds(deletableRoleIds);
+    }
+  };
+
+  const handleBulkDeleteUsers = async () => {
+    if (!selectedDeletableUserIds.length) return;
+    if (!confirm(`Удалить выбранных пользователей (${selectedDeletableUserIds.length})?`)) return;
+    setBulkDeletingUsers(true);
+    try {
+      await Promise.all(
+        selectedDeletableUserIds.map(userId =>
+          adminApiCall(`/api/admin/users/${userId}`, authToken, { method: 'DELETE' }),
+        ),
+      );
+      setSelectedUserIds([]);
+      await fetchUsers();
+    } finally {
+      setBulkDeletingUsers(false);
+    }
+  };
+
+  const handleBulkDeleteRoles = async () => {
+    if (!selectedDeletableRoleIds.length) return;
+    if (!confirm(`Удалить выбранные шаблоны ролей (${selectedDeletableRoleIds.length})?`)) return;
+    setBulkDeletingRoles(true);
+    try {
+      await Promise.all(
+        selectedDeletableRoleIds.map(roleId =>
+          adminApiCall(`/api/admin/roles/${roleId}`, authToken, { method: 'DELETE' }),
+        ),
+      );
+      setSelectedRoleIds([]);
+      await fetchRoleTemplates();
+    } finally {
+      setBulkDeletingRoles(false);
+    }
+  };
+
+  const isЗаблокирован = (user: AdminUserItem) => Boolean(user.locked_until && new Date(user.locked_until) > new Date());
   const userTitle = useMemo(() => `${users.length} admin users`, [users.length]);
 
   return (
@@ -269,7 +362,7 @@ export default function AdminUsers() {
               if (tab === 'users') fetchUsers();
               else fetchRoleTemplates();
             }}
-            title="Refresh"
+            title="Обновить"
             className="rounded-lg border border-gray-300 p-2 hover:bg-gray-50"
           >
             <RefreshCw className="h-4 w-4 text-gray-500" />
@@ -289,7 +382,7 @@ export default function AdminUsers() {
               className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
             >
               <ShieldPlus className="h-4 w-4" />
-              Add Role
+              Добавить роль
             </button>
           )}
         </div>
@@ -301,13 +394,13 @@ export default function AdminUsers() {
             onClick={() => setTab('users')}
             className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${tab === 'users' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
           >
-            Users
+            Пользователи
           </button>
           <button
             onClick={() => setTab('roles')}
             className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${tab === 'roles' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
           >
-            Roles
+            Роли
           </button>
         </div>
       </div>
@@ -315,30 +408,49 @@ export default function AdminUsers() {
       {tab === 'users' ? (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           {loadingUsers ? (
-            <TableSkeleton columns={6} rows={6} className="border-0 rounded-none" />
+            <TableSkeleton columns={7} rows={6} className="border-0 rounded-none" />
           ) : users.length === 0 ? (
             <div className="p-6">
-              <EmptyState title="No users found" description="Create your first admin user." icon={UserPlus} />
+              <EmptyState title="Пользователей нет" description="Создайте первого администратора." icon={UserPlus} />
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                    <th className="px-4 py-3">User</th>
-                    <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3">Permissions</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Last Login</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="px-4 py-3 w-10">
+                      <button
+                        onClick={toggleAllUsers}
+                        disabled={!deletableUserIds.length}
+                        className="text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {allUsersSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+                      </button>
+                    </th>
+                    <th className="px-4 py-3">Пользователь</th>
+                    <th className="px-4 py-3">Роль</th>
+                    <th className="px-4 py-3">Права</th>
+                    <th className="px-4 py-3">Статус</th>
+                    <th className="px-4 py-3">Последний вход</th>
+                    <th className="px-4 py-3 text-right">Действия</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {users.map(user => {
                     const roleConfig = ROLE_CONFIG[user.role] ?? ROLE_CONFIG.admin;
-                    const locked = isLocked(user);
+                    const locked = isЗаблокирован(user);
+                    const canSelectForDelete = isSuperAdmin && String(user.id) !== me?.id;
                     return (
                       <tr key={user.id} className="transition-colors hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedUserIds.includes(user.id)}
+                            onChange={() => toggleUserSelection(user.id)}
+                            disabled={!canSelectForDelete}
+                            className="rounded border-gray-300"
+                          />
+                        </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
@@ -356,7 +468,7 @@ export default function AdminUsers() {
                           <span className={`rounded-full px-2 py-1 text-xs font-medium ${roleConfig.cls}`}>{roleConfig.label}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="mb-1 text-xs text-gray-500">{permissionCount(user)} permissions</div>
+                          <div className="mb-1 text-xs text-gray-500">{permissionCount(user)} прав</div>
                           <div className="flex flex-wrap gap-1">
                             {PERMISSIONS.filter(permission => user[permission.key]).slice(0, 6).map(permission => (
                               <span key={permission.key} className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600">
@@ -369,12 +481,12 @@ export default function AdminUsers() {
                           <div className="flex flex-col gap-1">
                             <span className={`inline-flex items-center gap-1 text-xs font-medium ${user.is_active ? 'text-green-600' : 'text-gray-400'}`}>
                               {user.is_active ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
-                              {user.is_active ? 'Active' : 'Inactive'}
+                              {user.is_active ? 'Активен' : 'Неактивен'}
                             </span>
                             {locked && (
                               <span className="inline-flex items-center gap-1 text-xs text-red-600">
                                 <Lock className="h-3 w-3" />
-                                Locked
+                                Заблокирован
                               </span>
                             )}
                           </div>
@@ -387,7 +499,7 @@ export default function AdminUsers() {
                                 onClick={() => handleUnlockUser(user)}
                                 disabled={unlockingUserId === user.id}
                                 className="rounded p-1.5 text-gray-400 transition-colors hover:bg-green-50 hover:text-green-600"
-                                title="Unlock account"
+                                title="Разблокировать"
                               >
                                 <Unlock className="h-4 w-4" />
                               </button>
@@ -395,14 +507,14 @@ export default function AdminUsers() {
                             <button
                               onClick={() => setPasswordUser(user)}
                               className="rounded p-1.5 text-gray-400 transition-colors hover:bg-yellow-50 hover:text-yellow-600"
-                              title="Reset password"
+                              title="Сбросить пароль"
                             >
                               <Key className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => setEditUser(user)}
                               className="rounded p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
-                              title="Edit user"
+                              title="Редактировать"
                             >
                               <Edit2 className="h-4 w-4" />
                             </button>
@@ -411,7 +523,7 @@ export default function AdminUsers() {
                                 onClick={() => handleDeleteUser(user)}
                                 disabled={deletingUserId === user.id}
                                 className="rounded p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
-                                title="Delete user"
+                                title="Удалить"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -429,69 +541,116 @@ export default function AdminUsers() {
       ) : (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           {loadingRoles ? (
-            <TableSkeleton columns={5} rows={4} className="border-0 rounded-none" />
+            <TableSkeleton columns={6} rows={4} className="border-0 rounded-none" />
           ) : roleTemplates.length === 0 ? (
             <div className="p-6">
-              <EmptyState title="No role templates found" description="Create a role template to reuse permission sets." icon={ShieldPlus} />
+              <EmptyState title="Шаблонов ролей нет" description="Создайте шаблон роли для повторного использования прав." icon={ShieldPlus} />
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                    <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3">Permissions</th>
+                    <th className="px-4 py-3 w-10">
+                      <button
+                        onClick={toggleAllRoles}
+                        disabled={!deletableRoleIds.length}
+                        className="text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {allRolesSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+                      </button>
+                    </th>
+                    <th className="px-4 py-3">Название</th>
+                    <th className="px-4 py-3">Роль</th>
+                    <th className="px-4 py-3">Права</th>
                     <th className="px-4 py-3">Type</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="px-4 py-3 text-right">Действия</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {roleTemplates.map(template => (
-                    <tr key={template.id} className="transition-colors hover:bg-gray-50">
-                      <td className="px-4 py-3">
-                        <div className="font-medium text-gray-900">{template.name}</div>
-                        {template.description && <div className="text-xs text-gray-500">{template.description}</div>}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`rounded-full px-2 py-1 text-xs font-medium ${(ROLE_CONFIG[template.role] ?? ROLE_CONFIG.admin).cls}`}>
-                          {(ROLE_CONFIG[template.role] ?? ROLE_CONFIG.admin).label}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-gray-600">{permissionCount(template)} enabled</td>
-                      <td className="px-4 py-3">
-                        <span className={`rounded-full px-2 py-1 text-xs font-medium ${template.is_system ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-700'}`}>
-                          {template.is_system ? 'System' : 'Custom'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => setEditRoleTemplate(template)}
-                            className="rounded p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
-                            title="Edit role"
-                          >
-                            <Edit2 className="h-4 w-4" />
-                          </button>
-                          {!template.is_system && isSuperAdmin && (
+                  {roleTemplates.map(template => {
+                    const canSelectRole = isSuperAdmin && !template.is_system;
+                    return (
+                      <tr key={template.id} className="transition-colors hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedRoleIds.includes(template.id)}
+                            onChange={() => toggleRoleSelection(template.id)}
+                            disabled={!canSelectRole}
+                            className="rounded border-gray-300"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="font-medium text-gray-900">{template.name}</div>
+                          {template.description && <div className="text-xs text-gray-500">{template.description}</div>}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`rounded-full px-2 py-1 text-xs font-medium ${(ROLE_CONFIG[template.role] ?? ROLE_CONFIG.admin).cls}`}>
+                            {(ROLE_CONFIG[template.role] ?? ROLE_CONFIG.admin).label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-600">{permissionCount(template)} enabled</td>
+                        <td className="px-4 py-3">
+                          <span className={`rounded-full px-2 py-1 text-xs font-medium ${template.is_system ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-700'}`}>
+                            {template.is_system ? 'Системный' : 'Пользовательский'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center justify-end gap-1">
                             <button
-                              onClick={() => handleDeleteRoleTemplate(template)}
-                              disabled={deletingRoleId === template.id}
-                              className="rounded p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
-                              title="Delete role"
+                              onClick={() => setEditRoleTemplate(template)}
+                              className="rounded p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                              title="Редактировать роль"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Edit2 className="h-4 w-4" />
                             </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            {!template.is_system && isSuperAdmin && (
+                              <button
+                                onClick={() => handleDeleteRoleTemplate(template)}
+                                disabled={deletingRoleId === template.id}
+                                className="rounded p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                                title="Удалить роль"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           )}
         </div>
+      )}
+
+      {tab === 'users' && isSuperAdmin && (
+        <BulkActionBar selectedCount={selectedDeletableUserIds.length} onClear={() => setSelectedUserIds([])}>
+          <button
+            onClick={handleBulkDeleteUsers}
+            disabled={bulkDeletingUsers}
+            className="inline-flex items-center gap-2 rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+          >
+            <Trash2 className="h-4 w-4" />
+            {bulkDeletingUsers ? 'Удаление...' : 'Удалить выбранных'}
+          </button>
+        </BulkActionBar>
+      )}
+
+      {tab === 'roles' && isSuperAdmin && (
+        <BulkActionBar selectedCount={selectedDeletableRoleIds.length} onClear={() => setSelectedRoleIds([])}>
+          <button
+            onClick={handleBulkDeleteRoles}
+            disabled={bulkDeletingRoles}
+            className="inline-flex items-center gap-2 rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+          >
+            <Trash2 className="h-4 w-4" />
+            {bulkDeletingRoles ? 'Удаление...' : 'Удалить выбранные'}
+          </button>
+        </BulkActionBar>
       )}
 
       {showCreateUser && (
@@ -606,7 +765,7 @@ function CreateUserModal({
       });
       await onSuccess();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Failed to create user');
+      setError(caught instanceof Error ? caught.message : 'Ошибка создания пользователя');
     } finally {
       setSaving(false);
     }
@@ -725,7 +884,7 @@ function CreateUserModal({
             disabled={saving}
             className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Creating...' : 'Create User'}
+            {saving ? 'Создание...' : 'Создать пользователя'}
           </button>
         </div>
       </form>
@@ -787,7 +946,7 @@ function EditUserModal({
       });
       await onSuccess();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Failed to update user');
+      setError(caught instanceof Error ? caught.message : 'Ошибка обновления пользователя');
     } finally {
       setSaving(false);
     }
@@ -894,7 +1053,7 @@ function EditUserModal({
             disabled={saving}
             className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? 'Сохранение...' : 'Сохранить'}
           </button>
         </div>
       </form>
@@ -920,7 +1079,7 @@ function PasswordModal({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (password.length < 8) {
-      setError('Password must be at least 8 characters.');
+      setError('Пароль должен содержать не менее 8 символов.');
       return;
     }
     setSaving(true);
@@ -932,7 +1091,7 @@ function PasswordModal({
       });
       onSuccess();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Failed to update password');
+      setError(caught instanceof Error ? caught.message : 'Ошибка смены пароля');
     } finally {
       setSaving(false);
     }
@@ -966,7 +1125,7 @@ function PasswordModal({
             disabled={saving}
             className="flex-1 rounded-lg bg-yellow-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-yellow-600 disabled:opacity-50"
           >
-            {saving ? 'Updating...' : 'Reset Password'}
+            {saving ? 'Обновление...' : 'Сбросить пароль'}
           </button>
         </div>
       </form>
@@ -1013,14 +1172,14 @@ function RoleTemplateModal({
       await adminApiCall(endpoint, authToken, { method, body: JSON.stringify(form) });
       await onSuccess();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Failed to save role template');
+      setError(caught instanceof Error ? caught.message : 'Ошибка сохранения шаблона роли');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <Modal title={mode === 'create' ? 'Create Role Template' : `Edit Role Template - ${template?.name ?? ''}`} onClose={onClose}>
+    <Modal title={mode === 'create' ? 'Создать шаблон роли' : `Редактировать шаблон: ${template?.name ?? ''}`} onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <p className="rounded bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
 
@@ -1083,7 +1242,7 @@ function RoleTemplateModal({
             disabled={saving}
             className="flex-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
           >
-            {saving ? 'Saving...' : mode === 'create' ? 'Create Role' : 'Save Role'}
+            {saving ? 'Сохранение...' : mode === 'create' ? 'Создать роль' : 'Сохранить роль'}
           </button>
         </div>
       </form>

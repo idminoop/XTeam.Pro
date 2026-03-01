@@ -112,7 +112,7 @@ function numberFormat(value: number, fractionDigits = 0) {
 }
 
 function DeltaBadge({ delta }: { delta?: ComparisonDelta }) {
-  if (!delta) return <span className="text-xs text-gray-400">no delta</span>;
+  if (!delta) return <span className="text-xs text-gray-400">нет данных</span>;
   const isUp = delta.value >= 0;
   const pct = delta.percent;
   const pctText = pct === null ? 'n/a' : `${Math.abs(pct).toFixed(1)}%`;
@@ -207,7 +207,7 @@ export default function AdminAnalytics() {
       }
     } catch (error) {
       console.error(error);
-      toast.error('Failed to load analytics');
+      toast.error('Ошибка загрузки аналитики');
     } finally {
       setLoading(false);
     }
@@ -239,11 +239,11 @@ export default function AdminAnalytics() {
     if (!authToken) return;
     const numericTarget = Number(goalForm.target_value);
     if (!goalForm.metric) {
-      toast.error('Choose a metric');
+      toast.error('Выберите метрику');
       return;
     }
     if (!Number.isFinite(numericTarget) || numericTarget <= 0) {
-      toast.error('Target value must be greater than 0');
+      toast.error('Целевое значение должно быть больше 0');
       return;
     }
 
@@ -268,10 +268,10 @@ export default function AdminAnalytics() {
       }
       setGoalModalOpen(false);
       await loadData();
-      toast.success(editingGoal ? 'Goal updated' : 'Goal created');
+      toast.success(editingGoal ? 'Цель обновлена' : 'Цель создана');
     } catch (error) {
       console.error(error);
-      toast.error('Failed to save goal');
+      toast.error('Ошибка сохранения цели');
     } finally {
       setSavingGoal(false);
     }
@@ -279,14 +279,14 @@ export default function AdminAnalytics() {
 
   const deleteGoal = async (goalId: number) => {
     if (!authToken) return;
-    if (!confirm('Delete this goal?')) return;
+    if (!confirm('Удалить эту цель?')) return;
     try {
       await adminApiCall(`/api/admin/analytics/goals/${goalId}`, authToken, { method: 'DELETE' });
       await loadData();
-      toast.success('Goal deleted');
+      toast.success('Цель удалена');
     } catch (error) {
       console.error(error);
-      toast.error('Failed to delete goal');
+      toast.error('Ошибка удаления цели');
     }
   };
 
@@ -315,10 +315,10 @@ export default function AdminAnalytics() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success('PDF exported');
+      toast.success('PDF экспортирован');
     } catch (error) {
       console.error(error);
-      toast.error('Failed to export PDF');
+      toast.error('Ошибка экспорта PDF');
     } finally {
       setExportingPdf(false);
     }
@@ -330,32 +330,32 @@ export default function AdminAnalytics() {
     if (!analytics) return [];
     return [
       {
-        title: 'Submissions',
+        title: 'Обращения',
         value: numberFormat(analytics.totalSubmissions),
         delta: deltaMap.total_submissions,
       },
       {
-        title: 'Completed Audits',
+        title: 'Завершённые аудиты',
         value: numberFormat(analytics.completedAudits),
         delta: deltaMap.completed_audits,
       },
       {
-        title: 'Maturity Score',
+        title: 'Оценка зрелости',
         value: numberFormat(analytics.averageMaturityScore, 1),
         delta: deltaMap.average_maturity_score,
       },
       {
-        title: 'Estimated ROI',
+        title: 'Оценочный ROI',
         value: `$${numberFormat(analytics.totalEstimatedROI)}`,
         delta: deltaMap.total_estimated_roi,
       },
       {
-        title: 'Audit Conversion',
+        title: 'Конверсия аудитов',
         value: `${numberFormat(analytics.conversionRate, 1)}%`,
         delta: deltaMap.conversion_rate,
       },
       {
-        title: 'Contact Conversion',
+        title: 'Конверсия контактов',
         value: `${numberFormat(analytics.contactConversionRate, 1)}%`,
         delta: deltaMap.contact_conversion_rate,
       },
@@ -373,7 +373,7 @@ export default function AdminAnalytics() {
   if (!analytics) {
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-8 text-sm text-gray-500">
-        No analytics data available.
+        Аналитические данные недоступны.
       </div>
     );
   }
@@ -401,7 +401,7 @@ export default function AdminAnalytics() {
           ))}
           <span className="ml-2 inline-flex items-center gap-1 text-xs text-gray-500">
             <Filter className="h-3.5 w-3.5" />
-            Custom range
+            Произвольный период
           </span>
           <input
             type="date"
@@ -423,7 +423,7 @@ export default function AdminAnalytics() {
               }}
               className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
             >
-              Clear
+              Сбросить
             </button>
           )}
         </div>
@@ -436,7 +436,7 @@ export default function AdminAnalytics() {
               onChange={event => setCompareWithPrevious(event.target.checked)}
               className="rounded"
             />
-            Compare with previous period
+            Сравнить с прошлым периодом
           </label>
           <button
             onClick={exportPdf}
@@ -444,7 +444,7 @@ export default function AdminAnalytics() {
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
             <Download className="h-3.5 w-3.5" />
-            {exportingPdf ? 'Exporting...' : 'Export PDF'}
+            {exportingPdf ? 'Экспорт...' : 'Экспорт PDF'}
           </button>
         </div>
       </div>
@@ -461,7 +461,7 @@ export default function AdminAnalytics() {
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="rounded-2xl border border-gray-200 bg-white p-5 xl:col-span-2">
-          <h3 className="mb-4 text-sm font-semibold text-gray-800">Submissions Trend</h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-800">Динамика обращений</h3>
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={analytics.monthlySubmissions}>
               <defs>
@@ -481,7 +481,7 @@ export default function AdminAnalytics() {
         </div>
 
         <div className="rounded-2xl border border-gray-200 bg-white p-5">
-          <h3 className="mb-4 text-sm font-semibold text-gray-800">Funnel</h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-800">Воронка</h3>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={funnel?.stages ?? []}>
               <CartesianGrid stroke="#F1F5F9" strokeDasharray="3 3" />
@@ -496,18 +496,18 @@ export default function AdminAnalytics() {
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-800">Goals</h3>
+          <h3 className="text-sm font-semibold text-gray-800">Цели</h3>
           <button
             onClick={openCreateGoal}
             className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
           >
             <Plus className="h-3.5 w-3.5" />
-            Add Goal
+            Добавить цель
           </button>
         </div>
         {goals.length === 0 ? (
           <div className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
-            No goals yet.
+            Целей пока нет.
           </div>
         ) : (
           <div className="space-y-3">
@@ -526,14 +526,14 @@ export default function AdminAnalytics() {
                       <button
                         onClick={() => openEditGoal(goal)}
                         className="rounded p-1.5 text-gray-500 hover:bg-blue-50 hover:text-blue-700"
-                        title="Edit"
+                        title="Редактировать"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => deleteGoal(goal.id)}
                         className="rounded p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-700"
-                        title="Delete"
+                        title="Удалить"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -547,7 +547,7 @@ export default function AdminAnalytics() {
                   </div>
                   <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
                     <span>{numberFormat(goal.progress_percent, 1)}%</span>
-                    <span>{goal.is_active ? 'active' : 'inactive'}</span>
+                    <span>{goal.is_active ? 'активна' : 'неактивна'}</span>
                   </div>
                 </div>
               );
@@ -557,17 +557,17 @@ export default function AdminAnalytics() {
       </div>
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5">
-        <h3 className="mb-4 text-sm font-semibold text-gray-800">Monthly Cohort Conversion</h3>
+        <h3 className="mb-4 text-sm font-semibold text-gray-800">Когортная конверсия</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 text-left text-xs uppercase tracking-wide text-gray-500">
-                <th className="py-2 pr-3">Month</th>
-                <th className="py-2 pr-3">Contacts</th>
-                <th className="py-2 pr-3">Converted</th>
-                <th className="py-2 pr-3">Rate</th>
-                <th className="py-2 pr-3">Audits</th>
-                <th className="py-2 pr-3">Completed Audits</th>
+                <th className="py-2 pr-3">Месяц</th>
+                <th className="py-2 pr-3">Контакты</th>
+                <th className="py-2 pr-3">Конвертировано</th>
+                <th className="py-2 pr-3">Конверсия</th>
+                <th className="py-2 pr-3">Аудиты</th>
+                <th className="py-2 pr-3">Завершённых аудитов</th>
               </tr>
             </thead>
             <tbody>
@@ -592,19 +592,19 @@ export default function AdminAnalytics() {
             <div className="mb-4 flex items-center gap-2">
               <Target className="h-4 w-4 text-blue-600" />
               <h3 className="text-sm font-semibold text-gray-900">
-                {editingGoal ? 'Edit Goal' : 'Create Goal'}
+                {editingGoal ? 'Редактировать цель' : 'Создать цель'}
               </h3>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Metric</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Метрика</label>
                 <select
                   value={goalForm.metric}
                   onChange={event => setGoalForm(prev => ({ ...prev, metric: event.target.value }))}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                 >
-                  <option value="">Choose metric</option>
+                  <option value="">Выбрать метрику</option>
                   {metricOptions.map(option => (
                     <option key={option.value} value={option.value}>
                       {option.label}
@@ -614,7 +614,7 @@ export default function AdminAnalytics() {
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Target Value</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Целевое значение</label>
                 <input
                   type="number"
                   min={0}
@@ -626,7 +626,7 @@ export default function AdminAnalytics() {
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-600">Period</label>
+                <label className="mb-1 block text-xs font-medium text-gray-600">Период</label>
                 <select
                   value={goalForm.period}
                   onChange={event => setGoalForm(prev => ({ ...prev, period: event.target.value as Period }))}
@@ -647,7 +647,7 @@ export default function AdminAnalytics() {
                   onChange={event => setGoalForm(prev => ({ ...prev, is_active: event.target.checked }))}
                   className="rounded"
                 />
-                Goal is active
+                Цель активна
               </label>
             </div>
 
@@ -656,14 +656,14 @@ export default function AdminAnalytics() {
                 onClick={() => setGoalModalOpen(false)}
                 className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
-                Cancel
+                Отмена
               </button>
               <button
                 onClick={submitGoal}
                 disabled={savingGoal}
                 className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {savingGoal ? 'Saving...' : editingGoal ? 'Save' : 'Create'}
+                {savingGoal ? 'Сохранение...' : editingGoal ? 'Сохранить' : 'Создать'}
               </button>
             </div>
           </div>

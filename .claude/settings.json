@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/python.exe -c \":*)",
+      "Bash(curl -s \"http://localhost:8001/api/cases?limit=5&lang=ru\")",
+      "Bash(curl -s --max-time 3 \"http://localhost:8001/api/cases?limit=2&lang=ru\")",
+      "Bash(curl -s --max-time 3 \"http://localhost:8000/api/cases?limit=2&lang=ru\")",
+      "Bash(curl -s \"http://localhost:8000/api/cases?limit=10&lang=ru\")",
+      "Bash(curl -s \"http://localhost:8000/api/admin/cases?limit=10\" -H \"Authorization: Bearer test\")",
+      "Bash(tail -50 backend/logs/*.log)",
+      "Bash(# Check what Python process is listening on port 8000 netstat -ano)",
+      "Bash(curl -sv \"http://localhost:8000/api/cases?limit=10&lang=ru\")",
+      "Bash(curl -s \"http://localhost:8000/api/cases/aviation-rfq-automation?lang=ru\")",
+      "Bash(curl -s \"http://localhost:8000/api/cases?lang=ru&limit=10\")",
+      "Bash(curl -s \"http://localhost:8000/api/blog/posts?lang=ru&limit=10\")",
+      "Bash(curl -s \"http://localhost:8000/api/blog/\")",
+      "Bash(curl -s \"http://localhost:8000/api/blog\")",
+      "Bash(curl -s -X POST \"http://localhost:8000/api/admin/auth/login\" -H \"Content-Type: application/json\" -d '{\"\"email\"\":\"\"admin@xteam.pro\"\",\"\"password\"\":\"\"admin123\"\"}')",
+      "Bash(docker exec xteam-backend sh -c \"sed -n ''198,210p'' /app/routes/admin.py\")",
+      "Bash(curl -s \"http://localhost:8000/api/blog/?lang=ru&limit=10\")",
+      "Bash(curl -sv \"http://localhost:8000/api/blog?lang=ru&limit=5\")",
+      "Bash(curl -s \"http://localhost:8000/api/blog/posts?lang=ru&limit=5\")",
+      "Bash(grep -E \"Previous|Next|All statuses|All Stages|All Priorities|All Types|All Industries|General|Consultation|Support|Partnership|Send Profile|Add User|Add Task|Compose Email|Call|Refresh|Details|Type|Open|Users & Roles|Add|Create Template|Edit Template|Contacts Kanban|Drag cards\" src/pages/admin/*.tsx src/components/admin/*.tsx)"
+    ]
+  }
+}

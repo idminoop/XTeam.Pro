@@ -231,7 +231,7 @@ export default function AdminCaseEditor() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64 text-gray-400 text-sm">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-gray-400 text-sm">Загрузка...</div>;
   }
 
   return (
@@ -240,10 +240,10 @@ export default function AdminCaseEditor() {
         <div className="flex items-center gap-3">
           <Link to="/admin/cases" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Back to Cases
+            Назад к кейсам
           </Link>
           <span className="text-gray-300">/</span>
-          <h1 className="text-xl font-bold text-gray-900">{isNew ? 'New Case' : 'Edit Case'}</h1>
+          <h1 className="text-xl font-bold text-gray-900">{isNew ? 'Новый кейс' : 'Редактировать кейс'}</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ export default function AdminCaseEditor() {
             className="flex items-center gap-1.5 text-sm text-gray-700 border border-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <FileText className="w-4 h-4" />
-            Save Draft
+            Сохранить черновик
           </button>
           <button
             onClick={() => handleSave('published')}
@@ -261,7 +261,7 @@ export default function AdminCaseEditor() {
             className="flex items-center gap-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded-lg transition-colors disabled:opacity-50"
           >
             <Globe className="w-4 h-4" />
-            {saving ? 'Saving...' : 'Publish'}
+            {saving ? 'Сохранение...' : 'Опубликовать'}
           </button>
         </div>
       </div>
@@ -272,15 +272,15 @@ export default function AdminCaseEditor() {
         <div className="xl:col-span-2 space-y-6">
           <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Title (RU)">
+              <Field label="Заголовок (РУ)">
                 <Input value={payload.title_ru} onChange={e => set('title_ru', e.target.value)} placeholder="Название кейса на русском" />
               </Field>
-              <Field label="Title (EN)">
+              <Field label="Заголовок (EN)">
                 <Input value={payload.title_en} onChange={e => set('title_en', e.target.value)} placeholder="Case title in English" />
               </Field>
             </div>
 
-            <Field label="Slug">
+            <Field label="Слаг (URL)">
               <div className="flex gap-2">
                 <Input
                   value={payload.slug}
@@ -294,49 +294,49 @@ export default function AdminCaseEditor() {
                   onClick={() => setSlugLocked(value => !value)}
                   className="px-3 py-2 text-xs border border-gray-300 rounded-lg hover:bg-gray-50 shrink-0"
                 >
-                  {slugLocked ? 'Unlock' : 'Lock'}
+                  {slugLocked ? 'Изменить' : 'Зафиксировать'}
                 </button>
               </div>
             </Field>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Industry (RU)">
+              <Field label="Отрасль (РУ)">
                 <Input value={payload.industry_ru} onChange={e => set('industry_ru', e.target.value)} placeholder="Отрасль на русском" />
               </Field>
-              <Field label="Industry (EN)">
+              <Field label="Отрасль (EN)">
                 <Input value={payload.industry_en} onChange={e => set('industry_en', e.target.value)} placeholder="Industry in English" />
               </Field>
             </div>
 
-            <Field label="Client Company">
-              <Input value={payload.client_company} onChange={e => set('client_company', e.target.value)} placeholder="Client company" />
+            <Field label="Компания клиента">
+              <Input value={payload.client_company} onChange={e => set('client_company', e.target.value)} placeholder="Название компании" />
             </Field>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Challenge (RU)">
+              <Field label="Задача / проблема (РУ)">
                 <Textarea value={payload.challenge_ru} onChange={e => set('challenge_ru', e.target.value)} rows={5} />
               </Field>
-              <Field label="Challenge (EN)">
+              <Field label="Задача / проблема (EN)">
                 <Textarea value={payload.challenge_en} onChange={e => set('challenge_en', e.target.value)} rows={5} />
               </Field>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Solution (RU)">
+              <Field label="Решение (РУ)">
                 <Textarea value={payload.solution_ru} onChange={e => set('solution_ru', e.target.value)} rows={6} />
               </Field>
-              <Field label="Solution (EN)">
+              <Field label="Решение (EN)">
                 <Textarea value={payload.solution_en} onChange={e => set('solution_en', e.target.value)} rows={6} />
               </Field>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Testimonial (RU)">
+              <Field label="Отзыв клиента (РУ)">
                 <Textarea value={payload.testimonial_ru} onChange={e => set('testimonial_ru', e.target.value)} rows={4} />
               </Field>
-              <Field label="Testimonial (EN)">
+              <Field label="Отзыв клиента (EN)">
                 <Textarea value={payload.testimonial_en} onChange={e => set('testimonial_en', e.target.value)} rows={4} />
               </Field>
             </div>
@@ -344,7 +344,7 @@ export default function AdminCaseEditor() {
 
           <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-800">Metrics (RU/EN required)</h3>
+              <h3 className="text-sm font-semibold text-gray-800">Метрики (обязательны RU и EN)</h3>
               <button type="button" onClick={addMetric} className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50">
                 <Plus className="w-4 h-4" /> Add metric
               </button>
@@ -360,11 +360,11 @@ export default function AdminCaseEditor() {
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <Input value={metric.metric_ru} onChange={e => setMetric(index, 'metric_ru', e.target.value)} placeholder="Metric label (RU)" />
-                    <Input value={metric.metric_en} onChange={e => setMetric(index, 'metric_en', e.target.value)} placeholder="Metric label (EN)" />
-                    <Input value={metric.value} onChange={e => setMetric(index, 'value', e.target.value)} placeholder="Value" />
-                    <Input value={metric.improvement_ru} onChange={e => setMetric(index, 'improvement_ru', e.target.value)} placeholder="Improvement (RU)" />
-                    <Input value={metric.improvement_en} onChange={e => setMetric(index, 'improvement_en', e.target.value)} placeholder="Improvement (EN)" />
+                    <Input value={metric.metric_ru} onChange={e => setMetric(index, 'metric_ru', e.target.value)} placeholder="Название метрики (РУ)" />
+                    <Input value={metric.metric_en} onChange={e => setMetric(index, 'metric_en', e.target.value)} placeholder="Название метрики (EN)" />
+                    <Input value={metric.value} onChange={e => setMetric(index, 'value', e.target.value)} placeholder="Значение" />
+                    <Input value={metric.improvement_ru} onChange={e => setMetric(index, 'improvement_ru', e.target.value)} placeholder="Улучшение (РУ)" />
+                    <Input value={metric.improvement_en} onChange={e => setMetric(index, 'improvement_en', e.target.value)} placeholder="Улучшение (EN)" />
                   </div>
                 </div>
               ))}
@@ -374,26 +374,26 @@ export default function AdminCaseEditor() {
 
         <div className="space-y-4">
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-gray-800">Publishing</h3>
-            <Field label="Status">
+            <h3 className="text-sm font-semibold text-gray-800">Публикация</h3>
+            <Field label="Статус">
               <select
                 value={payload.status}
                 onChange={e => set('status', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-                <option value="archived">Archived</option>
+                <option value="draft">Черновик</option>
+                <option value="published">Опубликовано</option>
+                <option value="archived">В архиве</option>
               </select>
             </Field>
 
-            <Field label="Sort Order">
+            <Field label="Порядок сортировки">
               <Input type="number" value={payload.sort_order} onChange={e => set('sort_order', Number(e.target.value || 0))} />
             </Field>
 
             <label className="flex items-center gap-2 text-sm cursor-pointer">
               <input type="checkbox" checked={payload.is_featured} onChange={e => set('is_featured', e.target.checked)} className="rounded" />
-              Featured case
+              Рекомендуемый кейс
             </label>
 
             <button
@@ -402,23 +402,23 @@ export default function AdminCaseEditor() {
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? 'Сохранение...' : 'Сохранить'}
             </button>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-gray-800">Business Results</h3>
-            <Field label="ROI">
-              <Input value={payload.roi} onChange={e => set('roi', e.target.value)} placeholder="e.g. 320%" />
+            <h3 className="text-sm font-semibold text-gray-800">Бизнес-результаты</h3>
+            <Field label="ROI (окупаемость)">
+              <Input value={payload.roi} onChange={e => set('roi', e.target.value)} placeholder="напр. 320%" />
             </Field>
-            <Field label="Time Saved">
-              <Input value={payload.time_saved} onChange={e => set('time_saved', e.target.value)} placeholder="e.g. 12 weeks" />
+            <Field label="Сэкономленное время">
+              <Input value={payload.time_saved} onChange={e => set('time_saved', e.target.value)} placeholder="напр. 12 недель" />
             </Field>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-gray-800">Featured Image</h3>
-            <Field label="Image URL">
+            <h3 className="text-sm font-semibold text-gray-800">Обложка</h3>
+            <Field label="URL изображения">
               <Input value={payload.featured_image} onChange={e => set('featured_image', e.target.value)} placeholder="https://..." />
             </Field>
             {payload.featured_image && (

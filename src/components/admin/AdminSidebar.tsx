@@ -19,17 +19,17 @@ import { useAdminStore } from '@/store/adminStore';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
-  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard', permission: null },
-  { to: '/admin/audits', icon: FileText, label: 'Audits', permission: 'can_read_audits' as const },
-  { to: '/admin/contacts', icon: MessageSquare, label: 'Contacts', permission: 'can_read_contacts' as const },
-  { to: '/admin/contacts/kanban', icon: KanbanSquare, label: 'CRM Kanban', permission: 'can_read_contacts' as const },
-  { to: '/admin/email-templates', icon: Mail, label: 'Email Templates', permission: 'can_write_contacts' as const },
-  { to: '/admin/blog', icon: BookOpen, label: 'Blog', permission: 'can_manage_content' as const },
-  { to: '/admin/cases', icon: Briefcase, label: 'Cases', permission: 'can_manage_cases' as const },
-  { to: '/admin/media', icon: Image, label: 'Media', permission: 'can_manage_content' as const },
-  { to: '/admin/analytics', icon: BarChart2, label: 'Analytics', permission: 'can_view_analytics' as const },
-  { to: '/admin/users', icon: Users, label: 'Users', permission: 'can_manage_users' as const },
-  { to: '/admin/settings', icon: Settings, label: 'Settings', permission: null },
+  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Панель управления', permission: null },
+  { to: '/admin/audits', icon: FileText, label: 'Аудиты', permission: 'can_read_audits' as const },
+  { to: '/admin/contacts', icon: MessageSquare, label: 'Контакты', permission: 'can_read_contacts' as const },
+  { to: '/admin/contacts/kanban', icon: KanbanSquare, label: 'CRM Канбан', permission: 'can_read_contacts' as const },
+  { to: '/admin/email-templates', icon: Mail, label: 'Шаблоны писем', permission: 'can_write_contacts' as const },
+  { to: '/admin/blog', icon: BookOpen, label: 'Блог', permission: 'can_manage_content' as const },
+  { to: '/admin/cases', icon: Briefcase, label: 'Кейсы', permission: 'can_manage_cases' as const },
+  { to: '/admin/media', icon: Image, label: 'Медиатека', permission: 'can_manage_content' as const },
+  { to: '/admin/analytics', icon: BarChart2, label: 'Аналитика', permission: 'can_view_analytics' as const },
+  { to: '/admin/users', icon: Users, label: 'Пользователи', permission: 'can_manage_users' as const },
+  { to: '/admin/settings', icon: Settings, label: 'Настройки', permission: null },
 ];
 
 export default function AdminSidebar() {
@@ -68,7 +68,7 @@ export default function AdminSidebar() {
         <button
           onClick={toggleSidebar}
           className="text-gray-400 hover:text-white p-1 rounded transition-colors"
-          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
         >
           {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
@@ -107,10 +107,10 @@ export default function AdminSidebar() {
             'flex items-center rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white transition-colors w-full',
             sidebarCollapsed && 'justify-center',
           )}
-          title={sidebarCollapsed ? 'Logout' : undefined}
+          title={sidebarCollapsed ? 'Выход' : undefined}
         >
           <LogOut className={cn('w-5 h-5 shrink-0', !sidebarCollapsed && 'mr-3')} />
-          {!sidebarCollapsed && 'Logout'}
+          {!sidebarCollapsed && 'Выход'}
         </button>
       </div>
     </aside>
